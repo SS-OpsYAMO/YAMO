@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YAMO CRM</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  :root {
+    --bg-base:    #0b091d;
+    --bg-card:    #13112b;
+    --bg-elevated:#1a1838;
+    --bg-hover:   #201e42;
+    --border:     #2a2750;
+    --border-light:#322f5c;
+    --accent:     #7c3aed;
+    --accent-dim: #4c2898;
+    --accent-glow:rgba(124,58,237,0.25);
+    --accent-text:#a78bfa;
+    --text-1:     #f0eeff;
+    --text-2:     #a09dc8;
+    --text-3:     #6b6890;
+    --success:    #10b981;
+    --warning:    #f59e0b;
+    --danger:     #ef4444;
+    --info:       #6366f1;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-base); color: var(--text-1); min-height: 100vh; }
+
+  /* NAV */
+  .nav-btn { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:500; transition:all .15s; white-space:nowrap; color:var(--text-2); border:none; background:transparent; cursor:pointer; }
+  .nav-btn.active { background:var(--accent-dim); color:var(--accent-text); }
+  .nav-btn:not(.active):hover { background:var(--bg-hover); color:var(--text-1); }
+
+  /* CARDS */
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .kpi  { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; }
+
+  /* BUTTONS */
+  .btn-primary { display:inline-flex; align-items:center; gap:4px; background:var(--accent); color:#fff; padding:7px 14px; border-radius:8px; font-size:13px; font-weight:500; border:none; cursor:pointer; transition:background .15s; }
+  .btn-primary:hover { background:#6d28d9; }
+  .btn-secondary { display:inline-flex; align-items:center; gap:4px; background:var(--bg-elevated); color:var(--text-2); padding:7px 14px; border-radius:8px; font-size:13px; font-weight:500; border:1px solid var(--border); cursor:pointer; transition:all .15s; }
+  .btn-secondary:hover { background:var(--bg-hover); color:var(--text-1); border-color:var(--border-light); }
+  .btn-danger { display:inline-flex; align-items:center; background:transparent; color:#ef4444; padding:5px 10px; border-radius:6px; font-size:11px; font-weight:500; border:1px solid #3d1515; cursor:pointer; transition:all .15s; }
+  .btn-danger:hover { background:#3d1515; }
+
+  /* BADGES */
+  .badge { display:inline-flex; align-items:center; padding:2px 9px; border-radius:99px; font-size:11px; font-weight:500; }
+
+  /* INPUTS */
+  .input { width:100%; background:var(--bg-elevated); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:13px; color:var(--text-1); outline:none; transition:border .15s; font-family:inherit; }
+  .input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+  .input::placeholder { color:var(--text-3); }
+  .input[readonly] { opacity:.6; cursor:default; }
+  select.input { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23a09dc8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; background-size:14px; padding-right:30px; }
+  select.input option { background:var(--bg-elevated); color:var(--text-1); }
+  textarea.input { resize:vertical; }
+  .label { display:block; font-size:11px; font-weight:500; color:var(--text-3); margin-bottom:5px; text-transform:uppercase; letter-spacing:.04em; }
+
+  /* TABLES */
+  .table-row { border-bottom:1px solid var(--border); transition:background .1s; }
+  .table-row:hover { background:var(--bg-hover); }
+  .th { padding:10px 16px; text-align:left; font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.06em; }
+  .td { padding:12px 16px; font-size:13px; color:var(--text-2); }
+  .td.font-medium { color:var(--text-1); }
+  thead { background:var(--bg-elevated); border-bottom:1px solid var(--border); }
+
+  /* MODALS */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.65); backdrop-filter:blur(4px); z-index:50; display:flex; align-items:center; justify-content:center; padding:16px; }
+  .modal     { background:var(--bg-card); border:1px solid var(--border-light); border-radius:16px; width:100%; max-width:480px; max-height:90vh; overflow-y:auto; box-shadow:0 25px 80px rgba(0,0,0,.6); }
+  .modal-lg  { background:var(--bg-card); border:1px solid var(--border-light); border-radius:16px; width:100%; max-width:640px; max-height:90vh; overflow-y:auto; box-shadow:0 25px 80px rgba(0,0,0,.6); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:5px; height:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:99px; }
+
+  /* MISC */
+  .section { display:none; }
+  .section.active { display:block; }
+  .toast { position:fixed; bottom:24px; right:24px; z-index:100; padding:12px 20px; border-radius:10px; font-size:13px; font-weight:500; color:#fff; box-shadow:0 8px 32px rgba(0,0,0,.4); transition:opacity .3s; }
+  hr { border:none; border-top:1px solid var(--border); }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ── TOAST ── -->
+<div id="toast" class="toast opacity-0 pointer-events-none" style="background:#10b981"></div>
+
+<!-- ── SUPABASE CONFIG BANNER ── -->
+<div id="config-banner" style="background:#12102a;border-bottom:1px solid #2a2750;padding:7px 24px;font-size:11px;color:#7c6caa;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;">
+  <span id="config-text">Supabase not configured — running in local mode.</span>
+  <button onclick="toggleConfigPanel()" style="margin-left:auto;color:var(--accent-text);font-size:11px;font-weight:600;background:none;border:none;cursor:pointer;">Configure</button>
+</div>
+<div id="config-panel" class="hidden" style="background:var(--bg-card);border-bottom:1px solid var(--border);padding:16px 24px;position:sticky;top:28px;z-index:49;">
+  <div style="display:flex;gap:12px;align-items:flex-end;max-width:700px;">
+    <div style="flex:1"><label class="label">Supabase URL</label><input id="sb-url" class="input" placeholder="https://xxxx.supabase.co" /></div>
+    <div style="flex:1"><label class="label">Anon Key</label><input id="sb-key" class="input" placeholder="eyJh..." /></div>
+    <button onclick="initSupabase()" class="btn-primary" style="white-space:nowrap">Connect</button>
+  </div>
+</div>
+
+<!-- ── LAYOUT SHELL ── -->
+<div style="display:flex;min-height:calc(100vh - 36px);">
+
+<!-- ── SIDEBAR ── -->
+<aside style="width:200px;flex-shrink:0;background:var(--bg-card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:36px;height:calc(100vh - 36px);overflow-y:auto;">
+  <!-- Logo -->
+  <div style="padding:20px 16px 16px;border-bottom:1px solid var(--border);">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div style="width:32px;height:32px;background:linear-gradient(135deg,#7c3aed,#4c1d95);border-radius:9px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(124,58,237,.35);flex-shrink:0;">
+        <span style="color:#fff;font-size:15px;font-weight:800;">Y</span>
+      </div>
+      <div>
+        <div style="font-weight:700;color:var(--text-1);font-size:14px;letter-spacing:-.02em;">YAMO</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:1px;">CRM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav style="padding:12px 8px;flex:1;" id="main-nav">
+    <div style="font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;padding:0 8px 6px;">Records</div>
+    <button class="nav-btn active" data-section="dashboard" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_dashboard">Dashboard</span></button>
+    <button class="nav-btn" data-section="customers" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_customers">Customers</span></button>
+    <button class="nav-btn" data-section="devices" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_devices">Devices</span></button>
+    <button class="nav-btn" data-section="orders" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_orders">Orders</span></button>
+
+    <div style="font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;padding:16px 8px 6px;">Operations</div>
+    <button class="nav-btn" data-section="buyback" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_buyback">Buyback</span></button>
+    <button class="nav-btn" data-section="connectivity" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_connectivity">Connectivity</span></button>
+    <button class="nav-btn" data-section="suppliers" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_suppliers">Suppliers</span></button>
+    <button class="nav-btn" data-section="operations" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_operations">Operations</span></button>
+    <button class="nav-btn" data-section="topups" style="width:100%;justify-content:flex-start;"><span data-i18n="nav_topups">Top Ups</span></button>
+  </nav>
+
+  <!-- Bottom -->
+  <div style="padding:12px 8px;border-top:1px solid var(--border);">
+    <button onclick="toggleLang()" style="width:100%;text-align:left;font-size:12px;font-weight:500;color:var(--text-3);background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:7px;transition:all .15s;" id="lang-toggle">EN / ES</button>
+    <a href="yamo-landing.html" style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--text-3);text-decoration:none;padding:6px 8px;border-radius:7px;margin-top:4px;transition:all .15s;" onmouseover="this.style.background='var(--bg-hover)';this.style.color='var(--text-1)'" onmouseout="this.style.background='transparent';this.style.color='var(--text-3)'">
+      <svg width="12" height="12" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+      Back to site
+    </a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main style="flex:1;padding:28px 32px;min-width:0;overflow-x:hidden;">
+
+  <!-- DASHBOARD -->
+  <div id="section-dashboard" class="section active">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_dashboard">Dashboard</h1>
+      <button onclick="loadDashboard()" class="btn-secondary" style="font-size:12px;">↻ <span data-i18n="refresh">Refresh</span></button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;" id="kpi-row">
+      <!-- injected by JS -->
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:16px;" data-i18n="pipeline_by_stage">Pipeline by Stage</h3>
+        <div id="pipeline-chart" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:16px;" data-i18n="overdue_returns">Overdue Returns</h3>
+        <div id="overdue-list" style="display:flex;flex-direction:column;gap:6px;font-size:13px;"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:16px;" data-i18n="recent_orders">Recent Orders</h3>
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead><tr id="dash-orders-head"></tr></thead>
+          <tbody id="dash-orders-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMERS -->
+  <div id="section-customers" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_customers">Customers</h1>
+      <div style="display:flex;gap:8px;">
+        <input id="customer-search" class="input" style="width:180px;" placeholder="Search..." oninput="filterCustomers()" />
+        <button onclick="openModal('customer-modal')" class="btn-primary">+ <span data-i18n="add_customer">Add Customer</span></button>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b border-slate-100">
+            <tr>
+              <th class="th" data-i18n="name">Name</th>
+              <th class="th" data-i18n="email">Email</th>
+              <th class="th" data-i18n="nationality">Nationality</th>
+              <th class="th" data-i18n="tier">Tier</th>
+              <th class="th" data-i18n="orders">Orders</th>
+              <th class="th">LTV</th>
+              <th class="th"></th>
+            </tr>
+          </thead>
+          <tbody id="customers-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEVICES -->
+  <div id="section-devices" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_devices">Devices</h1>
+      <div style="display:flex;gap:8px;">
+        <select id="device-status-filter" class="input" style="width:140px;" onchange="loadDevices()">
+          <option value="">All Status</option>
+          <option value="in_stock">In Stock</option>
+          <option value="assigned">Assigned</option>
+          <option value="returned">Returned</option>
+          <option value="grading">Grading</option>
+          <option value="relisted">Relisted</option>
+        </select>
+        <select id="device-tier-filter" class="input" style="width:140px;" onchange="loadDevices()">
+          <option value="">All Tiers</option>
+          <option value="Essential">Essential</option>
+          <option value="Explorer">Explorer</option>
+          <option value="Premium">Premium</option>
+        </select>
+        <button onclick="openModal('device-modal')" class="btn-primary">+ <span data-i18n="add_device">Add Device</span></button>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b border-slate-100">
+            <tr>
+              <th class="th">IMEI</th>
+              <th class="th" data-i18n="model">Model</th>
+              <th class="th" data-i18n="tier">Tier</th>
+              <th class="th" data-i18n="supplier">Supplier</th>
+              <th class="th" data-i18n="landed_cost">Landed Cost</th>
+              <th class="th" data-i18n="status">Status</th>
+              <th class="th" data-i18n="grade">Grade</th>
+              <th class="th" data-i18n="cycles">Cycles</th>
+              <th class="th"></th>
+            </tr>
+          </thead>
+          <tbody id="devices-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div id="section-orders" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_orders">Orders</h1>
+      <div style="display:flex;gap:8px;">
+        <select id="order-stage-filter" class="input" style="width:160px;" onchange="loadOrders()">
+          <option value="">All Stages</option>
+          <option value="lead">Lead</option>
+          <option value="quoted">Quoted</option>
+          <option value="active">Active</option>
+          <option value="overdue_return">Overdue</option>
+          <option value="returned">Returned</option>
+          <option value="closed">Closed</option>
+        </select>
+        <button onclick="openModal('order-modal')" class="btn-primary">+ <span data-i18n="new_order">New Order</span></button>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b border-slate-100">
+            <tr>
+              <th class="th">#</th>
+              <th class="th" data-i18n="customer">Customer</th>
+              <th class="th" data-i18n="device">Device</th>
+              <th class="th">eSIM</th>
+              <th class="th" data-i18n="total">Total</th>
+              <th class="th" data-i18n="stage">Stage</th>
+              <th class="th" data-i18n="return_date">Return Date</th>
+              <th class="th" data-i18n="cycle">Cycle</th>
+              <th class="th"></th>
+            </tr>
+          </thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUYBACK -->
+  <div id="section-buyback" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_buyback">Buyback & Grading</h1>
+      <button onclick="openModal('buyback-modal')" class="btn-primary">+ <span data-i18n="process_return">Process Return</span></button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div class="kpi" style="text-align:center;"><div style="font-size:24px;font-weight:700;color:var(--text-1);" id="bb-grade-a">—</div><div style="font-size:10px;color:var(--text-3);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;">Grade A Returns</div></div>
+      <div class="kpi" style="text-align:center;"><div style="font-size:24px;font-weight:700;color:var(--text-1);" id="bb-grade-b">—</div><div style="font-size:10px;color:var(--text-3);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;">Grade B Returns</div></div>
+      <div class="kpi" style="text-align:center;"><div style="font-size:24px;font-weight:700;color:var(--text-1);" id="bb-grade-c">—</div><div style="font-size:10px;color:var(--text-3);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;">Grade C Returns</div></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b border-slate-100">
+            <tr>
+              <th class="th" data-i18n="date">Date</th>
+              <th class="th" data-i18n="device">Device</th>
+              <th class="th" data-i18n="customer">Customer</th>
+              <th class="th" data-i18n="grade">Grade</th>
+              <th class="th">Battery %</th>
+              <th class="th" data-i18n="buyback_amount">Buyback Amount</th>
+              <th class="th" data-i18n="cycle_margin">Cycle Margin</th>
+              <th class="th" data-i18n="notes">Notes</th>
+            </tr>
+          </thead>
+          <tbody id="buyback-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONNECTIVITY -->
+  <div id="section-connectivity" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_connectivity">Connectivity</h1>
+      <button onclick="openModal('esim-modal')" class="btn-primary">+ <span data-i18n="add_plan">Add Plan</span></button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:12px;">Airalo Plans</h3>
+        <div id="airalo-plans" class="space-y-2"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:12px;">eSIM Go Plans</h3>
+        <div id="esimgo-plans" class="space-y-2"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:14px;" data-i18n="active_esims">Active eSIM Assignments</h3>
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead class="bg-slate-50"><tr>
+            <th class="th" data-i18n="customer">Customer</th>
+            <th class="th">Provider</th>
+            <th class="th">Plan</th>
+            <th class="th" data-i18n="cost">Cost</th>
+            <th class="th" data-i18n="resale">Resale</th>
+            <th class="th" data-i18n="margin">Margin</th>
+            <th class="th" data-i18n="order">Order</th>
+          </tr></thead>
+          <tbody id="esim-assignments-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPPLIERS -->
+  <div id="section-suppliers" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_suppliers">Suppliers</h1>
+      <button onclick="openModal('po-modal')" class="btn-primary">+ <span data-i18n="new_po">New Purchase Order</span></button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;" id="supplier-cards"></div>
+    <div class="card">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-slate-700 text-sm" data-i18n="purchase_orders">Purchase Orders</h3>
+        <div style="display:flex;gap:8px;">
+          <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center;">
+            <div class="text-xs text-slate-500 mb-1" data-i18n="landed_cost_calc">Landed Cost Calculator</div>
+            <div class="flex gap-2 items-center mt-2">
+              <input id="calc-price" type="number" class="input text-xs" placeholder="Device $" oninput="calcLanded()" />
+              <span class="text-slate-400 text-xs">→</span>
+              <span id="calc-result" class="text-sm font-bold text-blue-600 min-w-16">$0.00</span>
+            </div>
+            <div class="text-xs text-slate-400 mt-1">(+5% tariff +19% VAT +$25 freight)</div>
+          </div>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b border-slate-100"><tr>
+            <th class="th" data-i18n="supplier">Supplier</th>
+            <th class="th" data-i18n="items">Items</th>
+            <th class="th" data-i18n="subtotal">Subtotal</th>
+            <th class="th" data-i18n="landed">Landed Total</th>
+            <th class="th" data-i18n="status">Status</th>
+            <th class="th" data-i18n="order_date">Order Date</th>
+            <th class="th" data-i18n="arrival">Est. Arrival</th>
+            <th class="th"></th>
+          </tr></thead>
+          <tbody id="po-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERATIONS -->
+  <div id="section-operations" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_operations">Operations Log</h1>
+      <button onclick="openModal('ops-modal')" class="btn-primary">+ <span data-i18n="log_event">Log Event</span></button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b border-slate-100"><tr>
+            <th class="th" data-i18n="date">Date</th>
+            <th class="th" data-i18n="event">Event</th>
+            <th class="th" data-i18n="customer">Customer</th>
+            <th class="th" data-i18n="device">Device</th>
+            <th class="th" data-i18n="location">Location</th>
+            <th class="th" data-i18n="operator">Operator</th>
+            <th class="th" data-i18n="notes">Notes</th>
+          </tr></thead>
+          <tbody id="ops-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP UPS -->
+  <div id="section-topups" class="section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <h1 style="font-size:20px;font-weight:700;color:var(--text-1);" data-i18n="nav_topups">Top Ups</h1>
+      <button onclick="openModal('topup-modal')" class="btn-primary">+ <span data-i18n="add_topup">New Top Up</span></button>
+    </div>
+
+    <!-- KPIs -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+      <div class="kpi"><div style="font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Top Ups</div><div id="tu-count" style="font-size:26px;font-weight:700;color:var(--text-1);">—</div></div>
+      <div class="kpi"><div style="font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Revenue</div><div id="tu-revenue" style="font-size:26px;font-weight:700;color:var(--accent-text);">—</div></div>
+      <div class="kpi"><div style="font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Cost</div><div id="tu-cost" style="font-size:26px;font-weight:700;color:var(--text-1);">—</div></div>
+      <div class="kpi"><div style="font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Margin</div><div id="tu-margin" style="font-size:26px;font-weight:700;color:#10b981;">—</div></div>
+    </div>
+
+    <!-- CATALOG TABS -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-size:13px;font-weight:600;color:var(--text-1);">Plan Catalog — Colombia</div>
+        <div style="display:flex;gap:4px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:3px;">
+          <button onclick="showCatalogTab('international')" id="tab-intl" style="font-size:11px;font-weight:600;padding:5px 14px;border-radius:5px;border:none;cursor:pointer;background:var(--accent);color:#fff;transition:all .15s;">International</button>
+          <button onclick="showCatalogTab('local')" id="tab-local" style="font-size:11px;font-weight:600;padding:5px 14px;border-radius:5px;border:none;cursor:pointer;background:transparent;color:var(--text-3);transition:all .15s;">Local Carriers</button>
+        </div>
+      </div>
+
+      <!-- International Catalog -->
+      <div id="catalog-international">
+        <!-- Airalo -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+            <span style="background:#1a1040;color:#a78bfa;padding:2px 8px;border-radius:99px;font-size:10px;">Airalo · Chimba</span>
+            <span style="color:var(--text-3);font-weight:400;font-size:10px;">4G · Movistar Colombia · ~20% below retail = your cost</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-airalo"></div>
+        </div>
+        <!-- eSIM Go -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+            <span style="background:#0a2618;color:#10b981;padding:2px 8px;border-radius:99px;font-size:10px;">eSIM Go · Wholesale</span>
+            <span style="color:var(--text-3);font-weight:400;font-size:10px;">$2.61/GB + $0.30 activation</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-esimgo"></div>
+        </div>
+      </div>
+
+      <!-- Local Catalog -->
+      <div id="catalog-local" style="display:none;">
+        <div style="font-size:11px;color:var(--text-3);margin-bottom:14px;">Prices in COP · TRM ref: $3,572/USD · Cost = face value · Resale = cost + service margin</div>
+        <!-- WOM -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">
+            <span style="background:#1a1838;color:#6366f1;padding:2px 8px;border-radius:99px;font-size:10px;">WOM Colombia</span>
+            <span style="color:var(--text-3);font-weight:400;font-size:10px;margin-left:6px;">Best GB/peso · 4G via RAN Claro/ETB · Includes calls</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-wom"></div>
+        </div>
+        <!-- Claro -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">
+            <span style="background:#2a0a0a;color:#ef4444;padding:2px 8px;border-radius:99px;font-size:10px;">Claro Colombia</span>
+            <span style="color:var(--text-3);font-weight:400;font-size:10px;margin-left:6px;">94.6% 4G coverage · Widest reach</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-claro"></div>
+        </div>
+        <!-- Movistar -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">
+            <span style="background:#0a1828;color:#38bdf8;padding:2px 8px;border-radius:99px;font-size:10px;">Movistar Colombia</span>
+            <span style="color:var(--text-3);font-weight:400;font-size:10px;margin-left:6px;">Strong in Medellín · WhatsApp included</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-movistar"></div>
+        </div>
+        <!-- Tigo -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">
+            <span style="background:#1a1000;color:#fbbf24;padding:2px 8px;border-radius:99px;font-size:10px;">Tigo Colombia</span>
+            <span style="color:var(--text-3);font-weight:400;font-size:10px;margin-left:6px;">82.7% 4G · Double data promos available</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-tigo"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECORDED TOP UPS -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;color:var(--text-1);">Recorded Top Ups</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;">
+          <thead style="background:var(--bg-elevated);border-bottom:1px solid var(--border);">
+            <tr>
+              <th class="th" data-i18n="date">Date</th>
+              <th class="th" data-i18n="customer">Customer</th>
+              <th class="th" data-i18n="device">Device</th>
+              <th class="th">Provider</th>
+              <th class="th">Plan</th>
+              <th class="th" data-i18n="cost">Cost</th>
+              <th class="th">Charged</th>
+              <th class="th" data-i18n="margin">Margin</th>
+              <th class="th" data-i18n="notes">Notes</th>
+            </tr>
+          </thead>
+          <tbody id="topups-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div><!-- end layout shell -->
+
+<!-- ══════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════ -->
+
+<!-- Customer Modal -->
+<div id="customer-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'customer-modal')">
+  <div class="modal p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="add_customer">Add Customer</h2>
+      <button onclick="closeModal('customer-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="customer-form" onsubmit="saveCustomer(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <input type="hidden" id="customer-id" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="first_name">First Name</label><input id="c-first" class="input" required /></div>
+        <div><label class="label" data-i18n="last_name">Last Name</label><input id="c-last" class="input" required /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="email">Email</label><input id="c-email" class="input" type="email" /></div>
+        <div><label class="label" data-i18n="phone">Phone</label><input id="c-phone" class="input" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="nationality">Nationality</label><input id="c-nationality" class="input" /></div>
+        <div><label class="label" data-i18n="country_origin">Country of Origin</label><input id="c-country" class="input" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="preferred_tier">Preferred Tier</label>
+          <select id="c-tier" class="input">
+            <option value="">— Select —</option>
+            <option value="Essential">Essential</option>
+            <option value="Explorer">Explorer</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </div>
+        <div><label class="label" data-i18n="referral_source">Referral Source</label><input id="c-referral" class="input" /></div>
+      </div>
+      <div><label class="label" data-i18n="notes">Notes</label><textarea id="c-notes" class="input" rows="2"></textarea></div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Save</button>
+        <button type="button" onclick="closeModal('customer-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Device Modal -->
+<div id="device-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'device-modal')">
+  <div class="modal p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="add_device">Add Device</h2>
+      <button onclick="closeModal('device-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="device-form" onsubmit="saveDevice(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <input type="hidden" id="device-id" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">Brand</label><input id="d-brand" class="input" placeholder="Apple / Samsung / Google" required /></div>
+        <div><label class="label" data-i18n="model">Model</label><input id="d-model" class="input" placeholder="iPhone 13, Galaxy A16 5G…" required /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="tier">Tier</label>
+          <select id="d-tier" class="input" required>
+            <option value="">— Select —</option>
+            <option value="Essential">Essential</option>
+            <option value="Explorer">Explorer</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </div>
+        <div><label class="label" data-i18n="supplier">Supplier</label>
+          <select id="d-supplier" class="input">
+            <option value="">— Select —</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">IMEI</label><input id="d-imei" class="input" /></div>
+        <div><label class="label">Serial Number</label><input id="d-serial" class="input" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="acquisition_cost">Acquisition Cost ($)</label><input id="d-cost" class="input" type="number" step="0.01" required oninput="autoCalcLanded()" /></div>
+        <div><label class="label" data-i18n="landed_cost">Landed Cost ($)</label><input id="d-landed" class="input" type="number" step="0.01" /></div>
+        <div><label class="label">Storage (GB)</label><input id="d-storage" class="input" type="number" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">Color</label><input id="d-color" class="input" /></div>
+        <div><label class="label">Battery Health %</label><input id="d-battery" class="input" type="number" min="0" max="100" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="status">Status</label>
+          <select id="d-status" class="input">
+            <option value="in_stock">In Stock</option>
+            <option value="assigned">Assigned</option>
+            <option value="returned">Returned</option>
+            <option value="grading">Grading</option>
+            <option value="relisted">Relisted</option>
+          </select>
+        </div>
+        <div><label class="label">Purchase Date</label><input id="d-purchase-date" class="input" type="date" /></div>
+      </div>
+      <div><label class="label" data-i18n="notes">Notes</label><textarea id="d-notes" class="input" rows="2"></textarea></div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Save</button>
+        <button type="button" onclick="closeModal('device-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Order Modal -->
+<div id="order-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'order-modal')">
+  <div class="modal-lg p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="new_order">New Order</h2>
+      <button onclick="closeModal('order-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="order-form" onsubmit="saveOrder(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <input type="hidden" id="order-id" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="customer">Customer</label>
+          <select id="o-customer" class="input" required></select>
+        </div>
+        <div><label class="label" data-i18n="device">Device (in stock)</label>
+          <select id="o-device" class="input" required onchange="fillDevicePrice()"></select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">eSIM Plan</label>
+          <select id="o-esim" class="input" onchange="fillEsimPrice()">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div><label class="label" data-i18n="cycle">Cycle #</label>
+          <input id="o-cycle" class="input" type="number" value="1" min="1" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="device_price">Device Price ($)</label><input id="o-device-price" class="input" type="number" step="0.01" required oninput="calcOrderTotal()" /></div>
+        <div><label class="label">eSIM Price ($)</label><input id="o-esim-price" class="input" type="number" step="0.01" value="0" oninput="calcOrderTotal()" /></div>
+        <div><label class="label" data-i18n="total">Total ($)</label><input id="o-total" class="input bg-slate-50" readonly /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="stage">Stage</label>
+          <select id="o-stage" class="input">
+            <option value="lead">Lead</option>
+            <option value="quoted">Quoted</option>
+            <option value="active" selected>Active</option>
+          </select>
+        </div>
+        <div><label class="label" data-i18n="payment_status">Payment Status</label>
+          <select id="o-payment" class="input">
+            <option value="pending">Pending</option>
+            <option value="partial">Partial</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="order_date">Order Date</label><input id="o-date" class="input" type="date" /></div>
+        <div><label class="label" data-i18n="delivery_date">Delivery Date</label><input id="o-delivery" class="input" type="date" /></div>
+        <div><label class="label" data-i18n="expected_return">Expected Return</label><input id="o-return" class="input" type="date" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="handoff_location">Handoff Location</label><input id="o-handoff" class="input" placeholder="e.g. El Poblado, Medellín" /></div>
+        <div><label class="label" data-i18n="return_location">Return Location</label><input id="o-return-loc" class="input" /></div>
+      </div>
+      <div><label class="label" data-i18n="notes">Notes</label><textarea id="o-notes" class="input" rows="2"></textarea></div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Save Order</button>
+        <button type="button" onclick="closeModal('order-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Buyback Modal -->
+<div id="buyback-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'buyback-modal')">
+  <div class="modal p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="process_return">Process Return & Grade</h2>
+      <button onclick="closeModal('buyback-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="buyback-form" onsubmit="saveBuyback(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <div><label class="label" data-i18n="select_order">Select Active Order</label>
+        <select id="bb-order" class="input" required onchange="fillBuybackOrder()">
+          <option value="">— Select Order —</option>
+        </select>
+      </div>
+      <div id="bb-order-info" class="bg-slate-50 rounded-lg p-3 text-sm hidden">
+        <div class="grid grid-cols-2 gap-2 text-slate-600">
+          <div><span class="font-medium">Customer:</span> <span id="bb-info-customer"></span></div>
+          <div><span class="font-medium">Device:</span> <span id="bb-info-device"></span></div>
+          <div><span class="font-medium">Sale Price:</span> $<span id="bb-info-price"></span></div>
+          <div><span class="font-medium">Cycle:</span> <span id="bb-info-cycle"></span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="grade">Grade</label>
+          <select id="bb-grade" class="input" required onchange="calcBuybackAmount()">
+            <option value="">— Select —</option>
+            <option value="A">A — Like New (50–60% buyback)</option>
+            <option value="B">B — Normal Wear (30–40%)</option>
+            <option value="C">C — Damaged (10–20%)</option>
+          </select>
+        </div>
+        <div><label class="label">Battery Health %</label><input id="bb-battery" class="input" type="number" min="0" max="100" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">Screen Condition</label>
+          <select id="bb-screen" class="input">
+            <option value="perfect">Perfect</option>
+            <option value="minor_scratches">Minor Scratches</option>
+            <option value="cracked">Cracked</option>
+          </select>
+        </div>
+        <div><label class="label">Body Condition</label>
+          <select id="bb-body" class="input">
+            <option value="perfect">Perfect</option>
+            <option value="minor_wear">Minor Wear</option>
+            <option value="damaged">Damaged</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="buyback_amount">Buyback Amount ($)</label>
+          <input id="bb-amount" class="input" type="number" step="0.01" required />
+          <div class="text-xs text-slate-400 mt-1" id="bb-suggested"></div>
+        </div>
+        <div class="flex items-end">
+          <label class="flex items-center gap-2 text-sm text-slate-600 pb-2">
+            <input id="bb-accessories" type="checkbox" class="rounded" />
+            <span data-i18n="accessories_returned">Accessories Returned</span>
+          </label>
+        </div>
+      </div>
+      <div><label class="label" data-i18n="inspector">Inspector Name</label><input id="bb-inspector" class="input" /></div>
+      <div><label class="label" data-i18n="notes">Notes</label><textarea id="bb-notes" class="input" rows="2"></textarea></div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Complete Buyback</button>
+        <button type="button" onclick="closeModal('buyback-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- eSIM Plan Modal -->
+<div id="esim-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'esim-modal')">
+  <div class="modal p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="add_plan">Add eSIM Plan</h2>
+      <button onclick="closeModal('esim-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="esim-form" onsubmit="saveEsimPlan(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <input type="hidden" id="esim-id" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">Provider</label>
+          <select id="ep-provider" class="input" required>
+            <option value="Airalo">Airalo</option>
+            <option value="eSIM Go">eSIM Go</option>
+          </select>
+        </div>
+        <div><label class="label">Plan Name</label><input id="ep-name" class="input" placeholder="5GB / 15 days" required /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div><label class="label">Data (GB)</label><input id="ep-gb" class="input" type="number" step="0.1" /></div>
+        <div><label class="label">Duration (days)</label><input id="ep-days" class="input" type="number" /></div>
+        <div><label class="label">Country</label><input id="ep-country" class="input" value="Colombia" /></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">Cost to YAMO ($)</label><input id="ep-cost" class="input" type="number" step="0.01" required /></div>
+        <div><label class="label">Resale Price ($)</label><input id="ep-resale" class="input" type="number" step="0.01" required /></div>
+      </div>
+      <div><label class="label" data-i18n="notes">Notes</label><textarea id="ep-notes" class="input" rows="2"></textarea></div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Save Plan</button>
+        <button type="button" onclick="closeModal('esim-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Purchase Order Modal -->
+<div id="po-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'po-modal')">
+  <div class="modal-lg p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="new_po">New Purchase Order</h2>
+      <button onclick="closeModal('po-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="po-form" onsubmit="savePO(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <input type="hidden" id="po-id" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="supplier">Supplier</label>
+          <select id="po-supplier" class="input" required></select>
+        </div>
+        <div><label class="label" data-i18n="status">Status</label>
+          <select id="po-status" class="input">
+            <option value="draft">Draft</option>
+            <option value="submitted">Submitted</option>
+            <option value="in_transit">In Transit</option>
+            <option value="received">Received</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="order_date">Order Date</label><input id="po-date" class="input" type="date" /></div>
+        <div><label class="label" data-i18n="expected_arrival">Expected Arrival</label><input id="po-arrival" class="input" type="date" /></div>
+      </div>
+      <div>
+        <label class="label" data-i18n="line_items">Line Items</label>
+        <div id="po-lines" class="space-y-2">
+          <!-- Lines injected -->
+        </div>
+        <button type="button" onclick="addPOLine()" class="btn-secondary text-xs mt-2">+ Add Item</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label">Subtotal ($)</label><input id="po-subtotal" class="input bg-slate-50" readonly /></div>
+        <div><label class="label" data-i18n="landed_total">Landed Total ($)</label><input id="po-landed-total" class="input bg-slate-50 font-bold" readonly /></div>
+      </div>
+      <div><label class="label">Tracking Number</label><input id="po-tracking" class="input" /></div>
+      <div><label class="label" data-i18n="notes">Notes</label><textarea id="po-notes" class="input" rows="2"></textarea></div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Save PO</button>
+        <button type="button" onclick="closeModal('po-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Operations Log Modal -->
+<div id="ops-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'ops-modal')">
+  <div class="modal p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="log_event">Log Event</h2>
+      <button onclick="closeModal('ops-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="ops-form" onsubmit="saveOpsEvent(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="event_type">Event Type</label>
+          <select id="ops-type" class="input" required>
+            <option value="handoff">Handoff</option>
+            <option value="return">Return</option>
+            <option value="inspection">Inspection</option>
+            <option value="shipment">Shipment</option>
+            <option value="note">Note</option>
+          </select>
+        </div>
+        <div><label class="label" data-i18n="order">Order (optional)</label>
+          <select id="ops-order" class="input">
+            <option value="">— None —</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label class="label" data-i18n="location">Location</label><input id="ops-location" class="input" placeholder="El Poblado" /></div>
+        <div><label class="label" data-i18n="city">City</label><input id="ops-city" class="input" value="Medellín" /></div>
+      </div>
+      <div><label class="label" data-i18n="operator">Operator Name</label><input id="ops-operator" class="input" /></div>
+      <div><label class="label">Description</label><textarea id="ops-description" class="input" rows="2"></textarea></div>
+      <div><label class="label" data-i18n="notes">Notes</label><textarea id="ops-notes" class="input" rows="2"></textarea></div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Log Event</button>
+        <button type="button" onclick="closeModal('ops-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Top Up Modal -->
+<div id="topup-modal" class="modal-overlay hidden" onclick="closeOnOverlay(event,'topup-modal')">
+  <div class="modal p-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-weight:700;color:var(--text-1);font-size:15px;" data-i18n="add_topup">New Top Up</h2>
+      <button onclick="closeModal('topup-modal')" style="color:var(--text-3);font-size:22px;background:none;border:none;cursor:pointer;line-height:1;padding:0;">×</button>
+    </div>
+    <form id="topup-form" onsubmit="saveTopup(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <label class="label" data-i18n="select_order">Active Order</label>
+        <select id="tu-order" class="input" required onchange="fillTopupOrder()">
+          <option value="">— Select Order —</option>
+        </select>
+      </div>
+      <div id="tu-order-info" style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:12px;display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;color:var(--text-2);">
+          <div><span style="color:var(--text-3);">Customer:</span> <span id="tu-info-customer"></span></div>
+          <div><span style="color:var(--text-3);">Device:</span> <span id="tu-info-device"></span></div>
+        </div>
+      </div>
+      <div>
+        <label class="label">eSIM Plan</label>
+        <select id="tu-plan" class="input" onchange="fillTopupPlan()">
+          <option value="">— Select Plan —</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div>
+          <label class="label">Provider</label>
+          <input id="tu-provider" class="input" placeholder="Airalo / eSIM Go" />
+        </div>
+        <div>
+          <label class="label">Our Cost ($)</label>
+          <input id="tu-cost" class="input" type="number" step="0.01" required oninput="calcTopupMargin()" />
+        </div>
+        <div>
+          <label class="label">Charged ($)</label>
+          <input id="tu-charged" class="input" type="number" step="0.01" required oninput="calcTopupMargin()" />
+        </div>
+      </div>
+      <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:12px;color:var(--text-3);">Margin</span>
+        <span id="tu-margin-preview" style="font-size:15px;font-weight:700;color:#10b981;">$0.00</span>
+      </div>
+      <div>
+        <label class="label" data-i18n="notes">Notes</label>
+        <textarea id="tu-notes" class="input" rows="2"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;padding-top:8px;">
+        <button type="submit" class="btn-primary" style="flex:1;justify-content:center;" data-i18n="save">Save Top Up</button>
+        <button type="button" onclick="closeModal('topup-modal')" class="btn-secondary" style="flex:1;justify-content:center;" data-i18n="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIG & SUPABASE
+// ══════════════════════════════════════════
+let sb = null;
+let sbConnected = false;
+
+function initSupabase() {
+  const url = document.getElementById('sb-url').value.trim();
+  const key = document.getElementById('sb-key').value.trim();
+  if (!url || !key) return toast('Enter URL and key', 'error');
+  try {
+    sb = supabase.createClient(url, key);
+    sbConnected = true;
+    localStorage.setItem('yamo_sb_url', url);
+    localStorage.setItem('yamo_sb_key', key);
+    document.getElementById('config-banner').className = 'bg-green-50 border-b border-green-200 px-6 py-2 text-sm text-green-800 flex items-center gap-3';
+    document.getElementById('config-text').textContent = '✓ Connected to Supabase';
+    document.getElementById('config-panel').classList.add('hidden');
+    toast('Connected to Supabase!', 'success');
+    loadCurrentSection();
+  } catch(e) {
+    toast('Connection failed: ' + e.message, 'error');
+  }
+}
+
+function toggleConfigPanel() {
+  document.getElementById('config-panel').classList.toggle('hidden');
+}
+
+// Try restore saved creds
+window.addEventListener('DOMContentLoaded', () => {
+  const url = localStorage.getItem('yamo_sb_url');
+  const key = localStorage.getItem('yamo_sb_key');
+  if (url && key) {
+    document.getElementById('sb-url').value = url;
+    document.getElementById('sb-key').value = key;
+    initSupabase();
+  }
+});
+
+// ── LOCAL STORE (fallback when no Supabase) ──
+const LS = {
+  get: (k) => JSON.parse(localStorage.getItem('yamo_' + k) || '[]'),
+  set: (k, v) => localStorage.setItem('yamo_' + k, JSON.stringify(v)),
+  genId: () => crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2),
+  now: () => new Date().toISOString()
+};
+
+// ── DB ABSTRACTION ──
+const DB = {
+  async getAll(table, filters = {}) {
+    if (sbConnected) {
+      let q = sb.from(table).select('*');
+      Object.entries(filters).forEach(([k, v]) => { if (v) q = q.eq(k, v); });
+      const { data, error } = await q.order('created_at', { ascending: false });
+      if (error) throw error;
+      return data || [];
+    }
+    let rows = LS.get(table);
+    Object.entries(filters).forEach(([k, v]) => { if (v) rows = rows.filter(r => r[k] === v); });
+    return rows.reverse();
+  },
+  async insert(table, row) {
+    const record = { id: LS.genId(), created_at: LS.now(), updated_at: LS.now(), ...row };
+    if (sbConnected) {
+      const { data, error } = await sb.from(table).insert(record).select().single();
+      if (error) throw error;
+      return data;
+    }
+    const rows = LS.get(table);
+    rows.push(record);
+    LS.set(table, rows);
+    return record;
+  },
+  async update(table, id, changes) {
+    const record = { ...changes, updated_at: LS.now() };
+    if (sbConnected) {
+      const { data, error } = await sb.from(table).update(record).eq('id', id).select().single();
+      if (error) throw error;
+      return data;
+    }
+    const rows = LS.get(table);
+    const idx = rows.findIndex(r => r.id === id);
+    if (idx >= 0) { rows[idx] = { ...rows[idx], ...record }; LS.set(table, rows); return rows[idx]; }
+  },
+  async delete(table, id) {
+    if (sbConnected) {
+      const { error } = await sb.from(table).delete().eq('id', id);
+      if (error) throw error;
+      return;
+    }
+    const rows = LS.get(table).filter(r => r.id !== id);
+    LS.set(table, rows);
+  },
+  async query(table, select = '*', filters = {}) {
+    if (sbConnected) {
+      let q = sb.from(table).select(select);
+      Object.entries(filters).forEach(([k, v]) => { if (v) q = q.eq(k, v); });
+      const { data, error } = await q;
+      if (error) throw error;
+      return data || [];
+    }
+    return this.getAll(table, filters);
+  }
+};
+
+// ══════════════════════════════════════════
+// i18n
+// ══════════════════════════════════════════
+let lang = localStorage.getItem('yamo_lang') || 'en';
+const T = {
+  en: {
+    nav_dashboard: 'Dashboard', nav_customers: 'Customers', nav_devices: 'Devices',
+    nav_orders: 'Orders', nav_buyback: 'Buyback', nav_connectivity: 'Connectivity',
+    nav_suppliers: 'Suppliers', nav_operations: 'Operations',
+    add_customer: 'Add Customer', add_device: 'Add Device', new_order: 'New Order',
+    process_return: 'Process Return', add_plan: 'Add Plan', new_po: 'New Purchase Order', log_event: 'Log Event',
+    name: 'Name', email: 'Email', nationality: 'Nationality', tier: 'Tier', orders: 'Orders',
+    first_name: 'First Name', last_name: 'Last Name', phone: 'Phone', country_origin: 'Country of Origin',
+    preferred_tier: 'Preferred Tier', referral_source: 'Referral Source', notes: 'Notes',
+    model: 'Model', supplier: 'Supplier', landed_cost: 'Landed Cost', status: 'Status',
+    grade: 'Grade', cycles: 'Cycles', acquisition_cost: 'Acquisition Cost',
+    customer: 'Customer', device: 'Device', total: 'Total', stage: 'Stage',
+    return_date: 'Return Date', cycle: 'Cycle', payment_status: 'Payment Status',
+    order_date: 'Order Date', delivery_date: 'Delivery Date', expected_return: 'Expected Return',
+    handoff_location: 'Handoff Location', return_location: 'Return Location',
+    buyback_amount: 'Buyback Amount', cycle_margin: 'Cycle Margin',
+    inspector: 'Inspector', accessories_returned: 'Accessories Returned',
+    active_esims: 'Active eSIM Assignments', cost: 'Cost', resale: 'Resale', margin: 'Margin', order: 'Order',
+    purchase_orders: 'Purchase Orders', landed_cost_calc: 'Landed Cost Calc',
+    items: 'Items', subtotal: 'Subtotal', landed: 'Landed Total', arrival: 'Est. Arrival',
+    line_items: 'Line Items', landed_total: 'Landed Total', expected_arrival: 'Expected Arrival',
+    event_type: 'Event Type', location: 'Location', city: 'City', operator: 'Operator',
+    event: 'Event', date: 'Date', select_order: 'Select Active Order',
+    save: 'Save', cancel: 'Cancel', edit: 'Edit', delete: 'Delete',
+    pipeline_by_stage: 'Pipeline by Stage', overdue_returns: 'Overdue Returns',
+    recent_orders: 'Recent Orders', refresh: 'Refresh',
+    device_price: 'Device Price', order: 'Order',
+    nav_topups: 'Top Ups', add_topup: 'New Top Up',
+  },
+  es: {
+    nav_dashboard: 'Panel', nav_customers: 'Clientes', nav_devices: 'Dispositivos',
+    nav_orders: 'Pedidos', nav_buyback: 'Recompra', nav_connectivity: 'Conectividad',
+    nav_suppliers: 'Proveedores', nav_operations: 'Operaciones',
+    add_customer: 'Agregar Cliente', add_device: 'Agregar Dispositivo', new_order: 'Nuevo Pedido',
+    process_return: 'Procesar Devolución', add_plan: 'Agregar Plan', new_po: 'Nueva Orden de Compra', log_event: 'Registrar Evento',
+    name: 'Nombre', email: 'Correo', nationality: 'Nacionalidad', tier: 'Categoría', orders: 'Pedidos',
+    first_name: 'Nombre', last_name: 'Apellido', phone: 'Teléfono', country_origin: 'País de Origen',
+    preferred_tier: 'Categoría Preferida', referral_source: 'Fuente de Referido', notes: 'Notas',
+    model: 'Modelo', supplier: 'Proveedor', landed_cost: 'Costo Final', status: 'Estado',
+    grade: 'Calificación', cycles: 'Ciclos', acquisition_cost: 'Costo de Adquisición',
+    customer: 'Cliente', device: 'Dispositivo', total: 'Total', stage: 'Etapa',
+    return_date: 'Fecha de Retorno', cycle: 'Ciclo', payment_status: 'Estado de Pago',
+    order_date: 'Fecha de Pedido', delivery_date: 'Fecha de Entrega', expected_return: 'Retorno Esperado',
+    handoff_location: 'Punto de Entrega', return_location: 'Punto de Devolución',
+    buyback_amount: 'Monto de Recompra', cycle_margin: 'Margen del Ciclo',
+    inspector: 'Inspector', accessories_returned: 'Accesorios Devueltos',
+    active_esims: 'Asignaciones eSIM Activas', cost: 'Costo', resale: 'Reventa', margin: 'Margen', order: 'Pedido',
+    purchase_orders: 'Órdenes de Compra', landed_cost_calc: 'Calculadora de Costo Final',
+    items: 'Artículos', subtotal: 'Subtotal', landed: 'Total Final', arrival: 'Llegada Est.',
+    line_items: 'Artículos', landed_total: 'Total Final', expected_arrival: 'Llegada Esperada',
+    event_type: 'Tipo de Evento', location: 'Ubicación', city: 'Ciudad', operator: 'Operador',
+    event: 'Evento', date: 'Fecha', select_order: 'Seleccionar Pedido Activo',
+    save: 'Guardar', cancel: 'Cancelar', edit: 'Editar', delete: 'Eliminar',
+    pipeline_by_stage: 'Pipeline por Etapa', overdue_returns: 'Devoluciones Vencidas',
+    recent_orders: 'Pedidos Recientes', refresh: 'Actualizar',
+    device_price: 'Precio Dispositivo', order: 'Pedido',
+    nav_topups: 'Recargas', add_topup: 'Nueva Recarga',
+  }
+};
+
+function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.getElementById('lang-toggle').textContent = lang === 'en' ? 'ES' : 'EN';
+}
+
+function toggleLang() {
+  lang = lang === 'en' ? 'es' : 'en';
+  localStorage.setItem('yamo_lang', lang);
+  applyI18n();
+}
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+let currentSection = 'dashboard';
+
+document.getElementById('main-nav').addEventListener('click', e => {
+  const btn = e.target.closest('[data-section]');
+  if (!btn) return;
+  navigateTo(btn.dataset.section);
+});
+
+function navigateTo(section) {
+  currentSection = section;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + section).classList.add('active');
+  document.querySelector(`[data-section="${section}"]`).classList.add('active');
+  loadCurrentSection();
+}
+
+function loadCurrentSection() {
+  const loaders = {
+    dashboard: loadDashboard,
+    customers: loadCustomers,
+    devices: loadDevices,
+    orders: loadOrders,
+    buyback: loadBuyback,
+    connectivity: loadConnectivity,
+    suppliers: loadSuppliers,
+    operations: loadOperations,
+    topups: loadTopups
+  };
+  if (loaders[currentSection]) loaders[currentSection]();
+}
+
+// ══════════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+function closeOnOverlay(e, id) { if (e.target.id === id) closeModal(id); }
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type === 'error' ? 'bg-red-500' : 'bg-green-600'}`;
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+const fmt$ = v => v != null ? '$' + parseFloat(v).toFixed(2) : '—';
+const fmtDate = d => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+const isOverdue = d => d && new Date(d) < new Date();
+
+const badge = (label, bg, color) =>
+  `<span class="badge" style="background:${bg};color:${color};">${label}</span>`;
+
+const stageBadge = (s) => {
+  const map = {
+    lead:           ['#1e1c3a','#6b6890'],
+    quoted:         ['#2a1f00','#f59e0b'],
+    active:         ['#0a2618','#10b981'],
+    overdue_return: ['#2a0a0a','#ef4444'],
+    returned:       ['#1a1040','#a78bfa'],
+    closed:         ['#13112b','#4a4870']
+  };
+  const [bg, fg] = map[s] || ['#1a1838','#a09dc8'];
+  return badge(s?.replace('_',' ') || '—', bg, fg);
+};
+
+const gradeBadge = (g) => {
+  const map = { A: ['#0a2618','#10b981'], B: ['#2a1f00','#f59e0b'], C: ['#2a0a0a','#ef4444'], ungraded: ['#1a1838','#6b6890'] };
+  const [bg, fg] = map[g] || ['#1a1838','#6b6890'];
+  return badge(g || '—', bg, fg);
+};
+
+const statusBadge = (s) => {
+  const map = {
+    in_stock:  ['#0a2618','#10b981'],
+    assigned:  ['#111840','#6366f1'],
+    returned:  ['#1a1040','#a78bfa'],
+    grading:   ['#2a1f00','#f59e0b'],
+    relisted:  ['#0a2020','#2dd4bf'],
+    retired:   ['#1a1838','#4a4870']
+  };
+  const [bg, fg] = map[s] || ['#1a1838','#6b6890'];
+  return badge(s?.replace('_',' ') || '—', bg, fg);
+};
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════
+async function loadDashboard() {
+  const [orders, devices, customers, buybacks] = await Promise.all([
+    DB.getAll('orders'), DB.getAll('devices'),
+    DB.getAll('customers'), DB.getAll('buybacks')
+  ]);
+
+  const active = orders.filter(o => o.stage === 'active');
+  const overdue = orders.filter(o => o.stage === 'active' && o.expected_return && isOverdue(o.expected_return));
+  const totalRev = orders.reduce((s, o) => s + (parseFloat(o.total_sale_price || o.device_sale_price) || 0), 0);
+  const inStock = devices.filter(d => d.status === 'in_stock').length;
+  const avgMargin = buybacks.length ? buybacks.reduce((s, b) => s + (parseFloat(b.cycle_device_margin) || 0), 0) / buybacks.length : 0;
+
+  const kpi = (label, val, color='var(--text-1)') => `
+    <div class="kpi">
+      <div style="font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">${label}</div>
+      <div style="font-size:26px;font-weight:700;color:${color};line-height:1;">${val}</div>
+    </div>`;
+  document.getElementById('kpi-row').innerHTML =
+    kpi('Active Orders', active.length) +
+    kpi('Total Revenue', fmt$(totalRev), 'var(--accent-text)') +
+    kpi('Devices In Stock', inStock) +
+    kpi('Avg Cycle Margin', fmt$(avgMargin), '#10b981') +
+    kpi('Total Customers', customers.length) +
+    kpi('Overdue Returns', overdue.length, overdue.length ? '#ef4444' : 'var(--text-1)') +
+    kpi('Total Devices', devices.length) +
+    kpi('Buybacks Done', buybacks.length);
+
+  // Pipeline chart
+  const stages = ['lead','quoted','active','overdue_return','returned','closed'];
+  const stageClr = {'lead':'#6b6890','quoted':'#f59e0b','active':'#10b981','overdue_return':'#ef4444','returned':'#7c3aed','closed':'#2a2750'};
+  const max = Math.max(1, ...stages.map(s => orders.filter(o => o.stage === s).length));
+  document.getElementById('pipeline-chart').innerHTML = stages.map(s => {
+    const cnt = orders.filter(o => o.stage === s).length;
+    const pct = Math.round((cnt / max) * 100);
+    return `<div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:110px;font-size:11px;color:var(--text-3);text-transform:capitalize;">${s.replace('_',' ')}</div>
+      <div style="flex:1;background:var(--bg-elevated);border-radius:99px;height:6px;overflow:hidden;">
+        <div style="background:${stageClr[s]};height:6px;border-radius:99px;width:${pct}%;transition:width .4s;"></div>
+      </div>
+      <div style="width:20px;font-size:11px;color:var(--text-3);text-align:right;">${cnt}</div>
+    </div>`;
+  }).join('');
+
+  // Overdue
+  document.getElementById('overdue-list').innerHTML = overdue.length
+    ? overdue.map(o => {
+        const days = Math.ceil((new Date() - new Date(o.expected_return)) / 86400000);
+        return `<div style="display:flex;align-items:center;justify-content:space-between;background:#2a1010;border:1px solid #4a1a1a;border-radius:8px;padding:8px 12px;">
+          <span style="font-size:12px;color:var(--text-2);">${o.customer_id?.slice(0,8)}…</span>
+          <span style="font-size:11px;color:#ef4444;font-weight:600;">${days}d overdue</span>
+        </div>`;
+      }).join('')
+    : '<div style="color:var(--text-3);font-size:13px;padding:16px 0;text-align:center;">No overdue returns 🎉</div>';
+
+  // Recent orders
+  const allCustomers = await DB.getAll('customers');
+  const allDevices = await DB.getAll('devices');
+  const cMap = Object.fromEntries(allCustomers.map(c => [c.id, c.first_name + ' ' + c.last_name]));
+  const dMap = Object.fromEntries(allDevices.map(d => [d.id, d.brand + ' ' + d.model]));
+
+  document.getElementById('dash-orders-head').innerHTML = `
+    <th class="th">Customer</th><th class="th">Device</th>
+    <th class="th">Total</th><th class="th">Stage</th><th class="th">Return</th>`;
+  document.getElementById('dash-orders-body').innerHTML = orders.slice(0, 8).map(o => `
+    <tr class="table-row">
+      <td class="td">${cMap[o.customer_id] || '—'}</td>
+      <td class="td">${dMap[o.device_id] || '—'}</td>
+      <td class="td font-medium">${fmt$(o.total_sale_price || (parseFloat(o.device_sale_price||0) + parseFloat(o.esim_sale_price||0)))}</td>
+      <td class="td">${stageBadge(o.stage)}</td>
+      <td class="td ${o.expected_return && isOverdue(o.expected_return) ? 'text-red-600 font-medium' : ''}">${fmtDate(o.expected_return)}</td>
+    </tr>`).join('');
+}
+
+// ══════════════════════════════════════════
+// CUSTOMERS
+// ══════════════════════════════════════════
+let allCustomers = [];
+
+async function loadCustomers() {
+  allCustomers = await DB.getAll('customers');
+  renderCustomers(allCustomers);
+}
+
+function filterCustomers() {
+  const q = document.getElementById('customer-search').value.toLowerCase();
+  renderCustomers(allCustomers.filter(c =>
+    `${c.first_name} ${c.last_name} ${c.email} ${c.nationality}`.toLowerCase().includes(q)
+  ));
+}
+
+function renderCustomers(list) {
+  document.getElementById('customers-body').innerHTML = list.map(c => `
+    <tr class="table-row">
+      <td class="td font-medium" style="color:var(--text-1);">${c.first_name} ${c.last_name}</td>
+      <td class="td" style="color:var(--text-3);">${c.email || '—'}</td>
+      <td class="td">${c.nationality || '—'}</td>
+      <td class="td">${c.preferred_tier ? badge(c.preferred_tier,'#1a1040','#a78bfa') : '—'}</td>
+      <td class="td">—</td>
+      <td class="td">—</td>
+      <td class="td">
+        <div style="display:flex;gap:6px;">
+          <button onclick='editCustomer(${JSON.stringify(c)})' class="btn-secondary" style="font-size:11px;padding:4px 10px;">Edit</button>
+          <button onclick="deleteRecord('customers','${c.id}',loadCustomers)" class="btn-danger">Del</button>
+        </div>
+      </td>
+    </tr>`).join('') || `<tr><td class="td" colspan="7" style="text-align:center;color:var(--text-3);padding:40px;">No customers yet</td></tr>`;
+}
+
+async function saveCustomer(e) {
+  e.preventDefault();
+  const id = document.getElementById('customer-id').value;
+  const data = {
+    first_name: document.getElementById('c-first').value,
+    last_name: document.getElementById('c-last').value,
+    email: document.getElementById('c-email').value || null,
+    phone: document.getElementById('c-phone').value || null,
+    nationality: document.getElementById('c-nationality').value || null,
+    country_of_origin: document.getElementById('c-country').value || null,
+    preferred_tier: document.getElementById('c-tier').value || null,
+    referral_source: document.getElementById('c-referral').value || null,
+    notes: document.getElementById('c-notes').value || null
+  };
+  try {
+    if (id) await DB.update('customers', id, data);
+    else await DB.insert('customers', data);
+    toast(id ? 'Customer updated' : 'Customer added');
+    closeModal('customer-modal');
+    document.getElementById('customer-form').reset();
+    document.getElementById('customer-id').value = '';
+    loadCustomers();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+function editCustomer(c) {
+  document.getElementById('customer-id').value = c.id;
+  document.getElementById('c-first').value = c.first_name || '';
+  document.getElementById('c-last').value = c.last_name || '';
+  document.getElementById('c-email').value = c.email || '';
+  document.getElementById('c-phone').value = c.phone || '';
+  document.getElementById('c-nationality').value = c.nationality || '';
+  document.getElementById('c-country').value = c.country_of_origin || '';
+  document.getElementById('c-tier').value = c.preferred_tier || '';
+  document.getElementById('c-referral').value = c.referral_source || '';
+  document.getElementById('c-notes').value = c.notes || '';
+  openModal('customer-modal');
+}
+
+// ══════════════════════════════════════════
+// DEVICES
+// ══════════════════════════════════════════
+async function loadDevices() {
+  const status = document.getElementById('device-status-filter').value;
+  const tier = document.getElementById('device-tier-filter').value;
+  let devices = await DB.getAll('devices');
+  const suppliers = await DB.getAll('suppliers');
+  const sMap = Object.fromEntries(suppliers.map(s => [s.id, s.name]));
+
+  // Populate supplier dropdown in modal
+  const sel = document.getElementById('d-supplier');
+  sel.innerHTML = '<option value="">— Select —</option>' +
+    suppliers.filter(s => s.type === 'device').map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+
+  if (status) devices = devices.filter(d => d.status === status);
+  if (tier) devices = devices.filter(d => d.tier === tier);
+
+  document.getElementById('devices-body').innerHTML = devices.map(d => `
+    <tr class="table-row">
+      <td class="td" style="font-family:monospace;font-size:11px;color:var(--text-3);">${d.imei || '—'}</td>
+      <td class="td font-medium" style="color:var(--text-1);">${d.brand} ${d.model}</td>
+      <td class="td">${badge(d.tier,'#1a1040','#a78bfa')}</td>
+      <td class="td" style="color:var(--text-3);">${sMap[d.supplier_id] || '—'}</td>
+      <td class="td" style="color:var(--accent-text);font-weight:500;">${fmt$(d.landed_cost || d.acquisition_cost)}</td>
+      <td class="td">${statusBadge(d.status)}</td>
+      <td class="td">${gradeBadge(d.current_grade)}</td>
+      <td class="td" style="color:var(--text-3);">—</td>
+      <td class="td">
+        <div style="display:flex;gap:6px;">
+          <button onclick='editDevice(${JSON.stringify(d)})' class="btn-secondary" style="font-size:11px;padding:4px 10px;">Edit</button>
+          <button onclick="deleteRecord('devices','${d.id}',loadDevices)" class="btn-danger">Del</button>
+        </div>
+      </td>
+    </tr>`).join('') || `<tr><td class="td" colspan="9" style="text-align:center;color:var(--text-3);padding:40px;">No devices yet</td></tr>`;
+}
+
+function autoCalcLanded() {
+  const cost = parseFloat(document.getElementById('d-cost').value) || 0;
+  const supplier = document.getElementById('d-supplier').value;
+  // Only apply import costs for Nobility (US supplier)
+  const supplierName = document.getElementById('d-supplier').selectedOptions[0]?.text || '';
+  if (supplierName.includes('Nobility') || supplierName.includes('US')) {
+    const landed = cost * 1.05 * 1.19 + 25;
+    document.getElementById('d-landed').value = landed.toFixed(2);
+  } else {
+    document.getElementById('d-landed').value = cost.toFixed(2);
+  }
+}
+
+async function saveDevice(e) {
+  e.preventDefault();
+  const id = document.getElementById('device-id').value;
+  const data = {
+    brand: document.getElementById('d-brand').value,
+    model: document.getElementById('d-model').value,
+    tier: document.getElementById('d-tier').value,
+    supplier_id: document.getElementById('d-supplier').value || null,
+    imei: document.getElementById('d-imei').value || null,
+    serial_number: document.getElementById('d-serial').value || null,
+    acquisition_cost: parseFloat(document.getElementById('d-cost').value) || 0,
+    landed_cost: parseFloat(document.getElementById('d-landed').value) || null,
+    storage_gb: parseInt(document.getElementById('d-storage').value) || null,
+    color: document.getElementById('d-color').value || null,
+    battery_health_pct: parseInt(document.getElementById('d-battery').value) || null,
+    status: document.getElementById('d-status').value,
+    purchase_date: document.getElementById('d-purchase-date').value || null,
+    notes: document.getElementById('d-notes').value || null,
+    current_grade: 'ungraded'
+  };
+  try {
+    if (id) await DB.update('devices', id, data);
+    else await DB.insert('devices', data);
+    toast(id ? 'Device updated' : 'Device added');
+    closeModal('device-modal');
+    document.getElementById('device-form').reset();
+    document.getElementById('device-id').value = '';
+    loadDevices();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+function editDevice(d) {
+  document.getElementById('device-id').value = d.id;
+  document.getElementById('d-brand').value = d.brand || '';
+  document.getElementById('d-model').value = d.model || '';
+  document.getElementById('d-tier').value = d.tier || '';
+  document.getElementById('d-supplier').value = d.supplier_id || '';
+  document.getElementById('d-imei').value = d.imei || '';
+  document.getElementById('d-serial').value = d.serial_number || '';
+  document.getElementById('d-cost').value = d.acquisition_cost || '';
+  document.getElementById('d-landed').value = d.landed_cost || '';
+  document.getElementById('d-storage').value = d.storage_gb || '';
+  document.getElementById('d-color').value = d.color || '';
+  document.getElementById('d-battery').value = d.battery_health_pct || '';
+  document.getElementById('d-status').value = d.status || 'in_stock';
+  document.getElementById('d-purchase-date').value = d.purchase_date || '';
+  document.getElementById('d-notes').value = d.notes || '';
+  openModal('device-modal');
+}
+
+// ══════════════════════════════════════════
+// ORDERS
+// ══════════════════════════════════════════
+async function loadOrders() {
+  const stage = document.getElementById('order-stage-filter').value;
+  let orders = await DB.getAll('orders');
+  if (stage) orders = orders.filter(o => o.stage === stage);
+
+  const customers = await DB.getAll('customers');
+  const devices = await DB.getAll('devices');
+  const plans = await DB.getAll('esim_plans');
+  const cMap = Object.fromEntries(customers.map(c => [c.id, c.first_name + ' ' + c.last_name]));
+  const dMap = Object.fromEntries(devices.map(d => [d.id, d.brand + ' ' + d.model]));
+  const pMap = Object.fromEntries(plans.map(p => [p.id, p.provider + ' ' + p.plan_name]));
+
+  // Populate order modal dropdowns
+  document.getElementById('o-customer').innerHTML = customers.map(c =>
+    `<option value="${c.id}">${c.first_name} ${c.last_name}</option>`).join('');
+  document.getElementById('o-device').innerHTML =
+    '<option value="">— Select Device —</option>' +
+    devices.filter(d => d.status === 'in_stock' || d.status === 'relisted').map(d =>
+      `<option value="${d.id}" data-price="${d.landed_cost || d.acquisition_cost}">${d.brand} ${d.model} (${d.tier})</option>`).join('');
+  document.getElementById('o-esim').innerHTML = '<option value="">— No eSIM —</option>' +
+    plans.filter(p => p.is_active !== false).map(p =>
+      `<option value="${p.id}" data-resale="${p.resale_price_usd}">${p.provider} — ${p.plan_name} (${fmt$(p.resale_price_usd)})</option>`).join('');
+
+  document.getElementById('orders-body').innerHTML = orders.map((o, i) => {
+    const total = parseFloat(o.total_sale_price) || (parseFloat(o.device_sale_price||0) + parseFloat(o.esim_sale_price||0));
+    const overdue = o.expected_return && isOverdue(o.expected_return) && o.stage === 'active';
+    return `<tr class="table-row" style="${overdue ? 'background:#1a0808;' : ''}">
+      <td class="td" style="font-family:monospace;font-size:11px;color:var(--text-3);">${o.id.slice(0,6)}</td>
+      <td class="td font-medium" style="color:var(--text-1);">${cMap[o.customer_id] || '—'}</td>
+      <td class="td">${dMap[o.device_id] || '—'}</td>
+      <td class="td" style="font-size:11px;color:var(--text-3);">${pMap[o.esim_plan_id] || '—'}</td>
+      <td class="td" style="color:var(--accent-text);font-weight:600;">${fmt$(total)}</td>
+      <td class="td">${stageBadge(o.stage)}</td>
+      <td class="td" style="${overdue ? 'color:#ef4444;font-weight:600;' : 'color:var(--text-3);'}">${fmtDate(o.expected_return)}</td>
+      <td class="td" style="text-align:center;">${badge('#'+( o.cycle_number||1),'#1a1040','#a78bfa')}</td>
+      <td class="td">
+        <div style="display:flex;gap:6px;">
+          <select onchange="updateOrderStage('${o.id}', this.value, loadOrders)" class="input" style="font-size:11px;padding:4px 8px;width:110px;">
+            <option value="">Stage…</option>
+            ${['lead','quoted','active','returned','closed'].map(s => `<option value="${s}" ${o.stage===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+          <button onclick="deleteRecord('orders','${o.id}',loadOrders)" class="btn-danger">Del</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td class="td text-slate-400 py-8 text-center" colspan="9">No orders yet</td></tr>';
+}
+
+function fillDevicePrice() {
+  const sel = document.getElementById('o-device');
+  const opt = sel.selectedOptions[0];
+  if (opt && opt.dataset.price) {
+    // Suggest sale price based on tier
+    const text = opt.textContent;
+    let suggested = parseFloat(opt.dataset.price) * 1.2;
+    document.getElementById('o-device-price').value = suggested.toFixed(2);
+    calcOrderTotal();
+  }
+}
+
+function fillEsimPrice() {
+  const sel = document.getElementById('o-esim');
+  const opt = sel.selectedOptions[0];
+  document.getElementById('o-esim-price').value = opt?.dataset.resale || '0';
+  calcOrderTotal();
+}
+
+function calcOrderTotal() {
+  const dp = parseFloat(document.getElementById('o-device-price').value) || 0;
+  const ep = parseFloat(document.getElementById('o-esim-price').value) || 0;
+  document.getElementById('o-total').value = (dp + ep).toFixed(2);
+}
+
+async function saveOrder(e) {
+  e.preventDefault();
+  const id = document.getElementById('order-id').value;
+  const data = {
+    customer_id: document.getElementById('o-customer').value,
+    device_id: document.getElementById('o-device').value,
+    esim_plan_id: document.getElementById('o-esim').value || null,
+    device_sale_price: parseFloat(document.getElementById('o-device-price').value) || 0,
+    esim_sale_price: parseFloat(document.getElementById('o-esim-price').value) || 0,
+    stage: document.getElementById('o-stage').value,
+    payment_status: document.getElementById('o-payment').value,
+    order_date: document.getElementById('o-date').value || null,
+    delivery_date: document.getElementById('o-delivery').value || null,
+    expected_return: document.getElementById('o-return').value || null,
+    handoff_location: document.getElementById('o-handoff').value || null,
+    return_location: document.getElementById('o-return-loc').value || null,
+    cycle_number: parseInt(document.getElementById('o-cycle').value) || 1,
+    notes: document.getElementById('o-notes').value || null
+  };
+  // Set total_sale_price for local mode
+  data.total_sale_price = data.device_sale_price + data.esim_sale_price;
+  try {
+    if (id) await DB.update('orders', id, data);
+    else {
+      await DB.insert('orders', data);
+      // Mark device as assigned
+      await DB.update('devices', data.device_id, { status: 'assigned' });
+    }
+    toast(id ? 'Order updated' : 'Order created');
+    closeModal('order-modal');
+    document.getElementById('order-form').reset();
+    document.getElementById('order-id').value = '';
+    loadOrders();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+async function updateOrderStage(id, stage, cb) {
+  if (!stage) return;
+  try {
+    await DB.update('orders', id, { stage });
+    if (stage === 'returned' || stage === 'closed') {
+      // Get order to find device
+      const orders = await DB.getAll('orders');
+      const ord = orders.find(o => o.id === id);
+      if (ord) await DB.update('devices', ord.device_id, { status: 'returned' });
+    }
+    toast('Stage updated');
+    if (cb) cb();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// BUYBACK
+// ══════════════════════════════════════════
+async function loadBuyback() {
+  const buybacks = await DB.getAll('buybacks');
+  const orders = await DB.getAll('orders');
+  const customers = await DB.getAll('customers');
+  const devices = await DB.getAll('devices');
+
+  const cMap = Object.fromEntries(customers.map(c => [c.id, c.first_name + ' ' + c.last_name]));
+  const dMap = Object.fromEntries(devices.map(d => [d.id, d.brand + ' ' + d.model]));
+  const oMap = Object.fromEntries(orders.map(o => [o.id, o]));
+
+  // Populate active orders in buyback modal
+  const activeOrders = orders.filter(o => ['active','overdue_return'].includes(o.stage));
+  document.getElementById('bb-order').innerHTML = '<option value="">— Select Order —</option>' +
+    activeOrders.map(o => `<option value="${o.id}" data-price="${o.device_sale_price}" data-cycle="${o.cycle_number}">
+      ${cMap[o.customer_id] || '?'} — ${dMap[o.device_id] || '?'} ($${o.device_sale_price})
+    </option>`).join('');
+
+  const gradeCount = g => buybacks.filter(b => b.grade === g).length;
+  document.getElementById('bb-grade-a').textContent = gradeCount('A');
+  document.getElementById('bb-grade-b').textContent = gradeCount('B');
+  document.getElementById('bb-grade-c').textContent = gradeCount('C');
+
+  document.getElementById('buyback-body').innerHTML = buybacks.map(b => {
+    const ord = oMap[b.order_id];
+    return `<tr class="table-row">
+      <td class="td text-xs text-slate-500">${fmtDate(b.created_at)}</td>
+      <td class="td">${dMap[b.device_id] || '—'}</td>
+      <td class="td">${ord ? cMap[ord.customer_id] || '—' : '—'}</td>
+      <td class="td">${gradeBadge(b.grade)}</td>
+      <td class="td">${b.battery_health_pct != null ? b.battery_health_pct + '%' : '—'}</td>
+      <td class="td font-medium">${fmt$(b.buyback_amount)}</td>
+      <td class="td font-medium text-green-700">${fmt$(b.cycle_device_margin || (b.device_sale_price - b.buyback_amount))}</td>
+      <td class="td text-xs text-slate-500">${b.notes || '—'}</td>
+    </tr>`;
+  }).join('') || '<tr><td class="td text-slate-400 py-8 text-center" colspan="8">No buybacks yet</td></tr>';
+}
+
+function fillBuybackOrder() {
+  const sel = document.getElementById('bb-order');
+  const opt = sel.selectedOptions[0];
+  const info = document.getElementById('bb-order-info');
+  if (!opt || !opt.value) { info.classList.add('hidden'); return; }
+  const orders = JSON.parse(localStorage.getItem('yamo_orders') || '[]');
+  const ord = orders.find(o => o.id === opt.value);
+  if (ord) {
+    const customers = JSON.parse(localStorage.getItem('yamo_customers') || '[]');
+    const devices = JSON.parse(localStorage.getItem('yamo_devices') || '[]');
+    const c = customers.find(x => x.id === ord.customer_id);
+    const d = devices.find(x => x.id === ord.device_id);
+    document.getElementById('bb-info-customer').textContent = c ? c.first_name + ' ' + c.last_name : '—';
+    document.getElementById('bb-info-device').textContent = d ? d.brand + ' ' + d.model : '—';
+    document.getElementById('bb-info-price').textContent = ord.device_sale_price || '—';
+    document.getElementById('bb-info-cycle').textContent = ord.cycle_number || 1;
+    info.classList.remove('hidden');
+  }
+  calcBuybackAmount();
+}
+
+function calcBuybackAmount() {
+  const sel = document.getElementById('bb-order');
+  const opt = sel.selectedOptions[0];
+  const grade = document.getElementById('bb-grade').value;
+  if (!opt || !grade) return;
+  const price = parseFloat(opt.dataset.price) || 0;
+  const pcts = { A: 0.55, B: 0.35, C: 0.15 };
+  const pct = pcts[grade] || 0;
+  const suggested = price * pct;
+  document.getElementById('bb-amount').value = suggested.toFixed(2);
+  document.getElementById('bb-suggested').textContent = `Suggested: ${Math.round(pct*100)}% of $${price} = $${suggested.toFixed(2)}`;
+}
+
+async function saveBuyback(e) {
+  e.preventDefault();
+  const orderId = document.getElementById('bb-order').value;
+  const orders = await DB.getAll('orders');
+  const ord = orders.find(o => o.id === orderId);
+  if (!ord) return toast('Order not found', 'error');
+
+  const data = {
+    order_id: orderId,
+    device_id: ord.device_id,
+    grade: document.getElementById('bb-grade').value,
+    battery_health_pct: parseInt(document.getElementById('bb-battery').value) || null,
+    screen_condition: document.getElementById('bb-screen').value,
+    body_condition: document.getElementById('bb-body').value,
+    accessories_returned: document.getElementById('bb-accessories').checked,
+    buyback_amount: parseFloat(document.getElementById('bb-amount').value) || 0,
+    device_sale_price: parseFloat(ord.device_sale_price) || 0,
+    cycle_device_margin: parseFloat(ord.device_sale_price) - parseFloat(document.getElementById('bb-amount').value),
+    inspector_name: document.getElementById('bb-inspector').value || null,
+    notes: document.getElementById('bb-notes').value || null
+  };
+  try {
+    await DB.insert('buybacks', data);
+    await DB.update('orders', orderId, { stage: 'returned', actual_return: new Date().toISOString().split('T')[0] });
+    await DB.update('devices', ord.device_id, { status: 'grading', current_grade: data.grade, battery_health_pct: data.battery_health_pct });
+    toast('Buyback completed!');
+    closeModal('buyback-modal');
+    document.getElementById('buyback-form').reset();
+    document.getElementById('bb-order-info').classList.add('hidden');
+    loadBuyback();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// CONNECTIVITY
+// ══════════════════════════════════════════
+async function loadConnectivity() {
+  const plans = await DB.getAll('esim_plans');
+  const orders = await DB.getAll('orders');
+  const customers = await DB.getAll('customers');
+  const cMap = Object.fromEntries(customers.map(c => [c.id, c.first_name + ' ' + c.last_name]));
+
+  const renderPlan = p => {
+    const margin = (p.resale_price_usd - p.cost_usd).toFixed(2);
+    const pct = Math.round(((p.resale_price_usd - p.cost_usd) / p.resale_price_usd) * 100);
+    return `<div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:10px 12px;">
+      <div>
+        <div style="font-size:13px;font-weight:500;color:var(--text-1);">${p.plan_name}</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px;">${p.data_gb}GB · ${p.duration_days}d</div>
+      </div>
+      <div style="text-align:right;margin-right:10px;">
+        <div style="font-size:11px;color:var(--text-3);">${fmt$(p.cost_usd)} → <span style="color:var(--text-1);font-weight:500;">${fmt$(p.resale_price_usd)}</span></div>
+        <div style="font-size:11px;color:#10b981;font-weight:600;">+${fmt$(margin)} (${pct}%)</div>
+      </div>
+      <button onclick='editEsimPlan(${JSON.stringify(p)})' class="btn-secondary" style="font-size:11px;padding:4px 10px;">Edit</button>
+    </div>`;
+  };
+
+  document.getElementById('airalo-plans').innerHTML = plans.filter(p => p.provider === 'Airalo').map(renderPlan).join('') || '<div class="text-slate-400 text-sm">No plans</div>';
+  document.getElementById('esimgo-plans').innerHTML = plans.filter(p => p.provider === 'eSIM Go').map(renderPlan).join('') || '<div class="text-slate-400 text-sm">No plans</div>';
+
+  // Active eSIM assignments (orders with plans)
+  const pMap = Object.fromEntries(plans.map(p => [p.id, p]));
+  const withPlan = orders.filter(o => o.esim_plan_id && o.stage === 'active');
+  document.getElementById('esim-assignments-body').innerHTML = withPlan.map(o => {
+    const plan = pMap[o.esim_plan_id];
+    if (!plan) return '';
+    const margin = (plan.resale_price_usd - plan.cost_usd).toFixed(2);
+    return `<tr class="table-row">
+      <td class="td">${cMap[o.customer_id] || '—'}</td>
+      <td class="td"><span class="badge bg-slate-100 text-slate-700">${plan.provider}</span></td>
+      <td class="td">${plan.plan_name}</td>
+      <td class="td">${fmt$(plan.cost_usd)}</td>
+      <td class="td">${fmt$(o.esim_sale_price || plan.resale_price_usd)}</td>
+      <td class="td text-green-700 font-medium">${fmt$(margin)}</td>
+      <td class="td font-mono text-xs text-slate-400">${o.id.slice(0,6)}</td>
+    </tr>`;
+  }).join('') || '<tr><td class="td text-slate-400 py-6 text-center" colspan="7">No active eSIM assignments</td></tr>';
+}
+
+async function saveEsimPlan(e) {
+  e.preventDefault();
+  const id = document.getElementById('esim-id').value;
+  const data = {
+    provider: document.getElementById('ep-provider').value,
+    plan_name: document.getElementById('ep-name').value,
+    data_gb: parseFloat(document.getElementById('ep-gb').value) || null,
+    duration_days: parseInt(document.getElementById('ep-days').value) || null,
+    country: document.getElementById('ep-country').value || 'Colombia',
+    cost_usd: parseFloat(document.getElementById('ep-cost').value) || 0,
+    resale_price_usd: parseFloat(document.getElementById('ep-resale').value) || 0,
+    notes: document.getElementById('ep-notes').value || null
+  };
+  try {
+    if (id) await DB.update('esim_plans', id, data);
+    else await DB.insert('esim_plans', data);
+    toast(id ? 'Plan updated' : 'Plan added');
+    closeModal('esim-modal');
+    document.getElementById('esim-form').reset();
+    document.getElementById('esim-id').value = '';
+    loadConnectivity();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+function editEsimPlan(p) {
+  document.getElementById('esim-id').value = p.id;
+  document.getElementById('ep-provider').value = p.provider;
+  document.getElementById('ep-name').value = p.plan_name;
+  document.getElementById('ep-gb').value = p.data_gb;
+  document.getElementById('ep-days').value = p.duration_days;
+  document.getElementById('ep-country').value = p.country;
+  document.getElementById('ep-cost').value = p.cost_usd;
+  document.getElementById('ep-resale').value = p.resale_price_usd;
+  document.getElementById('ep-notes').value = p.notes || '';
+  openModal('esim-modal');
+}
+
+// ══════════════════════════════════════════
+// SUPPLIERS
+// ══════════════════════════════════════════
+async function loadSuppliers() {
+  const suppliers = await DB.getAll('suppliers');
+  const pos = await DB.getAll('supplier_orders');
+
+  // Supplier cards
+  document.getElementById('supplier-cards').innerHTML = suppliers.map(s => {
+    const sPOs = pos.filter(p => p.supplier_id === s.id);
+    const pending = sPOs.filter(p => ['submitted','in_transit'].includes(p.status)).length;
+    const [tbg, tfg] = s.type === 'device' ? ['#111840','#6366f1'] : ['#1a1040','#a78bfa'];
+    return `<div class="card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+        <div>
+          <div style="font-weight:600;color:var(--text-1);font-size:14px;">${s.name}</div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:3px;text-transform:capitalize;">${s.type} supplier · ${s.city || ''} ${s.country || ''}</div>
+        </div>
+        ${badge(s.type, tbg, tfg)}
+      </div>
+      <div style="font-size:11px;color:var(--text-3);margin-bottom:12px;line-height:1.5;">${s.notes || ''}</div>
+      <div style="display:flex;gap:16px;font-size:11px;">
+        <span style="color:var(--text-3);">Total POs: <strong style="color:var(--text-1);">${sPOs.length}</strong></span>
+        <span style="color:var(--text-3);">In Transit: <strong style="color:#f59e0b;">${pending}</strong></span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Populate supplier dropdown in PO modal
+  document.getElementById('po-supplier').innerHTML = suppliers.map(s =>
+    `<option value="${s.id}">${s.name}</option>`).join('');
+  const sMap = Object.fromEntries(suppliers.map(s => [s.id, s.name]));
+
+  const poStatusMap = {
+    draft: ['#1a1838','#6b6890'], submitted: ['#2a1f00','#f59e0b'],
+    in_transit: ['#111840','#6366f1'], received: ['#0a2618','#10b981'], cancelled: ['#2a0a0a','#ef4444']
+  };
+
+  document.getElementById('po-body').innerHTML = pos.map(p => {
+    const items = Array.isArray(p.line_items) ? p.line_items : [];
+    const itemSummary = items.map(i => `${i.qty}x ${i.model}`).join(', ') || '—';
+    return `<tr class="table-row">
+      <td class="td">${sMap[p.supplier_id] || '—'}</td>
+      <td class="td text-xs text-slate-500">${itemSummary}</td>
+      <td class="td">${fmt$(p.subtotal_usd)}</td>
+      <td class="td font-medium text-blue-700">${fmt$(p.total_landed_usd)}</td>
+      <td class="td">${badge(p.status, ...(poStatusMap[p.status] || ['#1a1838','#6b6890']))}</td>
+      <td class="td">${fmtDate(p.order_date)}</td>
+      <td class="td">${fmtDate(p.expected_arrival)}</td>
+      <td class="td">
+        <button onclick="deleteRecord('supplier_orders','${p.id}',loadSuppliers)" class="btn-danger">Del</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td class="td text-slate-400 py-8 text-center" colspan="8">No purchase orders yet</td></tr>';
+}
+
+function calcLanded() {
+  const price = parseFloat(document.getElementById('calc-price').value) || 0;
+  const landed = price * 1.05 * 1.19 + 25;
+  document.getElementById('calc-result').textContent = '$' + landed.toFixed(2);
+}
+
+let poLineCount = 0;
+function addPOLine() {
+  const i = poLineCount++;
+  const div = document.createElement('div');
+  div.className = 'grid grid-cols-3 gap-2 po-line';
+  div.innerHTML = `
+    <input class="input text-sm" placeholder="Model (e.g. iPhone 13)" id="pl-model-${i}" />
+    <input class="input text-sm" type="number" placeholder="Qty" id="pl-qty-${i}" min="1" oninput="calcPOTotals()" />
+    <div class="flex gap-1">
+      <input class="input text-sm" type="number" placeholder="Unit Cost $" id="pl-price-${i}" step="0.01" oninput="calcPOTotals()" />
+      <button type="button" onclick="this.parentElement.parentElement.remove(); calcPOTotals()" class="text-red-400 hover:text-red-600 px-1">×</button>
+    </div>`;
+  document.getElementById('po-lines').appendChild(div);
+}
+
+function calcPOTotals() {
+  let subtotal = 0;
+  document.querySelectorAll('.po-line').forEach((line, i) => {
+    const qty = parseFloat(line.querySelector('[id^=pl-qty]')?.value) || 0;
+    const price = parseFloat(line.querySelector('[id^=pl-price]')?.value) || 0;
+    subtotal += qty * price;
+  });
+  document.getElementById('po-subtotal').value = subtotal.toFixed(2);
+  const landed = subtotal * 1.05 * 1.19 + 25;
+  document.getElementById('po-landed-total').value = landed.toFixed(2);
+}
+
+async function savePO(e) {
+  e.preventDefault();
+  const lines = [];
+  document.querySelectorAll('.po-line').forEach(line => {
+    const model = line.querySelector('[id^=pl-model]')?.value;
+    const qty = parseInt(line.querySelector('[id^=pl-qty]')?.value) || 0;
+    const price = parseFloat(line.querySelector('[id^=pl-price]')?.value) || 0;
+    if (model || qty) lines.push({ model, qty, unit_cost: price });
+  });
+  const subtotal = parseFloat(document.getElementById('po-subtotal').value) || 0;
+  const data = {
+    supplier_id: document.getElementById('po-supplier').value,
+    line_items: lines,
+    subtotal_usd: subtotal,
+    total_landed_usd: subtotal * 1.05 * 1.19 + 25,
+    status: document.getElementById('po-status').value,
+    order_date: document.getElementById('po-date').value || null,
+    expected_arrival: document.getElementById('po-arrival').value || null,
+    tracking_number: document.getElementById('po-tracking').value || null,
+    notes: document.getElementById('po-notes').value || null
+  };
+  try {
+    await DB.insert('supplier_orders', data);
+    toast('Purchase order created');
+    closeModal('po-modal');
+    document.getElementById('po-form').reset();
+    document.getElementById('po-lines').innerHTML = '';
+    poLineCount = 0;
+    loadSuppliers();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// OPERATIONS
+// ══════════════════════════════════════════
+async function loadOperations() {
+  const logs = await DB.getAll('operations_log');
+  const orders = await DB.getAll('orders');
+  const customers = await DB.getAll('customers');
+  const devices = await DB.getAll('devices');
+
+  const cMap = Object.fromEntries(customers.map(c => [c.id, c.first_name + ' ' + c.last_name]));
+  const dMap = Object.fromEntries(devices.map(d => [d.id, d.brand + ' ' + d.model]));
+
+  // Populate order select in ops modal
+  const activeOrders = orders.filter(o => !['closed'].includes(o.stage));
+  document.getElementById('ops-order').innerHTML = '<option value="">— None —</option>' +
+    activeOrders.map(o => {
+      const c = customers.find(x => x.id === o.customer_id);
+      const d = devices.find(x => x.id === o.device_id);
+      return `<option value="${o.id}">${c ? c.first_name : '?'} — ${d ? d.model : '?'}</option>`;
+    }).join('');
+
+  const eventIcons = { handoff: '↗', return: '↙', inspection: '◎', shipment: '⊡', note: '◇' };
+  document.getElementById('ops-body').innerHTML = logs.map(l => `
+    <tr class="table-row">
+      <td class="td text-xs text-slate-500">${fmtDate(l.event_at || l.created_at)}</td>
+      <td class="td"><span class="text-base">${eventIcons[l.event_type] || '📝'}</span> <span class="capitalize text-sm">${l.event_type}</span></td>
+      <td class="td">${l.customer_id ? cMap[l.customer_id] || '—' : '—'}</td>
+      <td class="td">${l.device_id ? dMap[l.device_id] || '—' : '—'}</td>
+      <td class="td text-slate-500">${l.location || ''} ${l.city ? '· ' + l.city : ''}</td>
+      <td class="td">${l.operator_name || '—'}</td>
+      <td class="td text-xs text-slate-500">${l.description || l.notes || '—'}</td>
+    </tr>`).join('') || '<tr><td class="td text-slate-400 py-8 text-center" colspan="7">No events logged</td></tr>';
+}
+
+async function saveOpsEvent(e) {
+  e.preventDefault();
+  const orderId = document.getElementById('ops-order').value;
+  const orders = await DB.getAll('orders');
+  const ord = orders.find(o => o.id === orderId);
+
+  const data = {
+    order_id: orderId || null,
+    device_id: ord?.device_id || null,
+    customer_id: ord?.customer_id || null,
+    event_type: document.getElementById('ops-type').value,
+    location: document.getElementById('ops-location').value || null,
+    city: document.getElementById('ops-city').value || 'Medellín',
+    operator_name: document.getElementById('ops-operator').value || null,
+    description: document.getElementById('ops-description').value || null,
+    notes: document.getElementById('ops-notes').value || null,
+    event_at: new Date().toISOString()
+  };
+  try {
+    await DB.insert('operations_log', data);
+    toast('Event logged');
+    closeModal('ops-modal');
+    document.getElementById('ops-form').reset();
+    loadOperations();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// GENERIC DELETE
+// ══════════════════════════════════════════
+async function deleteRecord(table, id, cb) {
+  if (!confirm('Delete this record?')) return;
+  try {
+    await DB.delete(table, id);
+    toast('Deleted');
+    if (cb) cb();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// TOP UPS — CATALOG DATA
+// ══════════════════════════════════════════
+const TOPUP_CATALOG = {
+  airalo: [
+    {gb:'1',    days:3,  tag:'',                     cost:3.20,  resale:6.00},
+    {gb:'1',    days:7,  tag:'',                     cost:3.60,  resale:7.00},
+    {gb:'2',    days:15, tag:'',                     cost:6.40,  resale:10.00},
+    {gb:'3',    days:3,  tag:'',                     cost:7.60,  resale:12.00},
+    {gb:'3',    days:7,  tag:'',                     cost:8.40,  resale:13.00},
+    {gb:'3',    days:30, tag:'Best value',            cost:8.40,  resale:13.00},
+    {gb:'∞',   days:3,  tag:'3GB/day@1Mbps',        cost:10.00, resale:15.00},
+    {gb:'5',    days:7,  tag:'',                     cost:12.00, resale:18.00},
+    {gb:'5',    days:15, tag:'',                     cost:12.40, resale:19.00},
+    {gb:'5',    days:30, tag:'Popular',              cost:12.80, resale:20.00},
+    {gb:'10',   days:7,  tag:'',                     cost:20.80, resale:30.00},
+    {gb:'10',   days:15, tag:'',                     cost:21.60, resale:32.00},
+    {gb:'10',   days:30, tag:'',                     cost:22.40, resale:34.00},
+    {gb:'∞',   days:7,  tag:'@1Mbps',               cost:23.60, resale:35.00},
+    {gb:'20',   days:15, tag:'',                     cost:32.00, resale:48.00},
+    {gb:'20',   days:30, tag:'',                     cost:32.80, resale:49.00},
+    {gb:'50',   days:30, tag:'',                     cost:39.20, resale:57.00},
+    {gb:'∞',   days:15, tag:'@1Mbps',               cost:39.20, resale:58.00},
+    {gb:'∞',   days:30, tag:'@1Mbps · Nomad',       cost:73.20, resale:100.00},
+  ],
+  esimgo: [
+    {gb:'0.5',  days:30, tag:'Starter',              cost:1.51,  resale:5.00},
+    {gb:'1',    days:30, tag:'',                     cost:2.81,  resale:8.00},
+    {gb:'2',    days:30, tag:'',                     cost:5.42,  resale:12.00},
+    {gb:'3',    days:30, tag:'Best margin',          cost:8.03,  resale:16.00},
+    {gb:'5',    days:30, tag:'',                     cost:13.25, resale:22.00},
+    {gb:'10',   days:30, tag:'',                     cost:26.30, resale:38.00},
+    {gb:'20',   days:30, tag:'Heavy user',           cost:52.40, resale:72.00},
+  ],
+  wom: {
+    verified: true,
+    note: 'Verified Jun 2026 via selectra.com.co · Includes unlimited calls · RAN via Claro/ETB',
+    plans: [
+      {name:'Prepago Mixto', gb:'1',    days:3,  cop:5000,  tag:''},
+      {name:'Prepago Mixto', gb:'1.5',  days:6,  cop:8000,  tag:''},
+      {name:'Prepago Mixto', gb:'2.5',  days:7,  cop:8500,  tag:'Best value short'},
+      {name:'Prepago Plus',  gb:'3',    days:7,  cop:10000, tag:'Includes calls'},
+      {name:'Prepago Mixto', gb:'4.5',  days:10, cop:13000, tag:''},
+      {name:'Prepago Plus',  gb:'7',    days:15, cop:17000, tag:''},
+      {name:'Prepago Plus',  gb:'14',   days:30, cop:17000, tag:'Best 30d'},
+      {name:'Prepago Mixto', gb:'8',    days:20, cop:19000, tag:''},
+      {name:'Prepago Mixto', gb:'9.5',  days:30, cop:22000, tag:''},
+      {name:'Prepago Mixto', gb:'13',   days:30, cop:27000, tag:'Best data/peso'},
+    ]
+  },
+  claro: {
+    verified: false,
+    note: 'Estimated prices · Verify at claro.com.co before billing · 94.6% 4G national coverage',
+    plans: [
+      {name:'Pack Básico',   gb:'1',    days:7,  cop:6000,  tag:''},
+      {name:'Pack Semanal',  gb:'2',    days:7,  cop:10000, tag:''},
+      {name:'Pack Semanal+', gb:'4',    days:7,  cop:15000, tag:''},
+      {name:'Pack Mensual',  gb:'5',    days:30, cop:20000, tag:''},
+      {name:'Pack Mensual+', gb:'10',   days:30, cop:30000, tag:''},
+      {name:'Pack Total',    gb:'15',   days:30, cop:40000, tag:''},
+      {name:'Pack Ilimitado',gb:'∞',   days:30, cop:60000, tag:'Unlimited'},
+    ]
+  },
+  movistar: {
+    verified: false,
+    note: 'Estimated prices · Verify at movistar.co · Strong Medellín coverage · WhatsApp included',
+    plans: [
+      {name:'Prepago Libre',    gb:'1',  days:7,  cop:8000,  tag:''},
+      {name:'Prepago Digital',  gb:'3',  days:7,  cop:12000, tag:''},
+      {name:'Digital Plus',     gb:'5',  days:30, cop:25000, tag:''},
+      {name:'Digital Max',      gb:'10', days:30, cop:40000, tag:''},
+      {name:'Prepago Ilimitado',gb:'∞', days:30, cop:65000, tag:''},
+    ]
+  },
+  tigo: {
+    verified: false,
+    note: 'Estimated prices · Verify at tigo.com.co · Double-data promos common · 82.7% 4G coverage',
+    plans: [
+      {name:'Tigo Pack',    gb:'1',  days:7,  cop:7000,  tag:''},
+      {name:'Tigo Pack+',   gb:'3',  days:10, cop:13000, tag:''},
+      {name:'Tigo Mes',     gb:'5',  days:30, cop:22000, tag:''},
+      {name:'Tigo Mes+',    gb:'10', days:30, cop:35000, tag:''},
+      {name:'Tigo Ilimitado',gb:'∞', days:30, cop:55000, tag:''},
+    ]
+  }
+};
+
+const TRM = 3572; // COP/USD ref rate
+
+function showCatalogTab(tab) {
+  const intl  = document.getElementById('catalog-international');
+  const local = document.getElementById('catalog-local');
+  const tIntl = document.getElementById('tab-intl');
+  const tLoc  = document.getElementById('tab-local');
+
+  if (tab === 'international') {
+    intl.style.display = ''; local.style.display = 'none';
+    tIntl.style.background = 'var(--accent)'; tIntl.style.color = '#fff';
+    tLoc.style.background  = 'transparent';   tLoc.style.color  = 'var(--text-3)';
+  } else {
+    intl.style.display = 'none'; local.style.display = '';
+    tLoc.style.background  = 'var(--accent)'; tLoc.style.color  = '#fff';
+    tIntl.style.background = 'transparent';   tIntl.style.color = 'var(--text-3)';
+  }
+}
+
+function useTopupPlan(cost, resale, provider, planName) {
+  openModal('topup-modal');
+  setTimeout(() => {
+    document.getElementById('tu-provider').value = provider;
+    document.getElementById('tu-cost').value     = cost.toFixed(2);
+    document.getElementById('tu-charged').value  = resale.toFixed(2);
+    // Set plan name in notes field as hint
+    const notesEl = document.getElementById('tu-notes');
+    if (notesEl && !notesEl.value) notesEl.value = planName;
+    calcTopupMargin();
+  }, 50);
+}
+
+function buildPlanCard(opts) {
+  const { label, gb, days, cost, resale, tag, provider, planName, accent, dimBg } = opts;
+  const margin = resale - cost;
+  const pct    = cost > 0 ? Math.round((margin / resale) * 100) : 0;
+  const tagHtml = tag ? `<span style="font-size:9px;background:${dimBg};color:${accent};padding:1px 6px;border-radius:99px;margin-left:4px;">${tag}</span>` : '';
+  return `
+    <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:13px;font-weight:700;color:var(--text-1);">${gb} GB${tagHtml}</div>
+        <div style="font-size:10px;color:var(--text-3);">${days}d</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:10px;color:var(--text-3);">Our cost</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-2);">${fmt$(cost)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px;color:var(--text-3);">Resale</div>
+          <div style="font-size:13px;font-weight:700;color:${accent};">${fmt$(resale)}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:8px;">
+        <span style="font-size:10px;color:#10b981;font-weight:600;">+${fmt$(margin)} (${pct}%)</span>
+        <button onclick="useTopupPlan(${cost}, ${resale}, '${provider.replace(/'/g,'')}', '${planName.replace(/'/g,'')}')"
+          style="font-size:10px;font-weight:600;padding:3px 10px;border-radius:6px;border:none;background:${dimBg};color:${accent};cursor:pointer;">Use</button>
+      </div>
+    </div>`;
+}
+
+function buildLocalCard(opts) {
+  const { name, gb, days, cop, tag, accent, dimBg, carrier, verified } = opts;
+  const usd    = parseFloat((cop / TRM).toFixed(2));
+  const resale = parseFloat((usd * 2.0).toFixed(2)); // 100% service margin
+  const margin = resale - usd;
+  const pct    = Math.round((margin / resale) * 100);
+  const tagHtml = tag ? `<span style="font-size:9px;background:${dimBg};color:${accent};padding:1px 6px;border-radius:99px;margin-left:4px;">${tag}</span>` : '';
+  const unverBadge = !verified ? `<span style="font-size:9px;background:#2a1f00;color:#f59e0b;padding:1px 5px;border-radius:99px;margin-left:4px;">est.</span>` : '';
+  const planLabel = `${carrier} ${name} · ${gb}GB/${days}d`;
+  return `
+    <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-1);">${gb} GB${tagHtml}${unverBadge}</div>
+        <div style="font-size:10px;color:var(--text-3);">${days}d</div>
+      </div>
+      <div style="font-size:10px;color:var(--text-3);margin-top:-4px;">${name}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:10px;color:var(--text-3);">Cost (COP / USD)</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-2);">$${cop.toLocaleString()} / ${fmt$(usd)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px;color:var(--text-3);">Resale</div>
+          <div style="font-size:13px;font-weight:700;color:${accent};">${fmt$(resale)}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:8px;">
+        <span style="font-size:10px;color:#10b981;font-weight:600;">+${fmt$(margin)} (${pct}%)</span>
+        <button onclick="useTopupPlan(${usd}, ${resale}, '${carrier}', '${planLabel.replace(/'/g,'')}')"
+          style="font-size:10px;font-weight:600;padding:3px 10px;border-radius:6px;border:none;background:${dimBg};color:${accent};cursor:pointer;">Use</button>
+      </div>
+    </div>`;
+}
+
+function renderTopupCatalog() {
+  // — Airalo
+  document.getElementById('catalog-airalo').innerHTML = TOPUP_CATALOG.airalo.map(p =>
+    buildPlanCard({
+      gb: p.gb, days: p.days, cost: p.cost, resale: p.resale, tag: p.tag,
+      provider: 'Airalo', planName: `Chimba ${p.gb}GB/${p.days}d`,
+      accent: '#a78bfa', dimBg: '#1a1040'
+    })
+  ).join('');
+
+  // — eSIM Go
+  document.getElementById('catalog-esimgo').innerHTML = TOPUP_CATALOG.esimgo.map(p =>
+    buildPlanCard({
+      gb: p.gb, days: p.days, cost: p.cost, resale: p.resale, tag: p.tag,
+      provider: 'eSIM Go', planName: `eSIM Go ${p.gb}GB/${p.days}d`,
+      accent: '#10b981', dimBg: '#0a2618'
+    })
+  ).join('');
+
+  // — WOM
+  const wom = TOPUP_CATALOG.wom;
+  document.getElementById('catalog-wom').innerHTML = wom.plans.map(p =>
+    buildLocalCard({ ...p, carrier: 'WOM', accent: '#818cf8', dimBg: '#1a1838', verified: wom.verified })
+  ).join('');
+
+  // — Claro
+  const claro = TOPUP_CATALOG.claro;
+  document.getElementById('catalog-claro').innerHTML = claro.plans.map(p =>
+    buildLocalCard({ ...p, carrier: 'Claro', accent: '#f87171', dimBg: '#2a0a0a', verified: claro.verified })
+  ).join('');
+
+  // — Movistar
+  const movi = TOPUP_CATALOG.movistar;
+  document.getElementById('catalog-movistar').innerHTML = movi.plans.map(p =>
+    buildLocalCard({ ...p, carrier: 'Movistar', accent: '#38bdf8', dimBg: '#0a1828', verified: movi.verified })
+  ).join('');
+
+  // — Tigo
+  const tigo = TOPUP_CATALOG.tigo;
+  document.getElementById('catalog-tigo').innerHTML = tigo.plans.map(p =>
+    buildLocalCard({ ...p, carrier: 'Tigo', accent: '#fbbf24', dimBg: '#1a1000', verified: tigo.verified })
+  ).join('');
+}
+
+// ══════════════════════════════════════════
+// TOP UPS
+// ══════════════════════════════════════════
+async function loadTopups() {
+  renderTopupCatalog();
+  const topups  = await DB.getAll('topups');
+  const orders   = await DB.getAll('orders');
+  const customers = await DB.getAll('customers');
+  const devices  = await DB.getAll('devices');
+  const plans    = await DB.getAll('esim_plans');
+
+  const cMap = Object.fromEntries(customers.map(c => [c.id, c.first_name + ' ' + c.last_name]));
+  const dMap = Object.fromEntries(devices.map(d => [d.id, d.brand + ' ' + d.model]));
+  const pMap = Object.fromEntries(plans.map(p => [p.id, p]));
+  const oMap = Object.fromEntries(orders.map(o => [o.id, o]));
+
+  // Populate order dropdown — active orders only
+  const activeOrders = orders.filter(o => ['active','overdue_return'].includes(o.stage));
+  document.getElementById('tu-order').innerHTML = '<option value="">— Select Order —</option>' +
+    activeOrders.map(o => {
+      const cName = cMap[o.customer_id] || '?';
+      const dName = dMap[o.device_id] || '?';
+      return `<option value="${o.id}">${cName} — ${dName}</option>`;
+    }).join('');
+
+  // Populate plan dropdown
+  document.getElementById('tu-plan').innerHTML = '<option value="">— Select Plan —</option>' +
+    plans.filter(p => p.is_active !== false).map(p =>
+      `<option value="${p.id}" data-cost="${p.cost_usd}" data-resale="${p.resale_price_usd}" data-provider="${p.provider}">${p.provider} — ${p.plan_name} (${fmt$(p.resale_price_usd)})</option>`
+    ).join('');
+
+  // KPIs
+  const totalRev  = topups.reduce((s, t) => s + (parseFloat(t.charged) || 0), 0);
+  const totalCost = topups.reduce((s, t) => s + (parseFloat(t.cost) || 0), 0);
+  const totalMargin = totalRev - totalCost;
+  document.getElementById('tu-count').textContent   = topups.length;
+  document.getElementById('tu-revenue').textContent = fmt$(totalRev);
+  document.getElementById('tu-cost').textContent    = fmt$(totalCost);
+  document.getElementById('tu-margin').textContent  = fmt$(totalMargin);
+
+  // Table
+  document.getElementById('topups-body').innerHTML = topups.map(t => {
+    const ord = oMap[t.order_id];
+    const margin = (parseFloat(t.charged) || 0) - (parseFloat(t.cost) || 0);
+    return `<tr class="table-row">
+      <td class="td" style="color:var(--text-3);font-size:12px;">${fmtDate(t.created_at)}</td>
+      <td class="td" style="color:var(--text-1);font-weight:500;">${ord ? cMap[ord.customer_id] || '—' : '—'}</td>
+      <td class="td">${ord ? dMap[ord.device_id] || '—' : '—'}</td>
+      <td class="td">${badge(t.provider || '—', '#111840', '#6366f1')}</td>
+      <td class="td" style="color:var(--text-2);font-size:12px;">${t.plan_name || '—'}</td>
+      <td class="td" style="color:var(--text-3);">${fmt$(t.cost)}</td>
+      <td class="td" style="color:var(--accent-text);font-weight:600;">${fmt$(t.charged)}</td>
+      <td class="td" style="color:#10b981;font-weight:600;">${fmt$(margin)}</td>
+      <td class="td" style="color:var(--text-3);font-size:12px;">${t.notes || '—'}</td>
+    </tr>`;
+  }).join('') || `<tr><td class="td" colspan="9" style="text-align:center;color:var(--text-3);padding:40px;">No top ups yet</td></tr>`;
+}
+
+function fillTopupOrder() {
+  const sel = document.getElementById('tu-order');
+  const info = document.getElementById('tu-order-info');
+  if (!sel.value) { info.style.display = 'none'; return; }
+  const orders    = JSON.parse(localStorage.getItem('yamo_orders') || '[]');
+  const customers = JSON.parse(localStorage.getItem('yamo_customers') || '[]');
+  const devices   = JSON.parse(localStorage.getItem('yamo_devices') || '[]');
+  const ord = orders.find(o => o.id === sel.value);
+  if (!ord) return;
+  const c = customers.find(x => x.id === ord.customer_id);
+  const d = devices.find(x => x.id === ord.device_id);
+  document.getElementById('tu-info-customer').textContent = c ? c.first_name + ' ' + c.last_name : '—';
+  document.getElementById('tu-info-device').textContent   = d ? d.brand + ' ' + d.model : '—';
+  info.style.display = 'block';
+}
+
+function fillTopupPlan() {
+  const sel = document.getElementById('tu-plan');
+  const opt = sel.selectedOptions[0];
+  if (!opt || !opt.value) return;
+  document.getElementById('tu-cost').value     = opt.dataset.cost || '';
+  document.getElementById('tu-charged').value  = opt.dataset.resale || '';
+  document.getElementById('tu-provider').value = opt.dataset.provider || '';
+  calcTopupMargin();
+  // Store plan name for display
+  document.getElementById('tu-plan').dataset.selectedName = opt.textContent.split('—')[1]?.trim() || opt.textContent;
+}
+
+function calcTopupMargin() {
+  const cost    = parseFloat(document.getElementById('tu-cost').value) || 0;
+  const charged = parseFloat(document.getElementById('tu-charged').value) || 0;
+  const margin  = charged - cost;
+  const el = document.getElementById('tu-margin-preview');
+  el.textContent = fmt$(margin);
+  el.style.color = margin >= 0 ? '#10b981' : '#ef4444';
+}
+
+async function saveTopup(e) {
+  e.preventDefault();
+  const planSel = document.getElementById('tu-plan');
+  const planOpt = planSel.selectedOptions[0];
+  const data = {
+    order_id:  document.getElementById('tu-order').value,
+    plan_id:   planSel.value || null,
+    plan_name: planOpt?.textContent.split('—')[1]?.trim() || null,
+    provider:  document.getElementById('tu-provider').value || null,
+    cost:      parseFloat(document.getElementById('tu-cost').value) || 0,
+    charged:   parseFloat(document.getElementById('tu-charged').value) || 0,
+    notes:     document.getElementById('tu-notes').value || null
+  };
+  try {
+    await DB.insert('topups', data);
+    toast('Top up saved');
+    closeModal('topup-modal');
+    document.getElementById('topup-form').reset();
+    document.getElementById('tu-order-info').style.display = 'none';
+    document.getElementById('tu-margin-preview').textContent = '$0.00';
+    loadTopups();
+  } catch(err) { toast(err.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+applyI18n();
+loadDashboard();
+
+// Set today as default date for orders
+document.getElementById('o-date').value = new Date().toISOString().split('T')[0];
+
+// Initialize PO with one line
+addPOLine();
+</script>
+</body>
+</html>

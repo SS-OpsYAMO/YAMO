@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<title>YAMO — Live fast. Stay connected.</title>
+<meta name="description" content="Your adventure phone for Colombia. Live the fast life, keep your digital identity yours. Buy it. Use it. Sell it back. From $229.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#FAFAF8;--bg-alt:#F3F1ED;--bg-warm:#F5F3EE;
+  --dark:#000000;--dark-card:#141414;--dark-card2:#1A1A1A;
+  --text:#111;--text-2:#555;--text-3:#888;--text-4:#aaa;
+  --text-inv:#F5F5F3;
+  --green:#22C55E;--green-soft:#ECFDF5;
+  --blue:#3B6FD4;--blue-soft:#EEF3FC;
+  --gold:#A07D2F;--gold-soft:#FBF5E6;
+  --border:#E0DDD6;--border-l:#ECEAE4;
+  --r:16px;--r2:24px;--r3:32px;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.55}
+
+/* ─── Grain texture ─── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.container{max-width:1120px;margin:0 auto;padding:0 32px}
+.section{padding:96px 0}
+
+/* ─── Typography ─── */
+.label{font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-3)}
+.label.light{color:rgba(255,255,255,0.35)}
+h2.t{font-size:clamp(40px,6.5vw,76px);font-weight:700;line-height:1.0;letter-spacing:-0.05em}
+h2.t .m{color:var(--text-4)}
+.sub{font-size:17px;color:var(--text-2);max-width:460px;margin-top:18px;line-height:1.65}
+
+/* ─── Animations ─── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1)}
+.rv.v{opacity:1;transform:none}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes spin-slow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes pulse-glow{0%,100%{opacity:1;box-shadow:0 0 8px rgba(34,197,94,0.5)}50%{opacity:0.4;box-shadow:0 0 2px rgba(34,197,94,0.2)}}
+
+/* ─── Buttons ─── */
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:13px 30px;border-radius:99px;text-decoration:none;border:none;cursor:pointer;font-family:inherit;transition:all 0.25s cubic-bezier(.16,1,.3,1)}
+.btn-p{background:#fff;color:var(--dark);box-shadow:0 0 0 1px rgba(255,255,255,0.1),0 4px 20px rgba(0,0,0,0.3)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,255,255,0.15),0 8px 32px rgba(0,0,0,0.4)}
+.btn-d{background:var(--dark);color:var(--text-inv);box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+.btn-d:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.18)}
+.btn-o{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+.btn-o:hover{border-color:var(--text);transform:translateY(-2px)}
+.btn-lg{padding:16px 38px;font-size:15px}
+.btn svg{width:16px;height:16px;transition:transform 0.25s}
+.btn:hover svg{transform:translateX(3px)}
+
+/* ─── Header ─── */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px}
+.head-wrap{max-width:1120px;margin:12px auto 0;display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 24px;border-radius:99px;background:rgba(10,10,10,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.06)}
+.logo{font-size:20px;font-weight:900;letter-spacing:-0.03em;color:#fff;text-decoration:none}
+.head-nav{display:flex;gap:4px}
+.head-nav a{font-size:12.5px;font-weight:500;color:rgba(255,255,255,0.5);text-decoration:none;padding:6px 14px;border-radius:99px;transition:all 0.2s}
+.head-nav a:hover{color:#fff;background:rgba(255,255,255,0.08)}
+.head-cta .btn{font-size:12px;padding:8px 20px;background:#fff;color:var(--dark)}
+.head-cta .btn:hover{background:rgba(255,255,255,0.9)}
+.mob-tog{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:4px}
+@media(max-width:768px){.head-nav,.head-cta{display:none}.mob-tog{display:block}}
+
+/* ═══ HERO — dark cinematic ═══ */
+.hero{background:var(--dark);color:var(--text-inv);padding:180px 0 100px;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:140%;height:80%;background:radial-gradient(ellipse,rgba(59,111,212,0.12) 0%,transparent 60%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-20%;left:50%;transform:translateX(-50%);width:120%;height:50%;background:radial-gradient(ellipse,rgba(34,197,94,0.06) 0%,transparent 60%);pointer-events:none}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(100px);pointer-events:none;opacity:0.22;transition:all 0.8s ease}
+
+.hero-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 8px;border-radius:99px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);backdrop-filter:blur(8px);font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:20px}
+.hero-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse-glow 2.5s infinite}
+
+.hero h1{font-size:clamp(58px,10vw,112px);font-weight:800;line-height:0.92;letter-spacing:-0.055em;margin-bottom:22px;position:relative}
+.hero h1 em{font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-weight:400;color:rgba(255,255,255,0.4)}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.4);max-width:480px;margin:0 auto 44px;line-height:1.6}
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2}
+
+
+
+/* ═══ HERO — Futuristic / Adventure ═══ */
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.hero-bg img{width:100%;height:100%;object-fit:cover;
+  filter:blur(20px) brightness(0.18) saturate(2.0);transform:scale(1.12)}
+.hero-bg::before{content:'';position:absolute;inset:0;z-index:1;
+  background:repeating-linear-gradient(0deg,transparent,transparent 1px,
+  rgba(255,255,255,0.013) 1px,rgba(255,255,255,0.013) 2px);pointer-events:none}
+.hero-bg::after{content:'';position:absolute;inset:0;z-index:2;
+  background:
+    radial-gradient(ellipse 95% 70% at 18% 48%,rgba(18,42,110,0.58) 0%,transparent 65%),
+    radial-gradient(ellipse 55% 50% at 84% 58%,rgba(6,34,16,0.44) 0%,transparent 60%),
+    linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.08) 45%,rgba(0,0,0,0.68) 100%);
+  pointer-events:none}
+/* Adventure photo cards */
+.adv-card{position:absolute;overflow:hidden;border-radius:22px;
+  box-shadow:0 28px 70px rgba(0,0,0,0.75),0 0 0 1.5px rgba(255,255,255,0.18),
+  inset 0 1px 0 rgba(255,255,255,0.12)}
+.adv-card img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(1.35) brightness(1.28) contrast(0.98)}
+.adv-ov{position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 52%,rgba(0,0,0,0.62) 100%)}
+.adv-lbl{position:absolute;bottom:10px;left:12px;
+  font-size:10px;font-weight:800;letter-spacing:0.12em;text-shadow:0 1px 4px rgba(0,0,0,0.6);
+  text-transform:uppercase;color:rgba(255,255,255,0.82);z-index:2;text-shadow:0 1px 8px rgba(0,0,0,0.6)}
+/* Electric multi-glow on phone */
+.hero-ph{
+  box-shadow:
+    0 56px 140px rgba(0,0,0,0.7),
+    0 0 0 1.5px rgba(255,255,255,0.09),
+    0 0 60px rgba(59,111,212,0.16),
+    0 0 120px rgba(34,197,94,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.08)!important}
+/* Gradient italic headline */
+.hero h1 em{
+  color:transparent!important;
+  background:linear-gradient(125deg,rgba(255,255,255,0.55) 0%,rgba(120,180,255,0.5) 55%,rgba(80,220,160,0.42) 100%);
+  -webkit-background-clip:text;background-clip:text}
+/* Floating card polish */
+.hero-fc{
+  box-shadow:0 12px 40px rgba(0,0,0,0.5),
+  inset 0 1px 0 rgba(255,255,255,0.06)!important}
+@media(max-width:960px){.adv-card{display:none}}
+
+/* ═══ HERO — Split layout ═══ */
+.hero{text-align:left;padding:120px 0 0}
+.hero-inner{display:grid;grid-template-columns:54fr 46fr;gap:48px;align-items:center;position:relative;z-index:2;padding-bottom:0}
+.hero-left{display:flex;flex-direction:column;align-items:flex-start}
+.hero h1{text-align:left}
+.hero-sub{text-align:left;margin:0 0 28px;max-width:460px}
+.hero-right{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:580px;padding-bottom:0}
+.hero-right::before{content:'';position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:380px;height:480px;background:radial-gradient(ellipse,rgba(59,111,212,0.22) 0%,transparent 65%);filter:blur(60px);pointer-events:none;z-index:0}
+.hero-right::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:70%;height:60px;background:radial-gradient(ellipse,rgba(80,100,200,0.18) 0%,transparent 70%);filter:blur(20px);pointer-events:none;z-index:0}
+.hero-kpis{display:flex;align-items:stretch;margin-top:28px;border:1px solid rgba(255,255,255,0.09);border-radius:20px;overflow:hidden;background:rgba(255,255,255,0.03);width:fit-content;backdrop-filter:blur(12px)}
+.hero-kpi{padding:14px 22px;text-align:center;transition:background 0.25s}
+.hero-kpi:hover{background:rgba(255,255,255,0.05)}
+.hero-kpi-val{font-size:22px;font-weight:900;letter-spacing:-0.04em;color:#fff;line-height:1}
+.hero-kpi-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-top:4px}
+.hero-kpi-sep{width:1px;background:rgba(255,255,255,0.07);align-self:stretch}
+/* ── 3-D hero mockup ── */
+.hero-ph-wrap{
+  position:relative;z-index:3;
+  transform:perspective(1400px) rotateY(-18deg) rotateX(6deg);
+  animation:float3d 7s ease-in-out infinite;
+  will-change:transform;transition:none;
+  transform-style:preserve-3d}
+.hero-ph-wrap.ph-tracked{animation:none;transition:transform 0.06s linear}
+.hero-ph-wrap.ph-releasing{animation:none;transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
+@keyframes float3d{
+  0%,100%{transform:perspective(1400px) rotateY(-18deg) rotateX(6deg) translateY(0)}
+  50%{transform:perspective(1400px) rotateY(-15deg) rotateX(4.5deg) translateY(-14px)}}
+/* shadow disc under the floating phone */
+.hero-ph-shadow{
+  position:absolute;bottom:-32px;left:50%;
+  transform:translateX(-50%);
+  width:210px;height:52px;
+  background:radial-gradient(ellipse,rgba(59,111,212,0.38) 0%,transparent 70%);
+  filter:blur(22px);border-radius:50%;
+  pointer-events:none;z-index:1;
+  animation:shadowPulse 7s ease-in-out infinite}
+@keyframes shadowPulse{
+  0%,100%{opacity:0.8;width:210px}
+  50%{opacity:0.55;width:180px}}
+/* mobile: softer tilt */
+@media(max-width:768px){
+  .hero-ph-wrap{transform:perspective(900px) rotateY(-8deg) rotateX(3deg)}
+  @keyframes float3d{
+    0%,100%{transform:perspective(900px) rotateY(-8deg) rotateX(3deg) translateY(0)}
+    50%{transform:perspective(900px) rotateY(-6deg) rotateX(2deg) translateY(-10px)}}}
+/* Hero screen — frameless glass, no fake hardware */
+.hero-ph{
+  width:256px;height:522px;border-radius:36px;position:relative;overflow:hidden;
+  background:linear-gradient(170deg,#131318 0%,#1c1c22 60%,#222228 100%);
+  box-shadow:0 48px 120px rgba(0,0,0,0.72),0 0 0 1px rgba(255,255,255,0.07),
+    inset 0 1px 0 rgba(255,255,255,0.1),inset 0 -1px 0 rgba(0,0,0,0.4)
+}
+/* Glass reflection only — no hardware pseudo-elements */
+.hero-ph::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(130deg,rgba(255,255,255,0.06) 0%,transparent 40%);
+  pointer-events:none;z-index:5;border-radius:inherit}
+.hero-ph::after{content:none}
+.hero-ph-notch{display:none}
+.hero-ph-scr{position:absolute;inset:0;border-radius:36px;overflow:hidden;background:transparent}
+.hero-ph-scr::before{content:none}
+.hero-ph-inner{padding:24px 17px 18px;display:flex;flex-direction:column;height:100%;position:relative;z-index:2}
+/* Floating cards */
+.hero-fc{position:absolute;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:10;border-radius:16px;padding:13px 17px}
+.hero-fc-a{top:90px;left:-130px;background:rgba(16,16,18,0.92);border:1px solid rgba(255,255,255,0.12);min-width:156px}
+.hero-fc-b{bottom:110px;right:-140px;background:rgba(8,22,12,0.94);border:1px solid rgba(34,197,94,0.28);min-width:162px}
+.hero-fc .fc-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:4px}
+.hero-fc .fc-val{font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+.hero-fc .fc-sub{font-size:11px;color:rgba(255,255,255,0.32);margin-top:2px}
+
+
+@media(max-width:960px){
+  .hero{padding:110px 0 0;text-align:center}
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .hero-left{align-items:center}
+  .hero h1,.hero-sub{text-align:center}
+  .hero-sub{margin:0 auto 36px}
+  .hero-kpis{margin:28px auto 0}
+  .hero-right{min-height:460px}
+  .hero-ph-wrap{animation-delay:0s}
+  .hero-ph{width:208px;height:424px;border-radius:42px}
+  .hero-ph-notch{width:78px;height:24px}
+  .hero-ph-scr{border-radius:34px}
+  .hero-fc-a{top:50px;left:-52px;min-width:132px;padding:10px 13px}
+  .hero-fc-b{bottom:56px;right:-56px;min-width:136px;padding:10px 13px}
+  .hero-fc .fc-val{font-size:12px}
+  .hero-fc .fc-sub{font-size:10px}
+}
+
+/* ─── Marquee ticker ─── */
+.marquee-wrap{border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);overflow:hidden;background:var(--dark);padding:18px 0}
+.marquee-track{display:flex;gap:48px;animation:marquee 30s linear infinite;width:max-content}
+.marquee-item{font-size:14px;font-weight:700;color:rgba(255,255,255,0.32);white-space:nowrap;display:flex;align-items:center;gap:12px;letter-spacing:0.03em}
+.marquee-item .md{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.22)}
+
+/* ═══ FEATURES — editorial rows ═══ */
+.feat-section.section{padding:64px 0 0}.feat-section{
+  background:#000;color:#fff;
+  background-image:
+    radial-gradient(ellipse 60% 45% at 10% 20%,rgba(59,111,212,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 80%,rgba(34,197,94,0.05) 0%,transparent 60%);
+}
+.feat-section .label{color:rgba(255,255,255,0.35);border-color:rgba(255,255,255,0.1)}
+.feat-section h2.t{color:#fff}
+.feat-section h2.t .m{color:rgba(255,255,255,0.25)}
+.feat-rows{display:flex;flex-direction:column;margin-top:32px}
+.feat-row{display:grid;align-items:stretch;padding:0;border-top:1px solid rgba(255,255,255,0.07)}
+.feat-row.normal{grid-template-columns:40px 1fr 300px}
+.feat-row.flipped{grid-template-columns:300px 1fr 40px}
+.feat-row:last-child{border-bottom:1px solid rgba(255,255,255,0.07)}
+.feat-num{font-size:9px;font-weight:800;letter-spacing:0.14em;color:rgba(255,255,255,0.28);writing-mode:vertical-rl;text-transform:uppercase;display:flex;align-items:center;justify-content:center;padding:26px 0}
+.feat-row.normal .feat-num{transform:rotate(180deg)}
+.feat-body{padding:26px 40px}
+.feat-kicker{font-size:9px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px}
+.feat-title{font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:clamp(22px,2.4vw,34px);font-weight:400;color:#fff;line-height:1.18;letter-spacing:-0.02em;margin-bottom:10px}
+.feat-desc{font-size:13.5px;color:rgba(255,255,255,0.65);line-height:1.62;max-width:360px}
+/* feat-photo: don't rely on height:100% in grid (collapses in Safari when track is auto).
+   Use align-self:stretch (grid default) + a solid min-height so the column always has height. */
+.feat-photo{position:relative;min-height:300px;align-self:stretch;border-radius:0;overflow:hidden}
+.feat-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.15) brightness(0.72)}
+.feat-photo-ov{position:absolute;inset:0}
+.feat-row.normal .feat-photo .feat-photo-ov{background:linear-gradient(to left,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.55) 100%)}
+.feat-row.flipped .feat-photo .feat-photo-ov{background:linear-gradient(to right,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.55) 100%)}
+.feat-photo-loc{position:absolute;top:11px;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65);text-shadow:0 1px 4px rgba(0,0,0,0.7)}
+.feat-row.normal .feat-photo-loc{right:13px;text-align:right}
+.feat-row.flipped .feat-photo-loc{left:13px}
+.feat-photo-stat{position:absolute;bottom:11px;font-size:9px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#fff;text-shadow:0 1px 5px rgba(0,0,0,0.8)}
+.feat-row.normal .feat-photo-stat{right:13px;text-align:right}
+.feat-row.flipped .feat-photo-stat{left:13px}
+@media(max-width:960px) and (min-width:769px){
+  .feat-row.normal{grid-template-columns:1fr 260px}
+  .feat-row.flipped{grid-template-columns:260px 1fr}
+  .feat-num{display:none}
+  .feat-body{padding:24px 28px}
+  .feat-photo{min-height:260px}
+}
+@media(max-width:768px){
+  .feat-row.normal,.feat-row.flipped{grid-template-columns:1fr;gap:0;border-top:1px solid rgba(255,255,255,0.07)}
+  .feat-num{display:none}
+  .feat-body{padding:20px 16px}
+  .feat-photo{height:260px;min-height:unset;align-self:auto;width:100%}
+  .feat-row.flipped .feat-photo{order:-1}
+  .feat-rows{margin-top:24px}
+}
+
+/* ═══ DIGITAL PROTECTION — dark ═══ */
+.protect-section{background:var(--dark);color:var(--text-inv);position:relative;overflow:hidden;padding-top:64px}
+.protect-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 80% 60% at 20% 30%,rgba(59,111,212,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 70%,rgba(34,197,94,0.04) 0%,transparent 60%);pointer-events:none}
+.protect-grid{display:grid;grid-template-columns:1fr;max-width:520px;margin-top:48px;position:relative;z-index:1}
+.protect-list{display:flex;flex-direction:column;gap:14px}
+.protect-item{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:var(--r);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);transition:all 0.3s}
+.protect-item:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);transform:translateX(4px)}
+.protect-item .ico{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.protect-item .ico svg{width:18px;height:18px;stroke:rgba(255,255,255,0.5);fill:none;stroke-width:1.5}
+.protect-item h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.protect-item p{font-size:13px;color:rgba(255,255,255,0.35);line-height:1.45}
+.protect-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.06em;
+  color:rgba(34,197,94,0.85);background:rgba(34,197,94,0.08);
+  border:1px solid rgba(34,197,94,0.2);border-radius:99px;
+  padding:2px 10px;margin-bottom:6px}
+
+.protect-hero{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r3);padding:52px 40px;text-align:center}
+.protect-hero .badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:20px}
+.protect-hero .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,0.5)}
+.protect-hero h3{font-size:30px;font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:16px}
+.protect-hero p{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:28px;max-width:340px;margin-left:auto;margin-right:auto}
+@media(max-width:768px){
+  .protect-grid{grid-template-columns:1fr}
+  .protect-photo{position:relative;width:100%;height:240px;top:auto;bottom:auto;right:auto;margin-top:32px;border-radius:0}
+  .protect-photo-ov{background:linear-gradient(to bottom,rgba(0,0,0,0) 20%,var(--dark) 100%)}
+}
+
+/* ═══ HOW IT WORKS ═══ */
+.how-section{background:#000;color:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:56px}
+.step{border-radius:var(--r3);overflow:hidden;position:relative;min-height:440px;cursor:default}
+.step-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(1.1) brightness(0.75) contrast(1.05);
+  transition:transform 0.9s cubic-bezier(.16,1,.3,1)}
+.step:hover .step-bg{transform:scale(1.06)}
+.step-ov{position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.1) 35%,rgba(0,0,0,0.72) 75%,rgba(0,0,0,0.88) 100%)}
+.step-content{position:relative;z-index:2;height:100%;min-height:440px;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:32px}
+.step-n{width:28px;height:28px;border-radius:50%;
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;margin-bottom:16px;letter-spacing:0.02em}
+.step h3{font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#fff;margin-bottom:8px;line-height:1.2}
+.step p{font-size:13px;color:rgba(255,255,255,0.58);line-height:1.55;margin-bottom:0}
+.step-detail{margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:6px}
+.step-detail::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0}
+@media(max-width:768px){.steps{grid-template-columns:1fr}.step{min-height:320px}.step-content{min-height:320px}}
+
+/* ═══ PRICING ═══ */
+.pricing-section{background:#000}
+.p-tabs{display:inline-flex;gap:4px;background:#fff;padding:4px;border-radius:99px;border:1.5px solid var(--border)}
+.p-tab{padding:10px 24px;font-size:13px;font-weight:600;border-radius:99px;border:none;background:transparent;color:var(--text-3);cursor:pointer;transition:all 0.25s;font-family:inherit}
+.p-tab.on{background:var(--dark);color:var(--text-inv)}
+
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px}
+.p-group{margin-top:36px}
+.p-group-lbl{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:14px;padding-left:2px}
+.p-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r3);padding:26px 18px;position:relative;transition:all 0.35s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
+.p-card:hover{border-color:#ccc;box-shadow:0 16px 48px rgba(0,0,0,0.06);transform:translateY(-4px)}
+.p-card.feat{border-color:var(--dark)}
+.p-card.feat:hover{box-shadow:0 20px 56px rgba(0,0,0,0.1);transform:translateY(-6px)}
+.p-pop{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--dark);color:var(--text-inv);font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:5px 16px;border-radius:99px;white-space:nowrap}
+
+/* Phone thumb in pricing */
+.p-ph{width:76px;height:132px;border-radius:20px;background:#0a0a0c;border:1.5px solid rgba(255,255,255,0.1);position:relative;overflow:hidden;margin:0 auto 20px;transition:all 0.35s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;justify-content:center}
+.p-card:hover .p-ph{transform:scale(1.06);border-color:rgba(255,255,255,0.22)}.p-card.feat .p-ph{box-shadow:0 0 30px rgba(255,255,255,0.07)}
+.p-ph-sc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.p-ph.sam{border-color:rgba(0,87,217,0.35)}.p-ph.sam .p-ph-sc{color:#6b96ff}
+.p-ph.iph{border-color:rgba(255,255,255,0.18)}.p-ph.iph .p-ph-sc{color:rgba(255,255,255,0.88)}
+.p-ph.pix{border-color:rgba(66,133,244,0.35)}.p-ph.pix .p-ph-sc{color:#5f9cf7}
+.p-ph-sc i{font-size:30px;line-height:1}.p-ph-sc span{font-size:7px;font-weight:800;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase}
+
+.p-tier{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-4);margin-bottom:6px}
+.p-device{font-size:20px;font-weight:700;margin-bottom:2px;letter-spacing:-0.01em}
+.p-cond{font-size:12px;color:var(--text-4);margin-bottom:20px}
+.p-price{font-size:48px;font-weight:800;letter-spacing:-0.04em;margin-bottom:4px}
+.p-inc{font-size:13px;color:var(--text-2);margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border-l)}
+
+.g-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--r);margin-bottom:10px;transition:transform 0.25s}
+.g-badge:hover{transform:translateX(3px)}
+.g-badge .g-ico{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.g-badge .g-txt{font-size:12px;font-weight:600;line-height:1.3}
+.g-badge .g-txt strong{display:block;font-weight:700}
+
+.p-feat{list-style:none;margin-bottom:24px}
+.p-feat li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2);margin-bottom:9px}
+.p-chk{width:18px;height:18px;background:transparent;color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;line-height:1}
+.p-card .btn{width:100%;justify-content:center;margin-top:auto}
+.p-alt{margin-top:10px;text-align:center;font-size:12px;color:var(--text-4)}
+.p-net{font-size:11px;font-weight:700;color:rgba(34,197,94,0.8);margin-bottom:4px;margin-top:-4px;letter-spacing:0.01em}
+
+/* eSIM tab */
+.esim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.esim-c{background:#fff;border:1.5px solid var(--border);border-radius:var(--r2);padding:32px 24px;text-align:center;transition:all 0.3s;position:relative;display:flex;flex-direction:column}
+.esim-c:hover{border-color:#ccc;transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,0.05)}
+.esim-c.pop{border-color:var(--dark)}
+.esim-c h4{font-size:16px;font-weight:700;margin-bottom:6px}
+.esim-pr{font-size:36px;font-weight:800;letter-spacing:-0.03em}
+.esim-pr span{font-size:14px;font-weight:500;color:var(--text-2)}
+.esim-d{font-size:13px;color:var(--text-2);margin-top:4px}
+.esim-net{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.38);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:99px;padding:4px 10px;margin:14px auto 0}
+.esim-net .nd{width:5px;height:5px;border-radius:50%;background:#4ade80;box-shadow:0 0 5px rgba(74,222,128,0.7);flex-shrink:0}
+.esim-pop-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.93);color:#000;font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:5px 16px;border-radius:99px;white-space:nowrap}
+.esim-spacer{flex:1}
+.esim-btn{display:block;width:100%;margin-top:20px;padding:12px;border-radius:99px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;text-decoration:none;border:1.5px solid rgba(255,255,255,0.18);background:transparent;color:rgba(255,255,255,0.8);transition:all 0.25s}
+.esim-btn:hover{border-color:rgba(255,255,255,0.5);color:#fff;transform:translateY(-1px)}
+.esim-c.pop .esim-btn{background:rgba(255,255,255,0.93);color:#000;border-color:transparent}
+.esim-c.pop .esim-btn:hover{background:#fff}
+@media(max-width:1100px){.p-grid{grid-template-columns:repeat(2,1fr);align-items:start}}
+@media(max-width:580px){.p-grid,.esim-grid{grid-template-columns:1fr}}
+@media(max-width:1100px){.esim-grid{grid-template-columns:repeat(3,1fr)}}
+
+.tab-c{display:none}.tab-c.on{display:block}
+
+/* ═══ GIFT ═══ */
+.gift-section{background:var(--bg-alt);position:relative;overflow:hidden}
+.gift-section::before{content:'';position:absolute;top:-20%;right:-15%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,190,170,0.15) 0%,transparent 55%);filter:blur(60px);pointer-events:none}
+.gift-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:48px}
+.gift-visual{background:rgba(255,255,255,0.75);backdrop-filter:blur(16px);border:1.5px solid var(--border);border-radius:var(--r3);padding:40px 36px;text-align:center}
+
+/* — card mocks — */
+.gc-mock{display:block;background:linear-gradient(135deg,#0A0A0A,#222);color:#fff;border-radius:var(--r2);padding:28px 32px;text-align:left;box-shadow:0 12px 40px rgba(0,0,0,0.2);transition:transform 0.4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.gc-mock:hover{transform:translateY(-4px) rotate(-1deg)}
+.gc-mock .gc-l{font-size:17px;font-weight:900;letter-spacing:-0.03em;margin-bottom:24px}
+.gc-mock .gc-a{font-size:40px;font-weight:800;letter-spacing:-0.04em;transition:opacity 0.3s}
+.gc-mock .gc-s{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px}
+.gc-mock .gc-bar{position:absolute;bottom:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--green),#FBBF24,#F87171);border-radius:0 0 var(--r2) var(--r2)}
+.gc-exp{display:none;align-items:center;gap:6px;margin-top:14px;padding:7px 10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:8px;font-size:10px;color:rgba(255,255,255,0.6)}
+.gc-exp.show{display:flex}
+
+.ub-mock{display:block;background:linear-gradient(135deg,#000,#1a1a1a);color:#fff;border-radius:var(--r2);padding:20px 28px;text-align:left;margin-top:10px;box-shadow:0 8px 28px rgba(0,0,0,0.15);transition:transform 0.4s cubic-bezier(.16,1,.3,1),opacity 0.3s;position:relative;overflow:hidden}
+.ub-mock:hover{transform:translateY(-4px) rotate(1deg)}
+.ub-mock .ub-l{font-size:14px;font-weight:800;margin-bottom:16px}
+.ub-mock .ub-a{font-size:30px;font-weight:800;letter-spacing:-0.03em}
+.ub-mock .ub-s{font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px}
+.ub-mock .ub-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--blue);border-radius:0 0 var(--r2) var(--r2)}
+
+.ab-mock{display:block;background:linear-gradient(135deg,#FF385C,#C91440);color:#fff;border-radius:var(--r2);padding:20px 28px;text-align:left;margin-top:10px;box-shadow:0 8px 28px rgba(255,56,92,0.22);transition:transform 0.4s cubic-bezier(.16,1,.3,1),opacity 0.3s;position:relative;overflow:hidden}
+.ab-mock:hover{transform:translateY(-4px) rotate(-1deg)}
+.ab-mock .ab-l{font-size:14px;font-weight:800;margin-bottom:16px}
+.ab-mock .ab-a{font-size:30px;font-weight:800;letter-spacing:-0.03em}
+.ab-mock .ab-s{font-size:10px;color:rgba(255,255,255,0.5);margin-top:3px}
+.ab-mock .ab-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.3);border-radius:0 0 var(--r2) var(--r2)}
+.ab-mock.dim{opacity:0.3;pointer-events:none}
+
+/* — kit selector — */
+.gift-content h3{font-size:28px;font-weight:800;letter-spacing:-0.03em;margin-bottom:12px;line-height:1.15}
+.gift-content > p{font-size:15px;color:var(--text-2);line-height:1.6;margin-bottom:24px}
+.kit-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:26px}
+.kit-opt{border:1.5px solid var(--border);border-radius:var(--r);padding:15px 18px;cursor:pointer;
+  transition:all 0.25s cubic-bezier(.16,1,.3,1);background:#fff;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.kit-opt:hover{border-color:#bbb;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+.kit-opt.sel{border-color:var(--dark);background:var(--dark);color:#fff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+.kit-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.kit-inc{font-size:11.5px;color:var(--text-3);line-height:1.45}
+.kit-opt.sel .kit-inc{color:rgba(255,255,255,0.45)}
+.kit-price{font-size:19px;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;flex-shrink:0}
+.kit-tag{display:inline-block;font-size:8.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  background:var(--green);color:#fff;padding:2px 7px;border-radius:99px;margin-left:6px;vertical-align:middle}
+
+@media(max-width:768px){.gift-grid{grid-template-columns:1fr}}
+
+/* ═══ SOCIAL PROOF ═══ */
+.proof-section{background:var(--bg)}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.proof-c{background:#fff;border:1px solid var(--border);border-radius:var(--r2);padding:32px 26px;transition:all 0.35s cubic-bezier(.16,1,.3,1)}
+.proof-c:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.05)}
+.proof-stars{color:#F59E0B;font-size:14px;letter-spacing:2px;margin-bottom:14px}
+.proof-c blockquote{font-size:15px;line-height:1.5;margin-bottom:18px;font-weight:500}
+.proof-auth{display:flex;align-items:center;gap:10px}
+.proof-av{width:36px;height:36px;border-radius:50%;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-2)}
+.proof-name{font-size:13px;font-weight:600}
+.proof-role{font-size:12px;color:var(--text-2)}
+@media(max-width:768px){.proof-grid{grid-template-columns:1fr}}
+
+/* ═══ BUYBACK ═══ */
+.circ-section{background:var(--dark);color:var(--text-inv);position:relative;overflow:hidden}
+.circ-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.04) 0%,transparent 50%);pointer-events:none}
+.circ-section .label{color:rgba(255,255,255,0.3)}
+.circ-section h2.t{color:#fff}
+.circ-section h2.t .m{color:rgba(255,255,255,0.3)}
+.circ-section .sub{color:rgba(255,255,255,0.4)}
+
+.flow{display:flex;gap:0;margin-top:56px;border:1px solid rgba(255,255,255,0.06);border-radius:var(--r3);overflow:hidden}
+.flow-c{flex:1;padding:40px 24px;text-align:center;border-right:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);transition:background 0.3s}
+.flow-c:last-child{border-right:none}
+.flow-c:hover{background:rgba(255,255,255,0.04)}
+.flow-c svg{width:28px;height:28px;stroke:rgba(255,255,255,0.4);fill:none;stroke-width:1.5;margin-bottom:12px}
+.flow-c h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.flow-c p{font-size:13px;color:rgba(255,255,255,0.35)}
+
+.grades{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.g-c{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r2);padding:28px 22px;transition:all 0.3s}
+.g-c:hover{background:rgba(255,255,255,0.05);transform:translateY(-3px)}
+.g-lab{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
+.g-dot{width:8px;height:8px;border-radius:50%}
+.ga .g-dot{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,0.4)}
+.gb .g-dot{background:#FBBF24;box-shadow:0 0 6px rgba(251,191,36,0.4)}
+.gc .g-dot{background:#F87171;box-shadow:0 0 6px rgba(248,113,113,0.4)}
+.g-c .desc{font-size:13px;color:rgba(255,255,255,0.35);line-height:1.45;margin-bottom:14px}
+.g-c .pct{font-size:28px;font-weight:800;letter-spacing:-0.02em}
+.g-c .pct span{font-size:13px;font-weight:500;color:rgba(255,255,255,0.3)}
+
+
+@media(max-width:768px){.flow{flex-direction:column}.flow-c{border-right:none;border-bottom:1px solid rgba(255,255,255,0.05)}.flow-c:last-child{border-bottom:none}.grades{grid-template-columns:1fr}}
+
+/* ═══ COVERAGE ═══ */
+.cov-section{background:var(--bg-alt)}
+.cov-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:48px;justify-content:center}
+.cov-p{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--border);border-radius:99px;padding:10px 20px;font-size:14px;font-weight:500;transition:all 0.25s}
+.cov-p:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.05)}
+.cov-p.on{border-color:var(--green)}
+.cd{width:8px;height:8px;border-radius:50%}
+.cd.on{background:var(--green);box-shadow:0 0 5px rgba(34,197,94,0.4)}
+.cd.soon{background:var(--text-4)}
+
+/* ═══ GO FURTHER (global eSIM) ═══ */
+.further-section{background:#000;color:#fff;overflow:hidden;position:relative;padding:100px 0 80px}
+.further-section::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 75% 40%,rgba(59,111,212,0.07) 0%,transparent 65%),
+             radial-gradient(ellipse 45% 45% at 20% 70%,rgba(34,197,94,0.05) 0%,transparent 65%);
+  pointer-events:none}
+/* Header row */
+.further-head{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:48px;position:relative;z-index:1;flex-wrap:wrap}
+.further-title{font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-0.04em;line-height:1.1;color:#fff;margin-bottom:8px}
+.further-title em{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;color:rgba(255,255,255,0.35)}
+.further-sub{font-size:14px;color:rgba(255,255,255,0.38);line-height:1.6;max-width:460px}
+.further-cta-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.further-cta{display:inline-flex;align-items:center;gap:10px;padding:13px 26px;border-radius:99px;background:rgba(255,255,255,0.93);color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.25s;letter-spacing:-0.01em;white-space:nowrap}
+.further-cta:hover{background:#fff;transform:translateY(-2px)}
+.further-cta:hover svg{transform:translateX(3px)}
+.further-cta svg{transition:transform 0.25s}
+.further-attr{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.18)}
+/* Country grid — 3 cols, full width */
+.dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;position:relative;z-index:1}
+.dest-card{background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px 18px 18px;display:flex;flex-direction:column;transition:all 0.3s cubic-bezier(.16,1,.3,1);cursor:default}
+.dest-card:hover{background:rgba(255,255,255,0.065);border-color:rgba(255,255,255,0.13);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.35)}
+/* CSS-rendered flag */
+.dest-flag-css{width:52px;height:34px;border-radius:5px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.5);overflow:hidden;position:relative;flex-shrink:0}
+.dest-name{font-size:14px;font-weight:700;color:#fff;letter-spacing:-0.01em;margin-bottom:3px}
+.dest-capital{font-size:11px;font-weight:600;color:rgba(255,255,255,0.3);letter-spacing:0.03em;text-transform:uppercase;margin-bottom:10px}
+.dest-note{font-size:10px;font-weight:700;color:rgba(74,222,128,0.55);letter-spacing:0.04em;margin-top:auto}
+/* CSS flags */
+.fl-es{background:linear-gradient(180deg,#c60b1e 0%,#c60b1e 25%,#f1bf00 25%,#f1bf00 75%,#c60b1e 75%)}
+.fl-jp{background:#fff}.fl-jp::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#bc002d 38%,transparent 38%)}
+.fl-fr{background:linear-gradient(90deg,#002395 33%,#fff 33%,#fff 66%,#ed2939 66%)}
+.fl-de{background:linear-gradient(180deg,#000 33%,#dd0000 33%,#dd0000 66%,#ffce00 66%)}
+.fl-it{background:linear-gradient(90deg,#009246 33%,#fff 33%,#fff 66%,#ce2b37 66%)}
+.fl-mx{background:linear-gradient(90deg,#006847 33%,#fff 33%,#fff 66%,#ce1126 66%)}
+.fl-th{background:linear-gradient(180deg,#a51931 16%,#f4f5f8 16%,#f4f5f8 33%,#2d2a4a 33%,#2d2a4a 67%,#f4f5f8 67%,#f4f5f8 84%,#a51931 84%)}
+.fl-br{background:#009c3b}.fl-br::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 28%,#ffdf00 28%,#ffdf00 72%,transparent 72%)}
+.fl-pt{background:linear-gradient(90deg,#006600 38%,#ff0000 38%)}
+.fl-us{background:repeating-linear-gradient(180deg,#b22234 0,#b22234 15%,#fff 15%,#fff 30%)}.fl-us::after{content:'';position:absolute;top:0;left:0;width:38%;height:54%;background:#3c3b6e}
+.fl-ae{background:linear-gradient(180deg,#00732f 33%,#fff 33%,#fff 66%,#000 66%)}.fl-ae::before{content:'';position:absolute;left:0;top:0;bottom:0;width:22%;background:#ff0000}
+.fl-au{background:#00008b}.fl-au::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 45%,rgba(255,255,255,0.12) 45%),linear-gradient(180deg,transparent 45%,rgba(255,255,255,0.12) 45%)}
+/* Scrolling city strip */
+.dest-strip{margin-top:20px;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);position:relative;z-index:1}
+.dest-track{display:flex;gap:8px;animation:marquee 32s linear infinite;width:max-content}
+.dest-pill{display:inline-flex;padding:5px 14px;border-radius:99px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);white-space:nowrap;letter-spacing:0.05em;text-transform:uppercase}
+@media(max-width:768px){.dest-grid{grid-template-columns:repeat(2,1fr)}.further-head{flex-direction:column;align-items:flex-start}.further-cta-wrap{align-items:flex-start}}
+
+/* ═══ FAQ ═══ */
+.faq-section{background:var(--bg)}
+.faq-list{max-width:680px;margin:48px auto 0}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;padding:22px 0;font-size:16px;font-weight:600;color:var(--text);background:none;border:none;cursor:pointer;text-align:left;line-height:1.4;font-family:inherit;transition:color 0.2s}
+.faq-q:hover{color:var(--text-2)}
+.faq-icon{width:26px;height:26px;border-radius:50%;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-left:16px;transition:transform 0.35s cubic-bezier(.16,1,.3,1),background 0.3s,color 0.3s}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--dark);color:var(--text-inv)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(.16,1,.3,1)}
+.faq-item.open .faq-a{max-height:400px}
+.faq-a p{font-size:14px;color:var(--text-2);line-height:1.7;padding-bottom:22px}
+
+/* ═══ FINAL CTA ═══ */
+.final{background:var(--dark);color:var(--text-inv);text-align:center;padding:160px 32px;position:relative;overflow:hidden}
+.final::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:100%;height:80%;background:radial-gradient(ellipse,rgba(255,255,255,0.03) 0%,transparent 60%);pointer-events:none}
+.final h2{font-size:clamp(52px,9vw,104px);font-weight:800;line-height:0.96;letter-spacing:-0.055em;margin-bottom:20px;position:relative}
+.final p{font-size:17px;color:rgba(255,255,255,0.35);margin-bottom:36px;position:relative}
+
+/* ═══ FOOTER ═══ */
+footer{padding:64px 0 40px;background:var(--dark);color:var(--text-inv);border-top:1px solid rgba(255,255,255,0.06)}
+.f-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.f-brand p{font-size:13px;color:rgba(255,255,255,0.35);margin-top:10px;line-height:1.5}
+.f-col h4{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:14px}
+.f-col a{display:block;font-size:13px;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:8px;transition:color 0.2s}
+.f-col a:hover{color:#fff}
+.f-bot{padding-top:32px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:flex-end}
+.f-bot p{font-size:12px;color:rgba(255,255,255,0.2)}
+.f-mark{font-size:clamp(56px,10vw,110px);font-weight:900;letter-spacing:-0.05em;color:rgba(255,255,255,0.04);line-height:1}
+@media(max-width:768px){.f-grid{grid-template-columns:1fr 1fr}}
+
+
+/* ═══ REVOLUT TWO-MODE CANVAS ══════════════════════════════
+   DARK storytelling: hero · protect · pricing · buyback · final · footer
+   LIGHT catalogue:   bento · how · gift · proof · coverage · faq
+═══════════════════════════════════════════════════════════ */
+
+/* ── PRICING (sole dark band in mid-page) ── */
+.pricing-section{color:var(--text-inv);position:relative;overflow:hidden}
+
+.pricing-section .label{color:rgba(255,255,255,0.3)}
+.pricing-section h2.t{color:#fff}
+.pricing-section h2.t .m{color:rgba(255,255,255,0.2)}
+.pricing-section .sub{color:rgba(255,255,255,0.38)}
+
+.pricing-section .p-tabs{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.12)}
+.pricing-section .p-tab{color:rgba(255,255,255,0.38)}
+.pricing-section .p-tab.on{background:rgba(255,255,255,0.93);color:#000}
+
+/* Cards: Revolut surface-elevated #16181a */
+.pricing-section .p-card{background:#16181a;border:1px solid rgba(255,255,255,0.12);border-radius:20px}
+.pricing-section .p-card:hover{background:#1e2124;border-color:rgba(255,255,255,0.18);transform:translateY(-4px)}
+/* Featured: solid dark-green accent (YAMO brand) */
+.pricing-section .p-card.feat{background:#0d1f13;border:1px solid rgba(34,197,94,0.3)}
+.pricing-section .p-card.feat:hover{transform:translateY(-6px)}
+.pricing-section .p-pop{background:rgba(255,255,255,0.93);color:#000}
+.pricing-section .p-ph{background:#0a0a0c!important}
+.pricing-section .p-tier{color:rgba(255,255,255,0.28)}
+.pricing-section .p-device{color:#fff}
+.pricing-section .p-cond{color:rgba(255,255,255,0.28)}
+.pricing-section .p-price{color:#fff}
+.pricing-section .p-inc{color:rgba(255,255,255,0.38);border-bottom-color:rgba(255,255,255,0.12)}
+.pricing-section .p-feat li{color:rgba(255,255,255,0.48)}
+.pricing-section .p-chk{background:transparent;color:#4ade80}
+.pricing-section .p-alt{color:rgba(255,255,255,0.25)}
+.pricing-section .g-badge{background:rgba(255,255,255,0.06)!important;border-color:rgba(255,255,255,0.12)!important}
+.pricing-section .g-ico{background:rgba(255,255,255,0.09)!important}
+.pricing-section .g-txt{color:rgba(255,255,255,0.58)!important}
+.pricing-section .g-txt strong{color:#fff!important;display:block}
+.pricing-section .btn-o{border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.8);background:transparent}
+.pricing-section .btn-o:hover{border-color:rgba(255,255,255,0.5);color:#fff}
+.pricing-section .btn-d{background:rgba(255,255,255,0.93);color:#000}
+.pricing-section .btn-d:hover{background:#fff}
+.pricing-section .esim-c{background:#16181a;border:1px solid rgba(255,255,255,0.12);color:#fff;border-radius:20px}
+.pricing-section .esim-c:hover{background:#1e2124;border-color:rgba(255,255,255,0.2)}
+.pricing-section .esim-c.pop{border-color:rgba(255,255,255,0.3)}
+.pricing-section .esim-c h4{color:#fff}
+.pricing-section .esim-pr{color:#fff}
+.pricing-section .esim-pr span{color:rgba(255,255,255,0.38)}
+.pricing-section .esim-d{color:rgba(255,255,255,0.38)}
+.pricing-section #tab-esim p{color:rgba(255,255,255,0.42)!important}
+/* Pricing ambient glow */
+.pricing-section::before{content:'';position:absolute;bottom:-10%;left:-5%;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.04) 0%,transparent 60%);pointer-events:none;filter:blur(40px)}
+
+/* ── LATAM PASS TAB ── */
+.p-tab-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;background:rgba(74,222,128,0.9);color:#000;padding:2px 6px;border-radius:99px;margin-left:6px;vertical-align:middle;line-height:1.4}
+.latam-head{text-align:center;padding:8px 0 28px}
+.latam-title{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-0.03em;color:#fff;line-height:1.15}
+.latam-title em{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;color:rgba(255,255,255,0.45)}
+.latam-countries{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+.lc{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:6px 14px;border-radius:99px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);transition:all 0.2s}
+.lc.live{border-color:rgba(74,222,128,0.35);background:rgba(74,222,128,0.07);color:rgba(74,222,128,0.9)}
+.lc.live::before{content:'';width:5px;height:5px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,0.8);flex-shrink:0}
+.lc.soon::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0}
+.latam-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:580px){.latam-grid{grid-template-columns:1fr}}
+.latam-card{background:#16181a;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:28px;position:relative;overflow:hidden;transition:all 0.3s}
+.latam-card:hover{background:#1e2124;border-color:rgba(255,255,255,0.2);transform:translateY(-4px)}
+.latam-card.feat{background:#0d1320;border-color:rgba(59,111,212,0.35)}
+.latam-card.feat:hover{transform:translateY(-6px)}
+.latam-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:99px;margin-bottom:14px}
+.latam-tag.q3{background:rgba(59,111,212,0.15);border:1px solid rgba(59,111,212,0.3);color:rgba(120,160,240,0.9)}
+.latam-tag.wl{background:rgba(160,125,47,0.15);border:1px solid rgba(160,125,47,0.3);color:rgba(200,170,90,0.9)}
+.latam-cname{font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#fff;margin-bottom:4px}
+.latam-cdesc{font-size:13px;color:rgba(255,255,255,0.38);margin-bottom:20px;line-height:1.5}
+.latam-price{font-size:34px;font-weight:900;letter-spacing:-0.04em;color:#fff;line-height:1}
+.latam-price span{font-size:14px;font-weight:500;color:rgba(255,255,255,0.35);margin-left:2px}
+.latam-feats{list-style:none;padding:0;margin:16px 0 20px;display:flex;flex-direction:column;gap:8px}
+.latam-feats li{font-size:13px;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:8px}
+.latam-feats li::before{content:'';width:14px;height:14px;border-radius:50%;background:rgba(59,111,212,0.2);border:1px solid rgba(59,111,212,0.4);flex-shrink:0}
+.latam-card.feat .latam-feats li::before{background:rgba(59,111,212,0.25);border-color:rgba(59,111,212,0.5)}
+.latam-btn{display:block;width:100%;padding:13px;border-radius:99px;font-size:13px;font-weight:700;letter-spacing:0.01em;text-align:center;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all 0.25s}
+.latam-btn.outline{background:transparent;border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.7)}
+.latam-btn.outline:hover{border-color:rgba(255,255,255,0.45);color:#fff}
+.latam-btn.primary{background:rgba(59,111,212,0.9);color:#fff}
+.latam-btn.primary:hover{background:rgba(59,111,212,1)}
+.latam-waitlist{margin-top:28px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.latam-wl-txt{flex:1;min-width:200px}
+.latam-wl-txt strong{font-size:15px;font-weight:700;color:#fff;display:block;margin-bottom:3px}
+.latam-wl-txt span{font-size:12px;color:rgba(255,255,255,0.35)}
+.latam-form{display:flex;gap:8px;flex:1.2;min-width:260px}
+.latam-input{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:99px;padding:11px 18px;font-size:13px;color:#fff;font-family:inherit;outline:none;transition:border-color 0.2s}
+.latam-input::placeholder{color:rgba(255,255,255,0.25)}
+.latam-input:focus{border-color:rgba(255,255,255,0.35)}
+.latam-cta{padding:11px 22px;border-radius:99px;background:rgba(255,255,255,0.93);color:#000;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all 0.2s}
+.latam-cta:hover{background:#fff}
+
+/* ── HOW IT WORKS: step styles now in primary block above ── */
+
+/* ── PROOF: subtle quote mark on light bg ── */
+.proof-c{position:relative!important}
+.proof-section .proof-c::before{
+  content:'\201C';
+  position:absolute;top:16px;right:22px;
+  font-size:72px;font-weight:800;
+  color:rgba(0,0,0,0.05);
+  line-height:1;pointer-events:none;
+  font-family:'DM Serif Display',Georgia,serif
+}
+
+/* ── INTER body precision tracking (Revolut spec) ── */
+body,.sub,p,.step p,.faq-a p,.proof-c blockquote{letter-spacing:0.01em}
+[id]{scroll-margin-top:80px}
+
+/* ═══ PROTECT-PHOTO column ═══ */
+.protect-photo{position:absolute;right:0;top:0;bottom:0;width:52%;border-radius:0;overflow:hidden;z-index:0}
+.protect-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(1.15) brightness(0.88) contrast(1.02);
+  transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.protect-section:hover .protect-photo img{transform:scale(1.03)}
+/* subtle vignette only — no text overlay */
+.protect-photo-ov{position:absolute;inset:0;
+  background:linear-gradient(to right,var(--dark) 0%,rgba(0,0,0,0.55) 38%,rgba(0,0,0,0) 72%);z-index:1}
+/* location label — bottom left, minimal */
+.protect-loc{position:absolute;bottom:24px;right:24px;left:auto;z-index:3;
+  font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:6px}
+.protect-loc::before{content:'';width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.35);flex-shrink:0;display:none}
+/* floating shield badge — top right */
+.protect-shield{position:absolute;top:20px;right:20px;z-index:3;
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.1);border-radius:99px;
+  padding:8px 14px;
+  font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:rgba(255,255,255,0.7)}
+.protect-shield .sd{width:6px;height:6px;border-radius:50%;background:#4ade80;
+  box-shadow:0 0 7px rgba(74,222,128,0.8);flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="head-wrap">
+    <a href="#" class="logo">YAMO</a>
+    <nav class="head-nav">
+      <a href="#features">Features</a>
+      <a href="#protect">Protection</a>
+      <a href="#pricing">Pricing</a>
+      <a href="yamo-gift.html">Gift</a>
+      <a href="#circular">Buyback</a>
+      <a href="#faq">FAQ</a>
+      <a href="yamo-crm.html">Admin</a>
+    </nav>
+    <div class="head-cta"><a href="#pricing" class="btn">Get yours</a></div>
+    <button class="mob-tog" onclick="document.querySelector('.head-nav').style.display=document.querySelector('.head-nav').style.display==='flex'?'none':'flex'">
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1635079552384-dd8adecd8a7c?auto=format&fit=crop&w=1800&q=85" alt="" loading="eager" fetchpriority="high" decoding="sync">
+  </div>
+  <div class="hero-glow" id="glow" style="top:20%;left:40%;background:rgba(59,111,212,0.2)"></div>
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- LEFT -->
+      <div class="hero-left">
+        <div class="hero-pill rv"><span class="dot"></span> Now live in Colombia</div>
+        <h1 class="rv" style="transition-delay:0.08s">Live fast.<br>Stay <em>connected.</em></h1>
+        <p class="hero-sub rv" style="transition-delay:0.16s">A dedicated phone for your Colombia trip &mdash; buy it, use it anywhere, sell it back.</p>
+        <div class="hero-ctas rv" style="transition-delay:0.24s;justify-content:flex-start">
+          <a href="#pricing" class="btn btn-p btn-lg">&#xA1;Y&aacute;meate <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+          <a href="#protect" class="btn btn-lg" style="color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.1)">How it works</a>
+        </div>
+        <div class="hero-kpis rv" style="transition-delay:0.32s">
+          <div class="hero-kpi"><div class="hero-kpi-val">$229</div><div class="hero-kpi-lbl">Starting</div></div>
+          <div class="hero-kpi-sep"></div>
+          <div class="hero-kpi"><div class="hero-kpi-val">60%</div><div class="hero-kpi-lbl">Max buyback</div></div>
+          <div class="hero-kpi-sep"></div>
+          <div class="hero-kpi"><div class="hero-kpi-val">5G</div><div class="hero-kpi-lbl">eSIM included</div></div>
+          <div class="hero-kpi-sep"></div>
+          <div class="hero-kpi"><div class="hero-kpi-val">3</div><div class="hero-kpi-lbl">Cities live</div></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Hero phone -->
+      <div class="hero-right rv" style="transition-delay:0.38s">
+        <!-- ─ Adventure photo cards ─ -->
+        <!-- Guatapé: bottom-left -->
+        <div class="adv-card" style="width:190px;height:248px;bottom:72px;left:-44px;transform:rotate(-6deg);z-index:1">
+          <img src="https://images.unsplash.com/photo-1525088299396-2417f1366edd?auto=format&fit=crop&w=344&q=80" alt="Guatapé">
+          <div class="adv-ov"></div>
+          <div class="adv-lbl">Guatapé</div>
+        </div>
+        <!-- Caño Cristales: top-right -->
+        <div class="adv-card" style="width:195px;height:252px;top:22px;right:-72px;transform:rotate(6deg);z-index:1">
+          <img src="https://images.pexels.com/photos/37456277/pexels-photo-37456277.jpeg?auto=compress&cs=tinysrgb&w=370&fit=crop" alt="Caño Cristales">
+          <div class="adv-ov"></div>
+          <div class="adv-lbl">Caño Cristales</div>
+        </div>
+        <!-- Tayrona: bottom-right -->
+        <div class="adv-card" style="width:185px;height:240px;bottom:24px;right:-68px;transform:rotate(-4deg);z-index:1">
+          <img src="https://images.unsplash.com/photo-1635079552384-dd8adecd8a7c?auto=format&fit=crop&w=360&q=80" alt="Playa Tayrona">
+          <div class="adv-ov"></div>
+          <div class="adv-lbl">Playa Tayrona</div>
+        </div>
+
+        <div class="hero-ph-wrap">
+
+          <!-- Floating card A: Protection -->
+          <div class="hero-fc hero-fc-a">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+              <div style="width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,0.7)"></div>
+              <div class="fc-lbl" style="margin:0">Protected</div>
+            </div>
+            <div class="fc-val">Identity separated</div>
+            <div class="fc-sub">Personal phone stays home</div>
+          </div>
+
+          <!-- Phone: YAMO screen — premium redesign -->
+          <div class="hero-ph">
+            <div class="hero-ph-scr">
+              <div class="hero-ph-inner">
+
+                <!-- Status bar -->
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:600;color:rgba(255,255,255,0.35);margin-bottom:18px">
+                  <span style="letter-spacing:0.02em">9:41</span>
+                  <div style="width:14px;height:14px;border-radius:50%;background:rgba(0,0,0,0.5)"></div>
+                  <span style="display:flex;align-items:center;gap:5px">
+                    <svg width="11" height="8" viewBox="0 0 12 9" fill="rgba(255,255,255,0.4)"><path d="M6 2.5C4.07 2.5 2.33 3.3 1.07 4.6L0 3.5C1.56 1.9 3.67 1 6 1s4.44.9 6 2.5L10.93 4.6C9.67 3.3 7.93 2.5 6 2.5zm0 3c-1.1 0-2.1.45-2.83 1.17L2 5.5C3.07 4.4 4.46 3.75 6 3.75s2.93.65 4 1.75l-1.17 1.17C8.1 5.95 7.1 5.5 6 5.5zm0 3c-.55 0-1.05.22-1.41.59L6 9l1.41-1.41C7.05 7.22 6.55 7 6 7z"/></svg>
+                    <svg width="14" height="8" viewBox="0 0 20 11" fill="none"><rect x="0.5" y="0.5" width="17" height="10" rx="2.5" stroke="rgba(255,255,255,0.35)"/><rect x="18" y="3" width="2" height="5" rx="1" fill="rgba(255,255,255,0.35)"/><rect x="2" y="2" width="11" height="7" rx="1.5" fill="rgba(255,255,255,0.7)"/></svg>
+                  </span>
+                </div>
+
+                <!-- YAMO wordmark -->
+                <div style="font-size:11px;font-weight:900;letter-spacing:0.18em;color:rgba(255,255,255,0.18);text-transform:uppercase;margin-bottom:14px">YAMO</div>
+
+                <!-- Location hero card -->
+                <div style="background:linear-gradient(140deg,rgba(25,55,140,0.6) 0%,rgba(10,50,25,0.55) 100%);border:1px solid rgba(255,255,255,0.09);border-radius:18px;padding:16px 15px;margin-bottom:8px;position:relative;overflow:hidden">
+                  <div style="position:absolute;top:-30px;right:-24px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.15) 0%,transparent 70%)"></div>
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                    <div>
+                      <div style="font-size:7px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:5px">Active location</div>
+                      <div style="font-size:19px;font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1">Medell&iacute;n</div>
+                      <div style="font-size:9.5px;color:rgba(255,255,255,0.3);margin-top:3px;letter-spacing:0.01em">Colombia &nbsp;&middot;&nbsp; Tigo 5G</div>
+                    </div>
+                    <div style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);border-radius:99px;padding:5px 10px;display:flex;align-items:center;gap:5px;flex-shrink:0">
+                      <div style="width:5px;height:5px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,0.7);animation:pulse-glow 2s infinite"></div>
+                      <span style="font-size:8px;font-weight:800;letter-spacing:0.09em;text-transform:uppercase;color:#4ade80">Live</span>
+                    </div>
+                  </div>
+                  <!-- shield row -->
+                  <div style="display:flex;align-items:center;gap:6px;padding-top:9px;border-top:1px solid rgba(255,255,255,0.07)">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span style="font-size:8.5px;font-weight:600;color:rgba(255,255,255,0.32);letter-spacing:0.01em">Identity isolated &nbsp;&middot;&nbsp; Zero personal data on device</span>
+                  </div>
+                </div>
+
+                <!-- Metrics row -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">
+                  <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:13px;padding:10px 11px">
+                    <div style="font-size:7px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px">Data left</div>
+                    <div style="font-size:17px;font-weight:800;color:#4ade80;letter-spacing:-0.03em;line-height:1">3.2 GB</div>
+                    <div style="height:2px;background:rgba(255,255,255,0.07);border-radius:99px;overflow:hidden;margin-top:7px"><div style="width:36%;height:100%;background:#22C55E;border-radius:99px"></div></div>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:13px;padding:10px 11px">
+                    <div style="font-size:7px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:5px">Trip days</div>
+                    <div style="font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1">5</div>
+                    <div style="font-size:8px;color:rgba(255,255,255,0.2);margin-top:6px">of 14 planned</div>
+                  </div>
+                </div>
+
+                <!-- Buyback estimate -->
+                <div style="background:linear-gradient(130deg,rgba(34,197,94,0.08) 0%,rgba(30,60,140,0.08) 100%);border:1px solid rgba(34,197,94,0.18);border-radius:13px;padding:11px 13px;margin-bottom:auto">
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <div>
+                      <div style="font-size:7px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(34,197,94,0.55);margin-bottom:4px">Estimated buyback</div>
+                      <div style="font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.02em">$185 <span style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.28)">at return</span></div>
+                    </div>
+                    <div style="width:30px;height:30px;border-radius:8px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Credits: top-up icons -->
+                <div style="margin-top:11px">
+                  <div style="font-size:7px;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:9px">Travel credits</div>
+                  <div style="display:flex;gap:9px;justify-content:flex-start">
+
+                    <!-- Uber -->
+                    <div style="width:40px;height:40px;border-radius:11px;background:#000;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="16" height="16" rx="3" fill="white"/>
+                        <rect x="8" y="7" width="3" height="8" rx="1.5" fill="black"/>
+                        <rect x="13" y="7" width="3" height="8" rx="1.5" fill="black"/>
+                        <path d="M8 15h8" stroke="black" stroke-width="2.5" stroke-linecap="round"/>
+                      </svg>
+                    </div>
+
+                    <!-- Airbnb -->
+                    <div style="width:40px;height:40px;border-radius:11px;background:#FF5A5F;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2c-2 0-3.5 2.3-3.5 4.5 0 1.2.4 2.3 1.2 3.1L12 12l2.3-2.4c.8-.8 1.2-1.9 1.2-3.1C15.5 4.3 14 2 12 2zm0 2c.9 0 1.5 1.4 1.5 2.5 0 .7-.2 1.3-.7 1.8L12 9.4l-.8-.9c-.5-.5-.7-1.1-.7-1.8C10.5 5.4 11.1 4 12 4zM6.5 13c-1.7 0-3 1.3-3 3 0 3 5 6 8.5 8.5 3.5-2.5 8.5-5.5 8.5-8.5 0-1.7-1.3-3-3-3-1.1 0-2.1.6-2.7 1.5L12 17l-2.8-2.5c-.6-.9-1.6-1.5-2.7-1.5z"/>
+                      </svg>
+                    </div>
+
+                    <!-- Spotify -->
+                    <div style="width:40px;height:40px;border-radius:99px;background:#1DB954;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="19" height="14" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.5 3C7 .5 15 .5 20.5 3" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M3 8.5C8 6.5 14 6.5 19 8.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M5 14C9.5 12.5 12.5 12.5 17 14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                      </svg>
+                    </div>
+
+                    <!-- Netflix -->
+                    <div style="width:40px;height:40px;border-radius:11px;background:#E50914;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="16" height="20" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0v22l4.5-1.4V8.5L12 22l4-.8V0l-4.5 1.4V13L4.5 0z" fill="white"/>
+                      </svg>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Home bar -->
+                <div style="width:40px;height:3px;border-radius:99px;background:rgba(255,255,255,0.18);margin:12px auto 0"></div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating card B: Buyback -->
+          <div class="hero-fc hero-fc-b">
+            <div class="fc-lbl">When you leave</div>
+            <div class="fc-val" style="color:#4ade80;font-size:15px;letter-spacing:-0.02em">$185 back</div>
+            <div class="fc-sub">Grade A &middot; iPhone 13</div>
+          </div>
+
+          <!-- 3D shadow disc -->
+          <div class="hero-ph-shadow"></div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">2.4M US visitors/yr <span class="md"></span></span>
+    <span class="marquee-item">8,300 digital nomads/month in MDE <span class="md"></span></span>
+    <span class="marquee-item">Buyback up to 60% <span class="md"></span></span>
+    <span class="marquee-item">$229 starting price <span class="md"></span></span>
+    <span class="marquee-item">eSIM instant activation <span class="md"></span></span>
+    <span class="marquee-item">Uber credit included <span class="md"></span></span>
+    <span class="marquee-item">3 device tiers <span class="md"></span></span>
+    <span class="marquee-item">Travel credit with every bundle <span class="md"></span></span>
+    <span class="marquee-item">&#xA1;Yamea Colombia! <span class="md"></span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">2.4M US visitors/yr <span class="md"></span></span>
+    <span class="marquee-item">8,300 digital nomads/month in MDE <span class="md"></span></span>
+    <span class="marquee-item">Buyback up to 60% <span class="md"></span></span>
+    <span class="marquee-item">$229 starting price <span class="md"></span></span>
+    <span class="marquee-item">eSIM instant activation <span class="md"></span></span>
+    <span class="marquee-item">Uber credit included <span class="md"></span></span>
+    <span class="marquee-item">3 device tiers <span class="md"></span></span>
+    <span class="marquee-item">Travel credit with every bundle <span class="md"></span></span>
+    <span class="marquee-item">&#xA1;Yamea Colombia! <span class="md"></span></span>
+  </div>
+</div>
+
+<!-- ═══ FEATURES — editorial rows ═══ -->
+<section id="features" class="section feat-section">
+  <div class="container">
+    <div style="text-align:center" class="rv">
+      <div class="label">Features</div>
+      <h2 class="t" style="margin-top:16px">The full<br><span class="m">experience.</span></h2>
+    </div>
+    <div class="feat-rows">
+
+      <!-- 01 Identity Shield -->
+      <div class="feat-row normal rv">
+        <div class="feat-num">01</div>
+        <div class="feat-body">
+          <div class="feat-kicker">Identity Shield</div>
+          <div class="feat-title">Your real life,<br>untouched.</div>
+          <div class="feat-desc">A dedicated device means your banking apps, 2FA codes, and crypto wallets never touch a foreign network. Travel the world &mdash; without exposing what matters.</div>
+        </div>
+        <div class="feat-photo">
+          <img src="https://images.unsplash.com/photo-1592918454598-34d64c722e50?auto=format&fit=crop&w=700&q=85" alt="Las Lajas, Nariño" loading="lazy" decoding="async">
+          <div class="feat-photo-ov"></div>
+          <div class="feat-photo-loc">Las Lajas &middot; Nari&ntilde;o</div>
+          <div class="feat-photo-stat">100% separation</div>
+        </div>
+      </div>
+
+      <!-- 02 Global Connectivity -->
+      <div class="feat-row flipped rv">
+        <div class="feat-photo">
+          <img src="https://images.unsplash.com/photo-1592782985575-a96c6e647155?auto=format&fit=crop&w=700&q=85" alt="San Andrés" loading="lazy" decoding="async">
+          <div class="feat-photo-ov"></div>
+          <div class="feat-photo-loc">San Andr&eacute;s &middot; Caribbean</div>
+          <div class="feat-photo-stat">5GB ready</div>
+        </div>
+        <div class="feat-body">
+          <div class="feat-kicker">Global Connectivity</div>
+          <div class="feat-title">Signal anywhere<br>you land.</div>
+          <div class="feat-desc">Instant eSIM. No SIM swapping, no carrier bureaucracy. One tap and you&rsquo;re connected in Colombia &mdash; and every country after that.</div>
+        </div>
+        <div class="feat-num">02</div>
+      </div>
+
+      <!-- 03 Financial Firewall -->
+      <div class="feat-row normal rv">
+        <div class="feat-num">03</div>
+        <div class="feat-body">
+          <div class="feat-kicker">Financial Firewall</div>
+          <div class="feat-title">New device.<br>Zero exposure.</div>
+          <div class="feat-desc">Fresh accounts. No remembered passwords, no autofilled card numbers. Every trip starts with a blank slate &mdash; and ends with your finances exactly as you left them.</div>
+        </div>
+        <div class="feat-photo">
+          <img src="https://images.unsplash.com/photo-1633627340121-a624e4d44b78?auto=format&fit=crop&w=700&q=85" alt="Andes, Colombia" loading="lazy" decoding="async">
+          <div class="feat-photo-ov"></div>
+          <div class="feat-photo-loc">Andes &middot; Colombia</div>
+          <div class="feat-photo-stat">0 accounts exposed</div>
+        </div>
+      </div>
+
+      <!-- 04 Circular Model -->
+      <div class="feat-row flipped rv">
+        <div class="feat-photo">
+          <img src="https://images.unsplash.com/photo-1731687318204-b65a1bb49474?auto=format&fit=crop&w=700&q=85" alt="La Guajira" loading="lazy" decoding="async">
+          <div class="feat-photo-ov"></div>
+          <div class="feat-photo-loc">La Guajira &middot; Colombia</div>
+          <div class="feat-photo-stat">Up to 60% back</div>
+        </div>
+        <div class="feat-body">
+          <div class="feat-kicker">Circular Model</div>
+          <div class="feat-title">Buy it. Use it.<br>Sell it back.</div>
+          <div class="feat-desc">When you leave, YAMO buys it back at a condition-based price. Grade A returns up to 60% of what you paid. The device travels on. Your money does too.</div>
+        </div>
+        <div class="feat-num">04</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIGITAL PROTECTION ═══ -->
+<section id="protect" class="section protect-section" style="position:relative;overflow:hidden">
+  <div class="protect-photo rv">
+        <img src="https://images.unsplash.com/photo-1778188985186-25a9d5f7d2b8?auto=format&fit=crop&w=1000&q=85" alt="Colombia" loading="lazy" decoding="async">
+        <div class="protect-photo-ov"></div>
+        <div class="protect-shield"><span class="sd"></span>Always protected</div>
+        <div class="protect-loc">Valle del Cocora &middot; Colombia</div>
+      </div>
+  <div class="container" style="position:relative;z-index:1">
+    <div class="label light">Digital Protection</div>
+    <h2 class="t" style="color:#fff;margin-top:16px">Separate your <br><span style="color:rgba(255,255,255,0.3)">digital identity.</span></h2>
+    <div class="protect-grid">
+      <div class="protect-list rv">
+        <div class="protect-item">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><h4>Identity isolation</h4><span class="protect-badge">0 personal accounts on device</span><p>Your personal phone, bank apps, 2FA codes, and passwords stay at your accommodation. YAMO handles the adventure.</p></div>
+        </div>
+        <div class="protect-item">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div><h4>Network privacy</h4><span class="protect-badge">All public WiFi secured</span><p>Caf&eacute;s, coworking spaces, hostels &mdash; use any WiFi without exposing your real accounts to interception.</p></div>
+        </div>
+        <div class="protect-item">
+          <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div><h4>Financial firewall</h4><span class="protect-badge">Zero financial exposure</span><p>Venmo, Zelle, crypto wallets &mdash; none of them live on the device you carry through the city. Zero exposure.</p></div>
+        </div>
+        <div class="protect-item">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div><h4>Scam-proof layer</h4><span class="protect-badge">Identity fully isolated</span><p>QR codes, dating apps, local downloads &mdash; interact freely knowing nothing connects back to your real identity.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="section how-section">
+  <div class="container">
+    <div style="text-align:center" class="rv">
+      <div class="label light">How it works</div>
+      <h2 class="t" style="margin-top:16px;color:#fff">Three steps. <span style="color:rgba(255,255,255,0.25)">That&#8217;s it.</span></h2>
+    </div>
+    <div class="steps rv">
+      <div class="step">
+        <img class="step-bg" src="https://images.unsplash.com/photo-1626300366725-7a79453e45c6?auto=format&fit=crop&w=900&q=85" alt="Barichara" loading="lazy" decoding="async">
+        <div class="step-ov"></div>
+        <div class="step-content">
+          <div class="step-n">1</div>
+          <h3>Choose your device</h3>
+          <p>Samsung, Pixel, or iPhone &mdash; certified, unlocked, eSIM-ready. Includes data, travel credit, and Uber credit. Pick up in Medell&iacute;n or get it shipped.</p>
+          <div class="step-detail">Pick up in MDE &middot; Nationwide shipping</div>
+        </div>
+      </div>
+      <div class="step">
+        <img class="step-bg" src="https://images.unsplash.com/photo-1642714388405-9eb67257736a?auto=format&fit=crop&w=900&q=85" alt="Punta Gallinas" loading="lazy" decoding="async">
+        <div class="step-ov"></div>
+        <div class="step-content">
+          <div class="step-n">2</div>
+          <h3>Live the fast life</h3>
+          <p>Use YAMO for calls, data, maps, rideshares, local apps. Navigate the nightlife, hit the trails, explore every corner &mdash; your real phone stays off the grid.</p>
+          <div class="step-detail">Tigo 5G &middot; Works across all Colombia</div>
+        </div>
+      </div>
+      <div class="step">
+        <img class="step-bg" src="https://images.unsplash.com/photo-1633627397446-04c7fca71c74?auto=format&fit=crop&w=900&q=85" alt="Mompox" loading="lazy" decoding="async">
+        <div class="step-ov"></div>
+        <div class="step-content">
+          <div class="step-n">3</div>
+          <h3>Sell it back</h3>
+          <p>Heading home? Return the phone in any condition. We grade it, pay you up to 60% back, refurbish it, and send it to the next traveler.</p>
+          <div class="step-detail">Instant payment &middot; Grade A &rarr; 60% back</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section id="pricing" class="section pricing-section">
+  <div class="container">
+    <div style="text-align:center" class="rv">
+      <div class="label">Pricing</div>
+      <h2 class="t" style="margin-top:16px">Pick your adventure phone.</h2>
+      <p class="sub" style="margin:14px auto 0">All prices are all-in &mdash; taxes, import duties &amp; logistics included.</p>
+      <div style="margin-top:32px">
+        <div class="p-tabs">
+          <button class="p-tab on" onclick="swTab('dev',this)">Device Bundles</button>
+          <button class="p-tab" onclick="swTab('more',this)">More Phones</button>
+          <button class="p-tab" onclick="swTab('esim',this)">eSIM Only</button>
+          <button class="p-tab" onclick="swTab('latam',this)">LATAM Pass <span class="p-tab-badge">New</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-dev" class="tab-c on">
+
+      <!-- ── APPLE via Refurbi Colombia ── -->
+      <div class="p-group">
+      <div class="p-group-lbl">Apple &mdash; Certified Refurbished &middot; Local stock &middot; No import fees</div>
+      <div class="p-grid">
+
+        <div class="p-card rv">
+          <div class="p-ph iph"><div class="p-ph-sc"><i class="ph-fill ph-apple-logo"></i><span>iPhone</span></div></div>
+          <div class="p-tier">Entry iPhone</div>
+          <div class="p-device">iPhone 12 Pro</div>
+          <div class="p-cond">Certified Refurbished &middot; Local stock &middot; 14-mo warranty</div>
+          <div class="p-price">$279</div>
+          <div class="p-inc">Includes 3 GB eSIM data</div>
+          <div class="g-badge" style="background:var(--gold-soft);border:1px solid #E8DFC0">
+            <div class="g-ico" style="background:#F0E8CC"><i class="ph-fill ph-gift" style="font-size:15px;color:#A07D2F"></i></div>
+            <div class="g-txt" style="color:var(--gold)"><strong>$15 Travel Credit</strong>Data top-ups or local services</div>
+          </div>
+          <div class="g-badge" style="background:var(--blue-soft);border:1px solid #D0DCF0">
+            <div class="g-ico" style="background:#D0DCF0"><i class="ph-fill ph-car" style="font-size:15px;color:#3B6FD4"></i></div>
+            <div class="g-txt" style="color:var(--blue)"><strong>$10 Uber Credit</strong>Airport &amp; city rides</div>
+          </div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Apple ecosystem</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Pro triple camera</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $167</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose iPhone 12 Pro</a>
+        </div>
+
+        <div class="p-card feat rv">
+          <div class="p-pop">Best Value</div>
+          <div class="p-ph iph"><div class="p-ph-sc"><i class="ph-fill ph-apple-logo"></i><span>iPhone</span></div></div>
+          <div class="p-tier">Premium</div>
+          <div class="p-device">iPhone 13</div>
+          <div class="p-cond">Certified Refurbished &middot; Local stock &middot; Like New</div>
+          <div class="p-price">$369</div>
+          <div class="p-net">After Grade A return: ~$184 net cost</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <div class="g-badge" style="background:var(--gold-soft);border:1px solid #E8DFC0">
+            <div class="g-ico" style="background:#F0E8CC"><i class="ph-fill ph-gift" style="font-size:15px;color:#A07D2F"></i></div>
+            <div class="g-txt" style="color:var(--gold)"><strong>$30 Travel Credit</strong>Data, services, or gift another traveler</div>
+          </div>
+          <div class="g-badge" style="background:var(--blue-soft);border:1px solid #D0DCF0">
+            <div class="g-ico" style="background:#D0DCF0"><i class="ph-fill ph-car" style="font-size:15px;color:#3B6FD4"></i></div>
+            <div class="g-txt" style="color:var(--blue)"><strong>$20 Uber Credit</strong>Airport pickup &amp; city rides</div>
+          </div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Apple ecosystem</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Best value ratio</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $221</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Local supply, no import costs</li>
+          </ul>
+          <a href="#" class="btn btn-d" style="width:100%;justify-content:center">Choose iPhone 13</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph iph"><div class="p-ph-sc"><i class="ph-fill ph-apple-logo"></i><span>iPhone</span></div></div>
+          <div class="p-tier">Flagship</div>
+          <div class="p-device">iPhone 17</div>
+          <div class="p-cond">New &middot; Local stock &middot; 1-yr Apple warranty</div>
+          <div class="p-price">$599</div>
+          <div class="p-net">After Grade A return: ~$299 net cost</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <div class="g-badge" style="background:var(--gold-soft);border:1px solid #E8DFC0">
+            <div class="g-ico" style="background:#F0E8CC"><i class="ph-fill ph-gift" style="font-size:15px;color:#A07D2F"></i></div>
+            <div class="g-txt" style="color:var(--gold)"><strong>$30 Travel Credit</strong>Data top-ups or local services</div>
+          </div>
+          <div class="g-badge" style="background:var(--blue-soft);border:1px solid #D0DCF0">
+            <div class="g-ico" style="background:#D0DCF0"><i class="ph-fill ph-car" style="font-size:15px;color:#3B6FD4"></i></div>
+            <div class="g-txt" style="color:var(--blue)"><strong>$20 Uber Credit</strong>Airport &amp; city rides</div>
+          </div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Apple A18 chip · Action button</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 48 MP main camera system</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $359</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose iPhone 17</a>
+        </div>
+
+      </div><!-- /p-grid Apple -->
+      </div><!-- /p-group Apple -->
+
+      <!-- ── ANDROID via Nobility ── -->
+      <div class="p-group">
+      <div class="p-group-lbl">Android &mdash; Certified Like-New &middot; Shipped from US &middot; Duties included</div>
+      <div class="p-grid">
+
+        <div class="p-card rv">
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Essential</div>
+          <div class="p-device">Samsung Galaxy A16 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$229</div>
+          <div class="p-inc">Includes 3 GB eSIM data</div>
+          <div class="g-badge" style="background:var(--gold-soft);border:1px solid #E8DFC0">
+            <div class="g-ico" style="background:#F0E8CC"><i class="ph-fill ph-gift" style="font-size:15px;color:#A07D2F"></i></div>
+            <div class="g-txt" style="color:var(--gold)"><strong>$15 Travel Credit</strong>Data top-ups or local services</div>
+          </div>
+          <div class="g-badge" style="background:var(--blue-soft);border:1px solid #D0DCF0">
+            <div class="g-ico" style="background:#D0DCF0"><i class="ph-fill ph-car" style="font-size:15px;color:#3B6FD4"></i></div>
+            <div class="g-txt" style="color:var(--blue)"><strong>$10 Uber Credit</strong>Airport &amp; city rides</div>
+          </div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 5G &middot; Tigo Colombia</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $137</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose A16</a>
+        </div>
+
+        <div class="p-card feat rv">
+          <div class="p-pop">Explorer Pick</div>
+          <div class="p-ph pix"><div class="p-ph-sc"><i class="ph-fill ph-google-logo"></i><span>Pixel</span></div></div>
+          <div class="p-tier">Explorer</div>
+          <div class="p-device">Google Pixel 7A</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; AI Camera</div>
+          <div class="p-price">$349</div>
+          <div class="p-net">After Grade A return: ~$174 net cost</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <div class="g-badge" style="background:var(--gold-soft);border:1px solid #E8DFC0">
+            <div class="g-ico" style="background:#F0E8CC"><i class="ph-fill ph-gift" style="font-size:15px;color:#A07D2F"></i></div>
+            <div class="g-txt" style="color:var(--gold)"><strong>$25 Travel Credit</strong>Data top-ups or local services</div>
+          </div>
+          <div class="g-badge" style="background:var(--blue-soft);border:1px solid #D0DCF0">
+            <div class="g-ico" style="background:#D0DCF0"><i class="ph-fill ph-car" style="font-size:15px;color:#3B6FD4"></i></div>
+            <div class="g-txt" style="color:var(--blue)"><strong>$15 Uber Credit</strong>Airport &amp; city rides</div>
+          </div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Best camera for travel</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Google AI built in</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $209</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-d" style="width:100%;justify-content:center">Choose Pixel 7A</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph pix"><div class="p-ph-sc"><i class="ph-fill ph-google-logo"></i><span>Pixel</span></div></div>
+          <div class="p-tier">Explorer+</div>
+          <div class="p-device">Google Pixel 9A</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; AI Camera</div>
+          <div class="p-price">$479</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Tensor G4 &middot; Gemini AI</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $287</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose Pixel 9A</a>
+        </div>
+
+      </div><!-- /p-grid Android -->
+      </div><!-- /p-group Android -->
+
+    </div>
+
+    <div id="tab-more" class="tab-c">
+
+      <!-- ── APPLE iPHONE ── -->
+      <div class="p-group">
+      <div class="p-group-lbl">Apple iPhone &mdash; New &middot; Local stock &middot; Full Apple warranty &middot; No import fees</div>
+      <div class="p-grid">
+
+        <div class="p-card rv">
+          <div class="p-ph iph"><div class="p-ph-sc"><i class="ph-fill ph-apple-logo"></i><span>iPhone</span></div></div>
+          <div class="p-tier">Flagship</div>
+          <div class="p-device">iPhone 16</div>
+          <div class="p-cond">New &middot; Local stock &middot; 1-yr Apple warranty</div>
+          <div class="p-price">$499</div>
+          <div class="p-net">After Grade A return: ~$249 net cost</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Apple A18 chip · Action button</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 48 MP main camera</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $299</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose iPhone 16</a>
+        </div>
+
+        <div class="p-card feat rv">
+          <div class="p-pop">Most Popular</div>
+          <div class="p-ph iph"><div class="p-ph-sc"><i class="ph-fill ph-apple-logo"></i><span>iPhone</span></div></div>
+          <div class="p-tier">Flagship Pro</div>
+          <div class="p-device">iPhone 16 Pro</div>
+          <div class="p-cond">New &middot; Local stock &middot; 1-yr Apple warranty</div>
+          <div class="p-price">$649</div>
+          <div class="p-net">After Grade A return: ~$324 net cost</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Apple A18 Pro chip</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 48 MP triple Pro camera</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $389</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-d" style="width:100%;justify-content:center">Choose iPhone 16 Pro</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph iph"><div class="p-ph-sc"><i class="ph-fill ph-apple-logo"></i><span>iPhone</span></div></div>
+          <div class="p-tier">Flagship Pro Max</div>
+          <div class="p-device">iPhone 17 Pro</div>
+          <div class="p-cond">New &middot; Local stock &middot; 1-yr Apple warranty</div>
+          <div class="p-price">$799</div>
+          <div class="p-net">After Grade A return: ~$399 net cost</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Apple A18 Pro · ProMotion 120 Hz</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 5× telephoto · Pro camera system</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $479</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose iPhone 17 Pro</a>
+        </div>
+
+      </div><!-- /p-grid Apple -->
+      </div><!-- /p-group Apple -->
+
+      <!-- ── SAMSUNG ESSENTIAL ── -->
+      <div class="p-group">
+      <div class="p-group-lbl">Samsung Galaxy &mdash; Certified Like-New &middot; Shipped from US &middot; Duties included</div>
+      <div class="p-grid">
+
+        <div class="p-card rv">
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Essential</div>
+          <div class="p-device">Samsung Galaxy A17 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$249</div>
+          <div class="p-inc">Includes 3 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 5G &middot; Tigo Colombia</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $149</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose A17</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Essential</div>
+          <div class="p-device">Samsung Galaxy A26 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$269</div>
+          <div class="p-inc">Includes 3 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 5G &middot; Tigo Colombia</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $161</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose A26</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Essential+</div>
+          <div class="p-device">Samsung Galaxy A35 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$289</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> AMOLED &middot; 50 MP camera</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $173</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose A35</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Essential+</div>
+          <div class="p-device">Samsung Galaxy A36 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$329</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> AMOLED &middot; 50 MP camera</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $197</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose A36</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Essential+</div>
+          <div class="p-device">Samsung Galaxy A37 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$499</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 5G &middot; Tigo Colombia</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> AMOLED &middot; 50 MP camera</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $299</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose A37</a>
+        </div>
+
+      </div><!-- /p-grid Samsung -->
+      </div><!-- /p-group Samsung -->
+
+      <!-- ── GOOGLE PIXEL EXPLORER ── -->
+      <div class="p-group">
+      <div class="p-group-lbl">Google Pixel &mdash; Certified Like-New &middot; Flagship AI cameras &middot; Duties included</div>
+      <div class="p-grid">
+
+        <div class="p-card rv">
+          <div class="p-ph pix"><div class="p-ph-sc"><i class="ph-fill ph-google-logo"></i><span>Pixel</span></div></div>
+          <div class="p-tier">Explorer</div>
+          <div class="p-device">Google Pixel 8</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; AI Camera</div>
+          <div class="p-price">$449</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Tensor G3 &middot; Best Photo AI</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $269</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose Pixel 8</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph pix"><div class="p-ph-sc"><i class="ph-fill ph-google-logo"></i><span>Pixel</span></div></div>
+          <div class="p-tier">Flagship</div>
+          <div class="p-device">Google Pixel 9</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; AI Camera</div>
+          <div class="p-price">$549</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Tensor G4 &middot; Gemini AI</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $329</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose Pixel 9</a>
+        </div>
+
+      </div><!-- /p-grid Pixel -->
+      </div><!-- /p-group Pixel -->
+
+      <!-- ── SAMSUNG FLAGSHIP ── -->
+      <div class="p-group">
+      <div class="p-group-lbl">Samsung Galaxy Flagship &mdash; Certified Like-New &middot; Shipped from US &middot; Duties included</div>
+      <div class="p-grid">
+
+        <div class="p-card feat rv">
+          <div class="p-pop">Flagship Pick</div>
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Flagship</div>
+          <div class="p-device">Samsung Galaxy S25 FE 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$659</div>
+          <div class="p-net">After Grade A return: ~$263 net cost</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Galaxy AI &middot; Snapdragon 8 Gen 3</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> 50 MP triple camera</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $395</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-d" style="width:100%;justify-content:center">Choose S25 FE</a>
+        </div>
+
+        <div class="p-card rv">
+          <div class="p-ph sam"><div class="p-ph-sc"><i class="ph-fill ph-android-logo"></i><span>Galaxy</span></div></div>
+          <div class="p-tier">Flagship+</div>
+          <div class="p-device">Samsung Galaxy S25 5G</div>
+          <div class="p-cond">Certified Like-New &middot; Unlocked &middot; 128 GB</div>
+          <div class="p-price">$729</div>
+          <div class="p-inc">Includes 5 GB eSIM data</div>
+          <ul class="p-feat">
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Galaxy AI &middot; Snapdragon 8 Elite</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Buyback up to $437</li>
+            <li><span class="p-chk"><i class="ph-fill ph-check-circle"></i></span> Remote lock &amp; wipe</li>
+          </ul>
+          <a href="#" class="btn btn-o" style="width:100%;justify-content:center">Choose S25</a>
+        </div>
+
+      </div><!-- /p-grid Samsung Flagship -->
+      </div><!-- /p-group Samsung Flagship -->
+
+    </div>
+
+    <div id="tab-esim" class="tab-c">
+      <div style="text-align:center;margin-bottom:8px"><p style="font-size:15px;color:var(--text-2)">Already have an unlocked phone? Get connected in Colombia with an eSIM.</p></div>
+      <div class="esim-grid">
+
+        <!-- Starter -->
+        <div class="esim-c">
+          <h4>Starter</h4>
+          <div class="esim-pr">$10<span> / 1 GB</span></div>
+          <div class="esim-d">Flexible &middot; Top-up anytime</div>
+          <div class="esim-net"><span class="nd"></span>Tigo 4G/5G</div>
+          <div class="esim-spacer"></div>
+          <a href="#" class="esim-btn">Get Starter</a>
+        </div>
+
+        <!-- Nomad — Most Popular -->
+        <div class="esim-c pop">
+          <div class="esim-pop-badge">Most Popular</div>
+          <h4>Nomad</h4>
+          <div class="esim-pr">$18<span> / 3 GB</span></div>
+          <div class="esim-d">Monthly &middot; Flexible top-up</div>
+          <div class="esim-net"><span class="nd"></span>Tigo 4G/5G</div>
+          <div class="esim-spacer"></div>
+          <a href="#" class="esim-btn">Get Nomad</a>
+        </div>
+
+        <!-- Extended -->
+        <div class="esim-c">
+          <h4>Extended</h4>
+          <div class="esim-pr">$22<span> / 5 GB</span></div>
+          <div class="esim-d">Monthly &middot; Heavy use</div>
+          <div class="esim-net"><span class="nd"></span>Tigo 4G/5G</div>
+          <div class="esim-spacer"></div>
+          <a href="#" class="esim-btn">Get Extended</a>
+        </div>
+
+      </div>
+      <p style="text-align:center;margin-top:20px;font-size:12px;color:rgba(255,255,255,0.25)">Instant activation &middot; Top-up anytime &middot; Works nationwide in Colombia</p>
+    </div>
+
+    <!-- ══════ LATAM PASS TAB ══════ -->
+    <div id="tab-latam" class="tab-c">
+
+      <div class="latam-head rv">
+        <div class="latam-title">Traveling through LATAM.<br><em>Count us in.</em></div>
+        <div class="latam-countries">
+          <span class="lc live">Colombia</span>
+          <span class="lc soon">Brazil</span>
+          <span class="lc soon">Mexico</span>
+          <span class="lc soon">Argentina</span>
+          <span class="lc soon">Chile</span>
+          <span class="lc soon">Peru</span>
+        </div>
+      </div>
+
+      <div class="latam-grid rv">
+
+        <!-- Card 1: LATAM Circuit -->
+        <div class="latam-card feat">
+          <div class="latam-tag q3">Launching Q3 2026</div>
+          <div class="latam-cname">LATAM Circuit</div>
+          <div class="latam-cdesc">iPhone 13 + regional eSIM. One device, six countries — no swaps, no roaming surprises.</div>
+          <div class="latam-price">$409 <span>from</span></div>
+          <ul class="latam-feats">
+            <li>iPhone 13 &mdash; Certified Refurbished</li>
+            <li>10 GB regional eSIM across 6 countries</li>
+            <li>Instant activation before you land</li>
+            <li>Sell it back when your trip ends</li>
+          </ul>
+          <a href="#waitlist" class="latam-btn primary">Join the waitlist</a>
+        </div>
+
+        <!-- Card 2: Regional eSIM Pass -->
+        <div class="latam-card">
+          <div class="latam-tag wl">Waitlist Open</div>
+          <div class="latam-cname">Regional eSIM Pass</div>
+          <div class="latam-cdesc">Already have a phone? Just get connected. One eSIM, six countries, one price.</div>
+          <div class="latam-price">$39 <span>/ month from</span></div>
+          <ul class="latam-feats">
+            <li>10 GB across 6 LATAM countries</li>
+            <li>Works on any unlocked device</li>
+            <li>Single eSIM &mdash; no re-configuration</li>
+            <li>Pause, cancel anytime</li>
+          </ul>
+          <a href="#waitlist" class="latam-btn outline">Join the waitlist</a>
+        </div>
+
+      </div>
+
+      <!-- Waitlist strip -->
+      <div class="latam-waitlist rv" id="waitlist">
+        <div class="latam-wl-txt">
+          <strong>Be first when we expand.</strong>
+          <span>We'll notify you when LATAM Pass launches in your next destination.</span>
+        </div>
+        <div class="latam-form">
+          <input type="email" class="latam-input" placeholder="Your email address">
+          <button class="latam-cta" onclick="this.textContent='You're in ✓';this.style.background='rgba(74,222,128,0.9)'">Count me in</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GIFT ═══ -->
+<section id="gift" class="section gift-section">
+  <div class="container" style="position:relative;z-index:1">
+    <div class="gift-grid">
+
+      <div class="gift-content rv">
+        <div class="label">Gift a YAMO</div>
+        <h3 style="margin-top:16px">Know someone traveling?<br><span style="font-style:italic;color:var(--text-2);font-weight:600">Send them ready.</span></h3>
+        <p>A YAMO travel kit gives them a dedicated phone, instant connectivity, and credits toward their stay and rides — everything set up before they land.</p>
+
+        <div class="kit-opts">
+
+          <!-- Starter -->
+          <div class="kit-opt" onclick="selKit(this,'$100','$15','0',false)">
+            <div>
+              <div class="kit-name">Starter Kit</div>
+              <div class="kit-inc">$100 credit toward any bundle · Digital delivery</div>
+            </div>
+            <div class="kit-price">$100</div>
+          </div>
+
+          <!-- Explorer -->
+          <div class="kit-opt sel" onclick="selKit(this,'$269','$20','20',false)">
+            <div>
+              <div class="kit-name">Explorer Kit <span class="kit-tag">Popular</span></div>
+              <div class="kit-inc">Samsung A16 5G + eSIM · $20 Uber · $20 Airbnb credit</div>
+            </div>
+            <div class="kit-price">$269</div>
+          </div>
+
+          <!-- Premium -->
+          <div class="kit-opt" onclick="selKit(this,'$449','$30','50',true)">
+            <div>
+              <div class="kit-name">Premium Kit</div>
+              <div class="kit-inc">iPhone 13 + eSIM · $30 Uber · $50 Airbnb · Curated Colombia experience</div>
+            </div>
+            <div class="kit-price">$449</div>
+          </div>
+
+        </div>
+
+        <a href="yamo-gift.html" class="btn btn-d btn-lg">Gift this kit <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <p style="font-size:12px;color:var(--text-4);margin-top:12px">Digital delivery &middot; Recipient redeems at checkout &middot; No expiry</p>
+      </div>
+
+      <div class="gift-visual rv">
+        <!-- YAMO card -->
+        <div class="gc-mock">
+          <div class="gc-l">YAMO</div>
+          <div class="gc-a" id="gc-display">$269</div>
+          <div class="gc-s">Travel Kit &middot; Gift Card</div>
+          <div class="gc-exp" id="gc-exp"><i class="ph ph-map-trifold" style="vertical-align:-2px;margin-right:5px"></i>Curated Colombia experience included</div>
+          <div class="gc-bar"></div>
+        </div>
+        <!-- Uber card -->
+        <div class="ub-mock">
+          <div class="ub-l">Uber</div>
+          <div class="ub-a" id="ub-display">$20</div>
+          <div class="ub-s">Rides in Colombia &middot; Included</div>
+          <div class="ub-bar"></div>
+        </div>
+        <!-- Airbnb card -->
+        <div class="ab-mock" id="ab-mock">
+          <div class="ab-l">Airbnb</div>
+          <div class="ab-a" id="ab-display">$20</div>
+          <div class="ab-s">Stay credit &middot; Applied at checkout</div>
+          <div class="ab-bar"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOCIAL PROOF ═══ -->
+<section class="section proof-section">
+  <div class="container">
+    <div style="text-align:center" class="rv">
+      <div class="label">What travelers say</div>
+      <h2 class="t" style="margin-top:16px">Real people. <span class="m">Real trips.</span></h2>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-c rv">
+        <div class="proof-stars"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+        <blockquote>"Used my YAMO for 3 months across Medell&iacute;n. My real phone stayed on airplane mode at the Airbnb. Three months of nightlife, coworking, exploring &mdash; zero digital incidents."</blockquote>
+        <div class="proof-auth"><div class="proof-av">JW</div><div><div class="proof-name">Jake W. &#x1F1FA;&#x1F1F8;</div><div class="proof-role">Remote dev &middot; 3 months in MDE</div></div></div>
+      </div>
+      <div class="proof-c rv">
+        <div class="proof-stars"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+        <blockquote>"$369 for the iPhone, used it Bogot&aacute; to Santa Marta, returned Grade A and got $185 back. Net cost: $184 for complete digital separation."</blockquote>
+        <div class="proof-auth"><div class="proof-av">MC</div><div><div class="proof-name">Maria C. &#x1F1E8;&#x1F1F4;</div><div class="proof-role">Nomad &middot; Bogot&aacute; &rarr; Costa</div></div></div>
+      </div>
+      <div class="proof-c rv">
+        <div class="proof-stars"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
+        <blockquote>"Got one as a gift for my girlfriend's solo trip. Two weeks in she texted: 'This was the smartest thing you've ever done.'"</blockquote>
+        <div class="proof-auth"><div class="proof-av">RH</div><div><div class="proof-name">Ryan H. &#x1F1FA;&#x1F1F8;</div><div class="proof-role">Software eng &middot; Miami</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BUYBACK ═══ -->
+<section id="circular" class="section circ-section">
+  <div class="container" style="position:relative;z-index:1">
+    <div style="text-align:center" class="rv">
+      <div class="label light">The circular model</div>
+      <h2 class="t" style="margin-top:16px;color:#fff">Buy it. Use it. <span class="m">Sell it back.</span></h2>
+      <p class="sub" style="margin:14px auto 0;color:rgba(255,255,255,0.4)">Return yours in any condition and get paid. We refurbish it in Colombia and send it to the next traveler.</p>
+    </div>
+    <div class="flow rv">
+      <div class="flow-c"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg><h4>Buy</h4><p>Pick your device</p></div>
+      <div class="flow-c"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><h4>Use in Colombia</h4><p>MDE, BOG, CTG &amp; beyond</p></div>
+      <div class="flow-c"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><h4>Sell back</h4><p>Return &amp; get paid</p></div>
+      <div class="flow-c"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg><h4>Recirculate</h4><p>Refurb &amp; resell</p></div>
+    </div>
+    <div class="grades rv">
+      <div class="g-c ga"><div class="g-lab"><span class="g-dot"></span> Grade A</div><div class="desc">Like new. Battery &gt;85%. Minor wear.</div><div class="pct">50&ndash;60% <span>of sale price</span></div></div>
+      <div class="g-c gb"><div class="g-lab"><span class="g-dot"></span> Grade B</div><div class="desc">Normal wear. Battery &gt;75%. Fully functional.</div><div class="pct">30&ndash;40% <span>of sale price</span></div></div>
+      <div class="g-c gc"><div class="g-lab"><span class="g-dot"></span> Grade C</div><div class="desc">Visible damage or battery &lt;75%.</div><div class="pct">10&ndash;20% <span>of sale price</span></div></div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ═══ COVERAGE ═══ -->
+<section id="coverage" class="section cov-section">
+  <div class="container">
+    <div style="text-align:center" class="rv">
+      <div class="label">Coverage</div>
+      <h2 class="t" style="margin-top:16px">Live across Colombia.<br><span class="m">Expanding to Brazil.</span></h2>
+      <p class="sub" style="margin:14px auto 0">Medell&iacute;n, Bogot&aacute;, and Cartagena cover 80% of international arrivals.</p>
+    </div>
+    <div class="cov-pills rv">
+      <div class="cov-p on"><span class="cd on"></span>Medell&iacute;n</div>
+      <div class="cov-p on"><span class="cd on"></span>Bogot&aacute;</div>
+      <div class="cov-p on"><span class="cd on"></span>Cartagena</div>
+      <div class="cov-p"><span class="cd soon"></span>Santa Marta</div>
+      <div class="cov-p"><span class="cd soon"></span>Cali</div>
+      <div class="cov-p"><span class="cd soon"></span>San Andr&eacute;s</div>
+      <div class="cov-p"><span class="cd soon"></span>S&atilde;o Paulo</div>
+      <div class="cov-p"><span class="cd soon"></span>Miami</div>
+    </div>
+    <p style="text-align:center;margin-top:24px;font-size:13px;color:var(--text-4)">eSIM data nationwide. Works across all of Colombia.</p>
+  </div>
+</section>
+
+<!-- ═══ GO FURTHER ═══ -->
+<section class="further-section">
+  <div class="container">
+    <div style="position:relative;z-index:1">
+
+      <!-- Left: copy + CTA -->
+      <!-- Header -->
+      <div class="further-head rv">
+        <div>
+          <div class="label light" style="margin-bottom:16px">Go further</div>
+          <h2 class="further-title">Your adventure doesn't<br>stop here. <em>The world is connected.</em></h2>
+          <p class="further-sub" style="margin-top:12px">Take your YAMO beyond Colombia. eSIM plans for 150+ countries — instant activation, no SIM swap, same unlocked device.</p>
+        </div>
+        <div class="further-cta-wrap">
+          <a href="https://nestrfi.com/esim" target="_blank" rel="noopener" class="further-cta">
+            Browse global plans
+            <svg width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <div class="further-attr">150+ countries &nbsp;&middot;&nbsp; Global eSIM network</div>
+        </div>
+      </div>
+
+      <!-- 3-col country grid — full width, CSS flags -->
+      <div class="dest-grid rv">
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-es"></div>
+          <div class="dest-name">Spain</div>
+          <div class="dest-capital">Madrid</div>
+          <div class="dest-note">from $8 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-jp"></div>
+          <div class="dest-name">Japan</div>
+          <div class="dest-capital">Tokyo</div>
+          <div class="dest-note">from $12 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-fr"></div>
+          <div class="dest-name">France</div>
+          <div class="dest-capital">Paris</div>
+          <div class="dest-note">from $9 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-de"></div>
+          <div class="dest-name">Germany</div>
+          <div class="dest-capital">Berlin</div>
+          <div class="dest-note">from $9 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-th"></div>
+          <div class="dest-name">Thailand</div>
+          <div class="dest-capital">Bangkok</div>
+          <div class="dest-note">from $7 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-mx"></div>
+          <div class="dest-name">Mexico</div>
+          <div class="dest-capital">Mexico City</div>
+          <div class="dest-note">from $6 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-br"></div>
+          <div class="dest-name">Brazil</div>
+          <div class="dest-capital">Bras&iacute;lia</div>
+          <div class="dest-note">from $9 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-ae"></div>
+          <div class="dest-name">UAE</div>
+          <div class="dest-capital">Abu Dhabi</div>
+          <div class="dest-note">from $10 &middot; 3 GB</div>
+        </div>
+
+        <div class="dest-card">
+          <div class="dest-flag-css fl-us"></div>
+          <div class="dest-name">United States</div>
+          <div class="dest-capital">Washington D.C.</div>
+          <div class="dest-note">from $8 &middot; 3 GB</div>
+        </div>
+
+      </div>
+
+      <!-- Scrolling city strip -->
+      <div class="dest-strip rv">
+        <div class="dest-track">
+          <span class="dest-pill">New York</span>
+          <span class="dest-pill">London</span>
+          <span class="dest-pill">Berlin</span>
+          <span class="dest-pill">Lisbon</span>
+          <span class="dest-pill">Buenos Aires</span>
+          <span class="dest-pill">Bali</span>
+          <span class="dest-pill">Hanoi</span>
+          <span class="dest-pill">Sydney</span>
+          <span class="dest-pill">Zurich</span>
+          <span class="dest-pill">San Jos&eacute;</span>
+          <span class="dest-pill">Amsterdam</span>
+          <span class="dest-pill">Seoul</span>
+          <span class="dest-pill">Dubai</span>
+          <span class="dest-pill">Cape Town</span>
+          <span class="dest-pill">Singapore</span>
+          <span class="dest-pill">Istanbul</span>
+          <!-- loop -->
+          <span class="dest-pill">New York</span>
+          <span class="dest-pill">London</span>
+          <span class="dest-pill">Berlin</span>
+          <span class="dest-pill">Lisbon</span>
+          <span class="dest-pill">Buenos Aires</span>
+          <span class="dest-pill">Bali</span>
+          <span class="dest-pill">Hanoi</span>
+          <span class="dest-pill">Sydney</span>
+          <span class="dest-pill">Zurich</span>
+          <span class="dest-pill">San Jos&eacute;</span>
+          <span class="dest-pill">Amsterdam</span>
+          <span class="dest-pill">Seoul</span>
+          <span class="dest-pill">Dubai</span>
+          <span class="dest-pill">Cape Town</span>
+          <span class="dest-pill">Singapore</span>
+          <span class="dest-pill">Istanbul</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" class="section faq-section">
+  <div class="container">
+    <div style="text-align:center" class="rv">
+      <div class="label">FAQ</div>
+      <h2 class="t" style="margin-top:16px">Got questions?<br><span class="m">Here are answers.</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">Why a separate phone for Colombia?<span class="faq-icon">+</span></button><div class="faq-a"><p>Smart travelers separate their digital identity when abroad. A YAMO means your personal phone, financial apps, and 2FA codes never touch a foreign network or unfamiliar WiFi. You navigate, explore, and connect freely &mdash; your digital life stays completely isolated.</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">I'm a digital nomad staying 3+ months. Does YAMO work for me?<span class="faq-icon">+</span></button><div class="faq-a"><p>Yes. Choose a monthly eSIM plan ($18/3GB or $22/5GB) for flexible data. The device is yours for the entire stay. When you leave, sell it back and get up to 60%. Many nomads in Medell&iacute;n use YAMO as their daily driver while keeping their personal phone offline.</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">Are the devices new?<span class="faq-icon">+</span></button><div class="faq-a"><p>Samsung and Pixel devices are Certified Like-New from our US supplier &mdash; OEM parts, less than 1% return rate. iPhones are certified refurbished from our Colombian partner, fully tested. Every device is unlocked and eSIM-ready.</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">How does buyback work?<span class="faq-icon">+</span></button><div class="faq-a"><p>Return the phone at our handoff point in Medell&iacute;n in any condition. We grade it: Grade A pays 50&ndash;60% back, Grade B 30&ndash;40%, Grade C 10&ndash;20%. Payment is issued immediately.</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">How do YAMO travel kits work?<span class="faq-icon">+</span></button><div class="faq-a"><p>Gift kits are digital. The recipient gets a code they redeem at checkout to cover their device bundle. Explorer and Premium kits also include Uber and Airbnb credits, which are delivered digitally alongside the device. No expiry date.</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">Does the eSIM work outside Medell&iacute;n?<span class="faq-icon">+</span></button><div class="faq-a"><p>Yes &mdash; nationwide coverage via Tigo 4G/5G. Works in all major cities and most towns. Activates instantly on your device.</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">What's included with the Uber credit?<span class="faq-icon">+</span></button><div class="faq-a"><p>Every bundle includes $10&ndash;$20 Uber credit for Colombia. Use it for your airport pickup and getting around the city. Uber is the go-to for safe, reliable rides in Medell&iacute;n, Bogot&aacute;, and Cartagena.</p></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="togFaq(this)">Can I pick up the phone when I land?<span class="faq-icon">+</span></button><div class="faq-a"><p>Currently available for pickup in Medell&iacute;n. Bogot&aacute; and Cartagena pickup points coming soon. Shipping within Colombia is also available.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<section class="final">
+  <div class="container" style="position:relative;z-index:1">
+    <h2 class="rv">Live the adventure.<br>Keep your identity.</h2>
+    <p class="rv">Devices from $229. Buyback up to 60%. Credits included.</p>
+    <a href="#pricing" class="btn btn-p btn-lg rv">&#xA1;Y&aacute;meate <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="f-grid">
+      <div class="f-brand">
+        <a href="#" class="logo">YAMO</a>
+        <p>Your adventure phone for Colombia.<br>Buy it. Use it. Sell it back.</p>
+      </div>
+      <div class="f-col"><h4>Product</h4><a href="#pricing">Pricing</a><a href="#gift">Gift Cards</a><a href="#circular">Buyback</a><a href="#coverage">Coverage</a></div>
+      <div class="f-col"><h4>Legal</h4><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Returns</a></div>
+      <div class="f-col"><h4>Connect</h4><a href="#">X (Twitter)</a><a href="#">Instagram</a><a href="#">Telegram</a></div>
+    </div>
+    <div class="f-bot">
+      <p>&copy; 2026 YAMO Inc. &middot; US incorporated &middot; Operating in Colombia</p>
+      <div class="f-mark">YAMO</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function swTab(t,el){document.querySelectorAll('.tab-c').forEach(c=>c.classList.remove('on'));document.querySelectorAll('.p-tab').forEach(b=>b.classList.remove('on'));document.getElementById('tab-'+t).classList.add('on');el.classList.add('on')}
+function togFaq(b){const i=b.parentElement,w=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(x=>x.classList.remove('open'));if(!w)i.classList.add('open')}
+function selKit(el,gc,ub,ab,hasExp){
+  document.querySelectorAll('.kit-opt').forEach(k=>k.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('gc-display').textContent=gc;
+  document.getElementById('ub-display').textContent='$'+ub;
+  var abAmt=parseInt(ab);
+  var abMock=document.getElementById('ab-mock');
+  document.getElementById('ab-display').textContent='$'+ab;
+  abMock.classList.toggle('dim',abAmt===0);
+  var expEl=document.getElementById('gc-exp');
+  if(expEl)expEl.classList.toggle('show',hasExp);
+}
+
+// Reveal
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:0.05,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// Smooth mouse-follow glow on hero
+(function(){const hero=document.querySelector('.hero');const g=document.getElementById('glow');if(!hero||!g)return;
+let tx=hero.offsetWidth/2-300,ty=180,cx=tx,cy=ty;
+hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();tx=e.clientX-r.left-300;ty=e.clientY-r.top-300});
+(function lerp(){cx+=(tx-cx)*0.06;cy+=(ty-cy)*0.06;g.style.left=cx+'px';g.style.top=cy+'px';requestAnimationFrame(lerp)})();
+})();
+
+// 3D phone parallax — mouse tracks tilt
+(function(){
+  const right=document.querySelector('.hero-right');
+  const wrap=document.querySelector('.hero-ph-wrap');
+  if(!right||!wrap)return;
+  let releasing=false,raf=null;
+  const BASE_Y=-18,BASE_X=6,P=1400;
+
+  right.addEventListener('mousemove',function(e){
+    if(releasing)return;
+    cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(function(){
+      const r=right.getBoundingClientRect();
+      const nx=(e.clientX-r.left)/r.width-0.5;  // -0.5…0.5
+      const ny=(e.clientY-r.top)/r.height-0.5;
+      const ry=BASE_Y+nx*22;
+      const rx=BASE_X-ny*14;
+      wrap.classList.add('ph-tracked');
+      wrap.classList.remove('ph-releasing');
+      wrap.style.transform='perspective('+P+'px) rotateY('+ry+'deg) rotateX('+rx+'deg) translateY(-6px)';
+    });
+  });
+
+  right.addEventListener('mouseleave',function(){
+    releasing=true;
+    cancelAnimationFrame(raf);
+    wrap.classList.remove('ph-tracked');
+    wrap.classList.add('ph-releasing');
+    wrap.style.transform='perspective('+P+'px) rotateY('+BASE_Y+'deg) rotateX('+BASE_X+'deg) translateY(0)';
+    setTimeout(function(){
+      wrap.classList.remove('ph-releasing');
+      wrap.style.transform='';
+      releasing=false;
+    },1100);
+  });
+})();
+</script>
+</body>
+</html>

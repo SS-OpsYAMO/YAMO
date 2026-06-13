@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<title>YAMO Gift Cards — The perfect gift for any traveler</title>
+<meta name="description" content="Send a digital gift card instantly. 23,000+ brands — Amazon, Apple, Uber, Netflix and more. Delivered by email in seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0b;--dark:#000000;--dark-card:#141414;--dark-card2:#1a1a1a;
+  --text-inv:#F5F5F3;--text-dim:rgba(255,255,255,0.5);--text-faint:rgba(255,255,255,0.28);
+  --green:#22C55E;--blue:#3B6FD4;--accent:#7c3aed;--accent2:#9f67ff;
+  --border:rgba(255,255,255,0.08);--border-l:rgba(255,255,255,0.05);
+  --r:14px;--r2:22px;--r3:32px
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text-inv);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.55}
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.container{max-width:1120px;margin:0 auto;padding:0 32px}
+.section{padding:88px 0}
+
+/* ─── Animations ─── */
+.rv{opacity:0;transform:translateY(24px);transition:opacity 0.65s cubic-bezier(.16,1,.3,1),transform 0.65s cubic-bezier(.16,1,.3,1)}
+.rv.v{opacity:1;transform:none}
+@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 8px rgba(34,197,94,0.6)}50%{opacity:.4;box-shadow:0 0 2px rgba(34,197,94,0.2)}}
+@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(-1deg)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+/* ─── Buttons ─── */
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:13px 28px;border-radius:99px;text-decoration:none;border:none;cursor:pointer;font-family:inherit;transition:all 0.25s cubic-bezier(.16,1,.3,1)}
+.btn-accent{background:var(--accent);color:#fff;box-shadow:0 4px 24px rgba(124,58,237,0.4)}
+.btn-accent:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(124,58,237,0.55);background:var(--accent2)}
+.btn-ghost{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.1)}
+.btn-ghost:hover{background:rgba(255,255,255,0.1);color:#fff;transform:translateY(-2px)}
+.btn-white{background:#fff;color:#0a0a0b;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.btn-lg{padding:17px 42px;font-size:15.5px}
+.btn svg{width:16px;height:16px;transition:transform .2s}
+.btn:hover svg{transform:translateX(3px)}
+
+/* ─── Header ─── */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px}
+.head-wrap{max-width:1120px;margin:12px auto 0;display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 24px;border-radius:99px;background:rgba(10,10,10,0.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.07)}
+.logo{font-size:20px;font-weight:900;letter-spacing:-0.03em;color:#fff;text-decoration:none}
+.head-nav{display:flex;gap:4px}
+.head-nav a{font-size:12.5px;font-weight:500;color:rgba(255,255,255,0.5);text-decoration:none;padding:6px 14px;border-radius:99px;transition:all .2s}
+.head-nav a:hover,.head-nav a.active{color:#fff;background:rgba(255,255,255,0.08)}
+.head-cta a{font-size:12px;font-weight:600;padding:8px 20px;background:#fff;color:#0a0a0b;border-radius:99px;text-decoration:none;transition:all .2s}
+.head-cta a:hover{background:rgba(255,255,255,0.9)}
+.mob-tog{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:4px}
+@media(max-width:768px){.head-nav,.head-cta{display:none}.mob-tog{display:block}}
+
+/* ─── Hero ─── */
+.gift-hero{padding:160px 0 88px;position:relative;overflow:hidden;background:radial-gradient(ellipse 100% 70% at 50% 0%,rgba(124,58,237,0.14) 0%,transparent 60%)}
+.gift-hero-inner{display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center}
+.gift-hero-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 8px;border-radius:99px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.55);margin-bottom:20px}
+.gift-hero-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-dot 2.5s infinite}
+.gift-hero h1{font-size:clamp(48px,7vw,84px);font-weight:800;line-height:0.95;letter-spacing:-0.05em;margin-bottom:22px}
+.gift-hero h1 em{font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-weight:400;color:rgba(255,255,255,0.38)}
+.gift-hero-sub{font-size:17px;color:rgba(255,255,255,0.45);max-width:420px;line-height:1.65;margin-bottom:36px}
+.gift-hero-checks{display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
+.gift-hero-checks li{list-style:none;display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,0.65);font-weight:500}
+.gift-hero-checks li::before{content:'';width:18px;height:18px;border-radius:50%;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%2322C55E' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+
+/* gift card visual */
+.gift-visual{position:relative;display:flex;justify-content:center;align-items:center;height:420px}
+.gift-card-main{width:320px;height:200px;border-radius:20px;background:linear-gradient(135deg,#1e0a3c 0%,#3b0a6e 50%,#7c3aed 100%);box-shadow:0 40px 80px rgba(124,58,237,0.45),0 0 0 1px rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.15);position:relative;overflow:hidden;animation:floatCard 6s ease-in-out infinite;z-index:3}
+.gift-card-main::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(255,255,255,0.1) 0%,transparent 50%)}
+.gift-card-main::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.gift-card-logo{position:absolute;top:20px;left:22px;font-size:22px;font-weight:900;letter-spacing:-0.04em;color:#fff}
+.gift-card-amount{position:absolute;bottom:22px;left:22px}
+.gift-card-amount-val{font-size:32px;font-weight:800;color:#fff;letter-spacing:-0.04em;line-height:1}
+.gift-card-amount-lbl{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:3px}
+.gift-card-chip{position:absolute;top:20px;right:20px;width:34px;height:26px;border-radius:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2)}
+/* floating brand chips */
+.gift-chip{position:absolute;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:40px;background:rgba(20,20,20,0.92);border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(16px);font-size:12px;font-weight:600;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,0.5);white-space:nowrap}
+.gift-chip-1{top:30px;left:-10px;animation:floatCard 5s ease-in-out 0.5s infinite}
+.gift-chip-2{top:50px;right:-20px;animation:floatCard 5.5s ease-in-out 1s infinite}
+.gift-chip-3{bottom:60px;left:-30px;animation:floatCard 6.5s ease-in-out 0.2s infinite}
+.gift-chip-4{bottom:30px;right:-10px;animation:floatCard 5s ease-in-out 1.5s infinite}
+.chip-dot{width:8px;height:8px;border-radius:50%}
+
+/* ─── Gift Card Shop ─── */
+.shop-section{padding:80px 0;border-top:1px solid var(--border)}
+.shop-header{margin-bottom:24px}
+.shop-header h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:8px}
+.shop-header h2 span{color:var(--accent2)}
+.shop-header p{font-size:14px;color:rgba(255,255,255,0.4)}
+/* Filter tabs */
+.gc-filter{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:32px}
+.gc-filter-btn{font-size:12px;font-weight:700;letter-spacing:0.01em;padding:7px 16px;border-radius:99px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.45);cursor:pointer;font-family:inherit;transition:all .18s}
+.gc-filter-btn:hover{color:rgba(255,255,255,0.75);border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.07)}
+.gc-filter-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+/* Card grid */
+.gc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.gc-tile{background:#111114;border:1px solid rgba(255,255,255,0.07);border-radius:18px;overflow:hidden;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s,border-color .3s}
+.gc-tile:hover{transform:translateY(-5px);box-shadow:0 24px 56px rgba(0,0,0,0.6);border-color:rgba(255,255,255,0.15)}
+.gc-tile.hidden{display:none}
+.gc-tile-top{padding:22px 20px 16px;display:flex;flex-direction:column;justify-content:space-between;min-height:108px;position:relative;overflow:hidden}
+.gc-tile-top::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(to top,#111114,transparent);pointer-events:none}
+.gc-logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;letter-spacing:-0.02em}
+.gc-brand-row{display:flex;align-items:center;gap:11px}
+.gc-brand-name{font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.2}
+.gc-cat-tag{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-top:2px}
+.gc-body{padding:14px 18px 18px;border-top:1px solid rgba(255,255,255,0.05)}
+.gc-vals{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px}
+.gc-val{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.5);font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;cursor:pointer;transition:all .16s;font-family:inherit;user-select:none}
+.gc-val:hover{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+.gc-val.active{background:rgba(255,255,255,0.13);color:#fff;border-color:rgba(255,255,255,0.3)}
+.gc-cta{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:10px 14px;border-radius:10px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.22);color:var(--accent2);font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;letter-spacing:0.01em}
+.gc-cta:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-1px)}
+.gc-cta svg{width:12px;height:12px;transition:transform .2s}
+.gc-cta:hover svg{transform:translateX(2px)}
+.gc-more{text-align:center;padding-top:36px;border-top:1px solid rgba(255,255,255,0.05);margin-top:8px}
+.gc-more p{font-size:14px;color:rgba(255,255,255,0.3);margin-bottom:20px}
+@media(max-width:1040px){.gc-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.gc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.gc-grid{grid-template-columns:1fr 1fr}}
+
+/* ─── Value props ─── */
+.value-section{background:#0e0e10;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.value-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:88px 0}
+.value-visual{position:relative;height:380px;display:flex;align-items:center;justify-content:center}
+.value-box{width:300px;height:380px;border-radius:28px;background:linear-gradient(160deg,#1a0d2e 0%,#2d1460 60%,#7c3aed 100%);border:1px solid rgba(255,255,255,0.1);box-shadow:0 40px 80px rgba(124,58,237,0.3),inset 0 1px 0 rgba(255,255,255,0.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden}
+.value-box::before{content:'';position:absolute;top:-60px;left:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.05)}
+.value-box-icon{font-size:56px}
+.value-box-tag{font-size:13px;font-weight:700;color:rgba(255,255,255,0.7);letter-spacing:-0.01em;text-align:center;padding:0 24px}
+.value-box-sub{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.value-content h2{font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px}
+.value-content h2 em{font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-weight:400;color:rgba(255,255,255,0.35)}
+.value-content p{font-size:16px;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:36px}
+.value-list{display:flex;flex-direction:column;gap:16px;margin-bottom:40px}
+.value-item{display:flex;align-items:flex-start;gap:14px}
+.value-item-icon{width:38px;height:38px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.25)}
+.value-item-text strong{display:block;font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.value-item-text span{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.5}
+
+/* ─── Categories ─── */
+.cats-section{padding:80px 0;border-top:1px solid var(--border)}
+.cats-header{text-align:center;margin-bottom:48px}
+.cats-header h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-0.04em;margin-bottom:10px}
+.cats-header h2 span{font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-weight:400;color:rgba(255,255,255,0.35)}
+.cats-header p{font-size:15px;color:rgba(255,255,255,0.4);max-width:480px;margin:0 auto;line-height:1.6}
+.cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cat-card{border-radius:var(--r2);overflow:hidden;position:relative;height:280px;cursor:pointer;text-decoration:none;display:block}
+.cat-card-bg{position:absolute;inset:0;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.cat-card:hover .cat-card-bg{transform:scale(1.06)}
+.cat-card-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.2) 60%,transparent 100%)}
+.cat-card-content{position:absolute;bottom:0;left:0;right:0;padding:24px}
+.cat-card-icon{font-size:28px;margin-bottom:8px;display:block}
+.cat-card h3{font-size:20px;font-weight:800;letter-spacing:-0.03em;margin-bottom:5px;color:#fff}
+.cat-card p{font-size:12.5px;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:14px}
+.cat-card-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--accent2);letter-spacing:0.02em}
+.cat-card-btn svg{width:13px;height:13px}
+/* Category backgrounds */
+.cat-gaming .cat-card-bg{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)}
+.cat-tech .cat-card-bg{background:linear-gradient(135deg,#0a0a23,#1a1a4e,#1a3a6e)}
+.cat-retail .cat-card-bg{background:linear-gradient(135deg,#1a0a00,#3d1f00,#7c3000)}
+
+/* ─── How it works ─── */
+.how-section{padding:80px 0;border-top:1px solid var(--border)}
+.how-header{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-bottom:60px}
+.how-header h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-0.04em;line-height:1.1}
+.how-header p{font-size:15px;color:rgba(255,255,255,0.4);line-height:1.7;padding-top:4px}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+.how-step{background:var(--bg);padding:36px 32px;position:relative}
+.how-step:first-child{border-radius:var(--r2) 0 0 var(--r2)}
+.how-step:last-child{border-radius:0 var(--r2) var(--r2) 0}
+.how-num{font-size:11px;font-weight:800;letter-spacing:0.12em;color:rgba(255,255,255,0.2);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.how-num::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06)}
+.how-step-icon{font-size:32px;margin-bottom:16px;display:block}
+.how-step h3{font-size:17px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;color:#fff}
+.how-step p{font-size:13.5px;color:rgba(255,255,255,0.4);line-height:1.65}
+
+/* ─── CTA ─── */
+.cta-section{padding:88px 0;border-top:1px solid var(--border)}
+.cta-inner{background:linear-gradient(135deg,#1a0940 0%,#2d1460 50%,#0f0a20 100%);border-radius:var(--r3);padding:72px 64px;display:flex;align-items:center;justify-content:space-between;gap:48px;border:1px solid rgba(124,58,237,0.3);position:relative;overflow:hidden}
+.cta-inner::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.2) 0%,transparent 70%);pointer-events:none}
+.cta-text h2{font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:12px;color:#fff}
+.cta-text p{font-size:16px;color:rgba(255,255,255,0.45);line-height:1.6;max-width:380px}
+.cta-actions{display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0}
+.cta-note{font-size:11.5px;color:rgba(255,255,255,0.3);font-weight:500}
+
+/* ─── Footer ─── */
+footer{border-top:1px solid var(--border);padding:32px 0}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.foot-logo{font-size:18px;font-weight:900;letter-spacing:-0.03em;color:#fff}
+.foot-links{display:flex;gap:24px}
+.foot-links a{font-size:12.5px;color:rgba(255,255,255,0.35);text-decoration:none;transition:.15s}
+.foot-links a:hover{color:rgba(255,255,255,0.7)}
+.foot-copy{font-size:12px;color:rgba(255,255,255,0.2)}
+
+/* ─── Responsive ─── */
+@media(max-width:960px){
+  .gift-hero-inner{grid-template-columns:1fr;gap:48px}
+  .gift-visual{height:280px}
+  .gift-card-main{width:260px;height:164px}
+  .value-inner{grid-template-columns:1fr}
+  .value-visual{display:none}
+  .cats-grid{grid-template-columns:1fr 1fr}
+  .how-steps{grid-template-columns:1fr;background:none;gap:12px}
+  .how-step{border-radius:var(--r2)!important;border:1px solid var(--border)}
+  .how-header{grid-template-columns:1fr}
+  .cta-inner{flex-direction:column;padding:48px 32px;text-align:center}
+  .cta-actions{align-items:center}
+}
+@media(max-width:640px){
+  .container{padding:0 20px}
+  .shop-header{flex-direction:column;align-items:flex-start}
+  .shop-header p{text-align:left}
+  .cats-grid{grid-template-columns:1fr}
+  .foot-inner{flex-direction:column;gap:16px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="head-wrap">
+    <a href="yamo-landing.html" class="logo">YAMO</a>
+    <nav class="head-nav">
+      <a href="yamo-landing.html">Home</a>
+      <a href="yamo-landing.html#pricing">Phones</a>
+      <a href="yamo-landing.html#protect">Protection</a>
+      <a href="yamo-gift.html" class="active">Gift</a>
+      <a href="yamo-landing.html#faq">FAQ</a>
+      <a href="yamo-crm.html">Admin</a>
+    </nav>
+    <div class="head-cta"><a href="https://nestrfi.com/gift-cards" target="_blank">Browse gift cards</a></div>
+    <button class="mob-tog" onclick="this.closest('header').querySelector('.head-nav').style.display=this.closest('header').querySelector('.head-nav').style.display==='flex'?'none':'flex'">
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="gift-hero">
+  <div class="container">
+    <div class="gift-hero-inner">
+
+      <div class="rv">
+        <div class="gift-hero-pill"><span class="dot"></span> Instant digital delivery</div>
+        <h1>Gift a<br>traveler.<br><em>Instantly.</em></h1>
+        <p class="gift-hero-sub">Send Amazon, Apple, Uber, Netflix and 23,000+ more brands — delivered by email in seconds, no expiry date.</p>
+        <ul class="gift-hero-checks">
+          <li>Instant delivery by email or SMS</li>
+          <li>23,000+ brands worldwide</li>
+          <li>No expiry date, ever</li>
+          <li>100% secure transactions</li>
+        </ul>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="btn btn-accent btn-lg">
+            Browse gift cards
+            <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="yamo-landing.html#pricing" class="btn btn-ghost btn-lg">Get a YAMO phone</a>
+        </div>
+      </div>
+
+      <!-- Gift card visual -->
+      <div class="gift-visual rv" style="transition-delay:.15s">
+        <!-- Floating brand chips -->
+        <div class="gift-chip gift-chip-1">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#FF9900"><path d="M1.5 9.5C7 7 17 7 22.5 9.5M4 15c4-2 12-2 16 0M6.5 19.5c2.5-1 9-1 11 0"/></svg>
+          Amazon
+        </div>
+        <div class="gift-chip gift-chip-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#A2AAAD"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Apple
+        </div>
+        <div class="gift-chip gift-chip-3">
+          <div style="width:16px;height:16px;background:#E50914;border-radius:3px;display:flex;align-items:center;justify-content:center">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M5 3l14 9-14 9V3z"/></svg>
+          </div>
+          Netflix
+        </div>
+        <div class="gift-chip gift-chip-4">
+          <div style="width:16px;height:16px;background:rgba(255,255,255,0.08);border-radius:3px;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.15)">U</div>
+          Uber
+        </div>
+
+        <!-- Main card -->
+        <div class="gift-card-main">
+          <div class="gift-card-logo">YAMO</div>
+          <div class="gift-card-chip"></div>
+          <div class="gift-card-amount">
+            <div class="gift-card-amount-val">$50</div>
+            <div class="gift-card-amount-lbl">Gift Card</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GIFT CARD SHOP ═══ -->
+<section class="shop-section">
+  <div class="container">
+    <div class="shop-header rv">
+      <h2>Shop <span>gift cards</span></h2>
+      <p>Instant digital delivery · No expiry · 23,000+ brands worldwide</p>
+    </div>
+    <div class="gc-filter rv" id="gcFilter" style="transition-delay:.04s">
+      <button class="gc-filter-btn on" data-filter="all">All</button>
+      <button class="gc-filter-btn" data-filter="gaming">🎮 Gaming</button>
+      <button class="gc-filter-btn" data-filter="streaming">🎬 Streaming</button>
+      <button class="gc-filter-btn" data-filter="retail">🛍 Retail</button>
+      <button class="gc-filter-btn" data-filter="travel">✈️ Travel</button>
+      <button class="gc-filter-btn" data-filter="food">☕ Food</button>
+    </div>
+    <div class="gc-grid rv" id="gcGrid" style="transition-delay:.1s">
+
+      <!-- Uber -->
+      <div class="gc-tile" data-cat="travel">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#0a0a0a,#141414,#1c1c1c)">
+          <div class="gc-logo" style="background:#000;color:#fff;font-size:18px;font-weight:900;border:1px solid rgba(255,255,255,0.15)">U</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Uber</div><div class="gc-cat-tag">Travel · Rides</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$10</button><button class="gc-val">$25</button><button class="gc-val">$50</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Airbnb -->
+      <div class="gc-tile" data-cat="travel">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#1c0002,#300005,#480008)">
+          <div class="gc-logo" style="background:#FF385C;color:#fff;font-size:18px">⌂</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Airbnb</div><div class="gc-cat-tag">Travel · Stays</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$50</button><button class="gc-val">$100</button><button class="gc-val">$200</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Spotify -->
+      <div class="gc-tile" data-cat="streaming">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#001200,#002000,#003200)">
+          <div class="gc-logo" style="background:#1DB954;color:#000;font-size:18px">♫</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Spotify</div><div class="gc-cat-tag">Streaming</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$10</button><button class="gc-val">$30</button><button class="gc-val">$60</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Amazon -->
+      <div class="gc-tile" data-cat="retail">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#1c0a00,#3e1a00,#5c2800)">
+          <div class="gc-logo" style="background:#FF9900;color:#000;font-size:18px">A</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Amazon</div><div class="gc-cat-tag">Retail</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$25</button><button class="gc-val">$50</button><button class="gc-val">$100</button><button class="gc-val">$200</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Netflix -->
+      <div class="gc-tile" data-cat="streaming">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#1a0000,#2e0000,#450000)">
+          <div class="gc-logo" style="background:#E50914;color:#fff;font-size:20px;font-family:'DM Serif Display',Georgia,serif;font-style:italic">N</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Netflix</div><div class="gc-cat-tag">Streaming</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$15</button><button class="gc-val">$25</button><button class="gc-val">$50</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Apple -->
+      <div class="gc-tile" data-cat="retail">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#111115,#1e1e28,#2c2c3c)">
+          <div class="gc-logo" style="background:#2a2a35;color:#fff;font-size:20px">⌘</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Apple</div><div class="gc-cat-tag">Tech · Retail</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$15</button><button class="gc-val">$25</button><button class="gc-val">$50</button><button class="gc-val">$100</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Steam -->
+      <div class="gc-tile" data-cat="gaming">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#080c14,#101828,#182038)">
+          <div class="gc-logo" style="background:#1b2838;color:#66c0f4;font-size:18px;font-weight:900;border:1px solid rgba(102,192,244,0.2)">S</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Steam</div><div class="gc-cat-tag">Gaming · PC</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$20</button><button class="gc-val">$50</button><button class="gc-val">$100</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- PlayStation -->
+      <div class="gc-tile" data-cat="gaming">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#000510,#000c2a,#001450)">
+          <div class="gc-logo" style="background:#003087;color:#fff;font-size:13px;font-weight:900;letter-spacing:-0.5px">PS</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">PlayStation</div><div class="gc-cat-tag">Gaming · Sony</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$20</button><button class="gc-val">$50</button><button class="gc-val">$100</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Xbox -->
+      <div class="gc-tile" data-cat="gaming">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#011401,#042004,#073007)">
+          <div class="gc-logo" style="background:#107C10;color:#fff;font-size:20px;font-weight:900">X</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Xbox</div><div class="gc-cat-tag">Gaming · Microsoft</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$15</button><button class="gc-val">$25</button><button class="gc-val">$50</button><button class="gc-val">$100</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Google Play -->
+      <div class="gc-tile" data-cat="gaming">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#0a1200,#141e00,#1e2c00)">
+          <div class="gc-logo" style="background:linear-gradient(135deg,#EA4335,#FBBC05,#34A853,#4285F4);color:#fff;font-size:18px">▶</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Google Play</div><div class="gc-cat-tag">Gaming · Apps</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$10</button><button class="gc-val">$25</button><button class="gc-val">$50</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Nintendo -->
+      <div class="gc-tile" data-cat="gaming">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#1a0000,#2e0000,#420000)">
+          <div class="gc-logo" style="background:#E4000F;color:#fff;font-size:18px;font-weight:900;border-radius:50%">◎</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Nintendo</div><div class="gc-cat-tag">Gaming</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$20</button><button class="gc-val">$35</button><button class="gc-val">$50</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Starbucks -->
+      <div class="gc-tile" data-cat="food">
+        <div class="gc-tile-top" style="background:linear-gradient(140deg,#001200,#002000,#003018)">
+          <div class="gc-logo" style="background:#00704A;color:#fff;font-size:18px">★</div>
+          <div class="gc-brand-row">
+            <div><div class="gc-brand-name">Starbucks</div><div class="gc-cat-tag">Food · Coffee</div></div>
+          </div>
+        </div>
+        <div class="gc-body">
+          <div class="gc-vals">
+            <button class="gc-val active">$10</button><button class="gc-val">$25</button><button class="gc-val">$50</button>
+          </div>
+          <a href="https://nestrfi.com/gift-cards" target="_blank" class="gc-cta">Gift this card <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+
+    </div><!-- end gc-grid -->
+
+    <div class="gc-more rv" style="transition-delay:.2s">
+      <p>...and 23,000+ more brands available worldwide</p>
+      <a href="https://nestrfi.com/gift-cards" target="_blank" class="btn btn-ghost btn-lg">
+        Browse all brands <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VALUE PROPS ═══ -->
+<section class="value-section">
+  <div class="container">
+    <div class="value-inner">
+
+      <div class="value-visual rv">
+        <div class="value-box">
+          <div class="value-box-icon">🎁</div>
+          <div class="value-box-tag">Send a gift in seconds.<br>Open anywhere in the world.</div>
+          <div class="value-box-sub">Digital · Instant · Global</div>
+        </div>
+      </div>
+
+      <div class="rv" style="transition-delay:.12s">
+        <p class="label light" style="margin-bottom:14px">Why YAMO Gift Cards</p>
+        <h2>Send <em>digital gifts</em><br>in seconds</h2>
+        <p>Choose from over 23,000 brands. Pay once, delivered instantly — perfect for travelers, remote workers, and anyone with someone they love far away.</p>
+        <div class="value-list">
+          <div class="value-item">
+            <div class="value-item-icon">⚡</div>
+            <div class="value-item-text">
+              <strong>Instant digital delivery</strong>
+              <span>Delivered to any email or SMS within seconds. No waiting, no shipping.</span>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-item-icon">🌎</div>
+            <div class="value-item-text">
+              <strong>23,000+ brands worldwide</strong>
+              <span>From US retail giants to streaming platforms and travel services.</span>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-item-icon">♾️</div>
+            <div class="value-item-text">
+              <strong>No expiry date</strong>
+              <span>Gift cards never expire. Redeem when they're ready.</span>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="value-item-icon">🔒</div>
+            <div class="value-item-text">
+              <strong>100% secure transactions</strong>
+              <span>Every transaction is encrypted and protected.</span>
+            </div>
+          </div>
+        </div>
+        <a href="https://nestrfi.com/gift-cards" target="_blank" class="btn btn-accent btn-lg">
+          Browse all gift cards
+          <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CATEGORIES ═══ -->
+<section class="cats-section">
+  <div class="container">
+    <div class="cats-header rv">
+      <h2>Find the <span>perfect</span> gift card</h2>
+      <p>From gaming giants to tech leaders, streaming platforms to global retail — find the gift card your recipient will love.</p>
+    </div>
+    <div class="cats-grid rv" style="transition-delay:.1s">
+
+      <a href="https://nestrfi.com/gift-cards" target="_blank" class="cat-card cat-gaming">
+        <div class="cat-card-bg"></div>
+        <div class="cat-card-ov"></div>
+        <div class="cat-card-content">
+          <span class="cat-card-icon">🎮</span>
+          <h3>Gaming gift cards</h3>
+          <p>PlayStation, Xbox, Nintendo, Steam — the perfect gift for gamers.</p>
+          <div class="cat-card-btn">Browse gaming <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+        </div>
+      </a>
+
+      <a href="https://nestrfi.com/gift-cards" target="_blank" class="cat-card cat-tech">
+        <div class="cat-card-bg"></div>
+        <div class="cat-card-ov"></div>
+        <div class="cat-card-content">
+          <span class="cat-card-icon">💻</span>
+          <h3>Tech & services</h3>
+          <p>Apple, Google Play, Microsoft, Adobe and software subscriptions.</p>
+          <div class="cat-card-btn">Browse tech <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+        </div>
+      </a>
+
+      <a href="https://nestrfi.com/gift-cards" target="_blank" class="cat-card cat-retail">
+        <div class="cat-card-bg"></div>
+        <div class="cat-card-ov"></div>
+        <div class="cat-card-content">
+          <span class="cat-card-icon">🛍️</span>
+          <h3>Retail & shopping</h3>
+          <p>Amazon, Walmart, Target and major stores around the world.</p>
+          <div class="cat-card-btn">Browse retail <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-section">
+  <div class="container">
+    <div class="how-header rv">
+      <h2>How it works</h2>
+      <p>Buy and send a digital gift card in under two minutes. It's that simple — no account required, no shipping, no waiting.</p>
+    </div>
+    <div class="how-steps rv" style="transition-delay:.1s">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <span class="how-step-icon">🔍</span>
+        <h3>Pick a gift card</h3>
+        <p>Browse 23,000+ brands across gaming, tech, retail, streaming, travel and more. Filter by category or recipient.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <span class="how-step-icon">💳</span>
+        <h3>Complete checkout</h3>
+        <p>Quick and secure payment process. No account needed. Enter the recipient's email and a personal message.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <span class="how-step-icon">📩</span>
+        <h3>Delivered instantly</h3>
+        <p>The gift card arrives by email or SMS within seconds. The recipient redeems it directly with the brand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner rv">
+      <div class="cta-text">
+        <h2>The gift that always<br>fits. Everywhere.</h2>
+        <p>No guessing size. No customs delays. No wrong choice. Just instant joy — from anywhere, to anywhere.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="https://nestrfi.com/gift-cards" target="_blank" class="btn btn-white btn-lg">
+          Shop gift cards now
+          <svg fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <span class="cta-note">Powered by NestrFi · 23,000+ brands available</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="foot-inner">
+      <div class="foot-logo">YAMO</div>
+      <div class="foot-links">
+        <a href="yamo-landing.html">Home</a>
+        <a href="yamo-landing.html#pricing">Phones</a>
+        <a href="yamo-landing.html#faq">FAQ</a>
+        <a href="https://nestrfi.com" target="_blank">NestrFi</a>
+      </div>
+      <div class="foot-copy">© 2026 YAMO. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const obs = new IntersectionObserver(e => {
+  e.forEach(x => { if(x.isIntersecting) x.target.classList.add('v') })
+}, {threshold:0.08, rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+// ─── Gift card value selector ─────────────────────────────────────────────
+(function initGiftCards() {
+
+  // Value selector — toggle active pill within each card
+  document.querySelectorAll('.gc-vals').forEach(function(vals) {
+    vals.querySelectorAll('.gc-val').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        vals.querySelectorAll('.gc-val').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      });
+    });
+  });
+
+  // Filter tabs
+  var filterBtns = document.querySelectorAll('.gc-filter-btn');
+  var tiles = document.querySelectorAll('.gc-tile');
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(function(b) { b.classList.remove('on'); });
+      btn.classList.add('on');
+      var filter = btn.getAttribute('data-filter');
+      tiles.forEach(function(tile) {
+        if (filter === 'all' || tile.getAttribute('data-cat') === filter) {
+          tile.classList.remove('hidden');
+        } else {
+          tile.classList.add('hidden');
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
