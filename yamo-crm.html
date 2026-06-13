@@ -450,21 +450,21 @@
 
       <!-- International Catalog -->
       <div id="catalog-international">
-        <!-- Airalo -->
-        <div style="margin-bottom:20px;">
-          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
-            <span style="background:#1a1040;color:#a78bfa;padding:2px 8px;border-radius:99px;font-size:10px;">Airalo · Chimba</span>
-            <span style="color:var(--text-3);font-weight:400;font-size:10px;">4G · Movistar Colombia · ~20% below retail = your cost</span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-airalo"></div>
-        </div>
         <!-- eSIM Go -->
-        <div>
+        <div style="margin-bottom:20px;">
           <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
             <span style="background:#0a2618;color:#10b981;padding:2px 8px;border-radius:99px;font-size:10px;">eSIM Go · Wholesale</span>
             <span style="color:var(--text-3);font-weight:400;font-size:10px;">$2.61/GB + $0.30 activation</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-esimgo"></div>
+        </div>
+        <!-- Airalo -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+            <span style="background:#1a1040;color:#a78bfa;padding:2px 8px;border-radius:99px;font-size:10px;">Airalo · Chimba</span>
+            <span style="color:var(--text-3);font-weight:400;font-size:10px;">4G · Movistar Colombia · ~20% below retail = your cost</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;" id="catalog-airalo"></div>
         </div>
       </div>
 
@@ -995,7 +995,26 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sb-key').value = key;
     initSupabase();
   }
+  // Seed eSIM Go plans on first load
+  setTimeout(seedEsimGoPlans, 300);
 });
+
+async function seedEsimGoPlans() {
+  const existing = await DB.getAll('esim_plans');
+  const hasEsimGo = existing.some(p => p.provider === 'eSIM Go');
+  if (hasEsimGo) return; // already seeded
+  const plans = [
+    { provider:'eSIM Go', plan_name:'eSIM Go 0.5GB/30d', data_gb:0.5,  duration_days:30, country:'Colombia', cost_usd:1.51,  resale_price_usd:5.00,  notes:'Starter' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 1GB/30d',   data_gb:1,    duration_days:30, country:'Colombia', cost_usd:2.81,  resale_price_usd:10.00, notes:'$2.61/GB + $0.30 activation + $0.20/mo' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 2GB/30d',   data_gb:2,    duration_days:30, country:'Colombia', cost_usd:5.42,  resale_price_usd:14.00, notes:'' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 3GB/30d',   data_gb:3,    duration_days:30, country:'Colombia', cost_usd:8.03,  resale_price_usd:18.00, notes:'Best margin ⭐' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 5GB/30d',   data_gb:5,    duration_days:30, country:'Colombia', cost_usd:13.25, resale_price_usd:22.00, notes:'' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 10GB/30d',  data_gb:10,   duration_days:30, country:'Colombia', cost_usd:26.30, resale_price_usd:38.00, notes:'' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 20GB/30d',  data_gb:20,   duration_days:30, country:'Colombia', cost_usd:52.40, resale_price_usd:72.00, notes:'Heavy user' },
+  ];
+  for (const p of plans) await DB.insert('esim_plans', p);
+  console.log('[YAMO] eSIM Go plans seeded ✓');
+}
 
 // ── LOCAL STORE (fallback when no Supabase) ──
 const LS = {
