@@ -1006,13 +1006,23 @@ async function seedEsimGoPlans() {
   const plans = [
     { provider:'eSIM Go', plan_name:'eSIM Go 0.5GB/30d', data_gb:0.5,  duration_days:30, country:'Colombia', cost_usd:1.51,  resale_price_usd:5.00,  notes:'Starter' },
     { provider:'eSIM Go', plan_name:'eSIM Go 1GB/30d',   data_gb:1,    duration_days:30, country:'Colombia', cost_usd:2.81,  resale_price_usd:10.00, notes:'$2.61/GB + $0.30 activation + $0.20/mo' },
-    { provider:'eSIM Go', plan_name:'eSIM Go 2GB/30d',   data_gb:2,    duration_days:30, country:'Colombia', cost_usd:5.42,  resale_price_usd:14.00, notes:'' },
-    { provider:'eSIM Go', plan_name:'eSIM Go 3GB/30d',   data_gb:3,    duration_days:30, country:'Colombia', cost_usd:8.03,  resale_price_usd:18.00, notes:'Best margin ⭐' },
-    { provider:'eSIM Go', plan_name:'eSIM Go 5GB/30d',   data_gb:5,    duration_days:30, country:'Colombia', cost_usd:13.25, resale_price_usd:22.00, notes:'' },
-    { provider:'eSIM Go', plan_name:'eSIM Go 10GB/30d',  data_gb:10,   duration_days:30, country:'Colombia', cost_usd:26.30, resale_price_usd:38.00, notes:'' },
-    { provider:'eSIM Go', plan_name:'eSIM Go 20GB/30d',  data_gb:20,   duration_days:30, country:'Colombia', cost_usd:52.40, resale_price_usd:72.00, notes:'Heavy user' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 2GB/30d',   data_gb:2,    duration_days:30, country:'Colombia', cost_usd:5.42,  resale_price_usd:12.00, notes:'' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 3GB/30d',   data_gb:3,    duration_days:30, country:'Colombia', cost_usd:8.03,  resale_price_usd:13.00, notes:'Best margin ⭐' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 5GB/30d',   data_gb:5,    duration_days:30, country:'Colombia', cost_usd:13.25, resale_price_usd:20.00, notes:'' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 10GB/30d',  data_gb:10,   duration_days:30, country:'Colombia', cost_usd:26.30, resale_price_usd:34.00, notes:'' },
+    { provider:'eSIM Go', plan_name:'eSIM Go 20GB/30d',  data_gb:20,   duration_days:30, country:'Colombia', cost_usd:52.40, resale_price_usd:49.00, notes:'Heavy user' },
+    // Unlimited — costs TBD, confirm via eSIM Go portal
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/7d Lite',      data_gb:null, duration_days:7,  country:'Colombia', cost_usd:0, resale_price_usd:28.00, notes:'⚠️ Cost TBD · SKU: esimc_UL_7D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/15d Lite',     data_gb:null, duration_days:15, country:'Colombia', cost_usd:0, resale_price_usd:45.00, notes:'⚠️ Cost TBD · SKU: esimc_UL_15D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/30d Lite',     data_gb:null, duration_days:30, country:'Colombia', cost_usd:0, resale_price_usd:75.00, notes:'⚠️ Cost TBD · SKU: esimc_UL_30D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/7d Essential', data_gb:null, duration_days:7,  country:'Colombia', cost_usd:0, resale_price_usd:32.00, notes:'⚠️ Cost TBD · SKU: esimc_ULE_7D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/15d Essential',data_gb:null, duration_days:15, country:'Colombia', cost_usd:0, resale_price_usd:52.00, notes:'⚠️ Cost TBD · SKU: esimc_ULE_15D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/30d Essential',data_gb:null, duration_days:30, country:'Colombia', cost_usd:0, resale_price_usd:85.00, notes:'⚠️ Cost TBD · SKU: esimc_ULE_30D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/7d Plus',      data_gb:null, duration_days:7,  country:'Colombia', cost_usd:0, resale_price_usd:38.00, notes:'⚠️ Cost TBD · SKU: esimc_ULP_7D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/15d Plus',     data_gb:null, duration_days:15, country:'Colombia', cost_usd:0, resale_price_usd:60.00, notes:'⚠️ Cost TBD · SKU: esimc_ULP_15D_CO_V2' },
+    { provider:'eSIM Go', plan_name:'eSIM Go ∞/30d Plus',     data_gb:null, duration_days:30, country:'Colombia', cost_usd:0, resale_price_usd:95.00, notes:'⚠️ Cost TBD · SKU: esimc_ULP_30D_CO_V2' },
   ];
-  for (const p of plans) await DB.insert('esim_plans', p);
+  for (const p of plans.filter(p => p.cost_usd > 0)) await DB.insert('esim_plans', p);
   console.log('[YAMO] eSIM Go plans seeded ✓');
 }
 
@@ -2048,10 +2058,22 @@ const TOPUP_CATALOG = {
     {gb:'0.5',  days:30, tag:'Starter',              cost:1.51,  resale:5.00},
     {gb:'1',    days:30, tag:'',                     cost:2.81,  resale:8.00},
     {gb:'2',    days:30, tag:'',                     cost:5.42,  resale:12.00},
-    {gb:'3',    days:30, tag:'Best margin',          cost:8.03,  resale:16.00},
-    {gb:'5',    days:30, tag:'',                     cost:13.25, resale:22.00},
-    {gb:'10',   days:30, tag:'',                     cost:26.30, resale:38.00},
-    {gb:'20',   days:30, tag:'Heavy user',           cost:52.40, resale:72.00},
+    {gb:'3',    days:30, tag:'Best margin',          cost:8.03,  resale:13.00},
+    {gb:'5',    days:30, tag:'',                     cost:13.25, resale:20.00},
+    {gb:'10',   days:30, tag:'',                     cost:26.30, resale:34.00},
+    {gb:'20',   days:30, tag:'Heavy user',           cost:52.40, resale:49.00},
+    // Unlimited Lite — cost TBD (confirm via eSIM Go portal · SKU: esimc_UL_XD_CO_V2)
+    {gb:'∞',   days:7,  tag:'Unlimited Lite ⚠️TBD',  cost:0,     resale:28.00},
+    {gb:'∞',   days:15, tag:'Unlimited Lite ⚠️TBD',  cost:0,     resale:45.00},
+    {gb:'∞',   days:30, tag:'Unlimited Lite ⚠️TBD',  cost:0,     resale:75.00},
+    // Unlimited Essential — cost TBD (SKU: esimc_ULE_XD_CO_V2)
+    {gb:'∞',   days:7,  tag:'Unlimited Ess ⚠️TBD',   cost:0,     resale:32.00},
+    {gb:'∞',   days:15, tag:'Unlimited Ess ⚠️TBD',   cost:0,     resale:52.00},
+    {gb:'∞',   days:30, tag:'Unlimited Ess ⚠️TBD',   cost:0,     resale:85.00},
+    // Unlimited Plus — cost TBD (SKU: esimc_ULP_XD_CO_V2)
+    {gb:'∞',   days:7,  tag:'Unlimited Plus ⚠️TBD',  cost:0,     resale:38.00},
+    {gb:'∞',   days:15, tag:'Unlimited Plus ⚠️TBD',  cost:0,     resale:60.00},
+    {gb:'∞',   days:30, tag:'Unlimited Plus ⚠️TBD',  cost:0,     resale:95.00},
   ],
   wom: {
     verified: true,
@@ -2212,7 +2234,7 @@ function renderTopupCatalog() {
   ).join('');
 
   // — eSIM Go
-  document.getElementById('catalog-esimgo').innerHTML = TOPUP_CATALOG.esimgo.map(p =>
+  document.getElementById('catalog-esimgo').innerHTML = TOPUP_CATALOG.esimgo.filter(p => p.cost > 0).map(p =>
     buildPlanCard({
       gb: p.gb, days: p.days, cost: p.cost, resale: p.resale, tag: p.tag,
       provider: 'eSIM Go', planName: `eSIM Go ${p.gb}GB/${p.days}d`,
